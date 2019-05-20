@@ -1,33 +1,35 @@
-#include "core.h"
+#include "stdafx.h"
 
 /**
 * @brief      using known spectrum to match all image. 
 * @param[in]  bip_data    bip image data.
 * @param[in]  spectrum    match spectrum.
-* @param[in]  samples     bip image samples.
-* @param[in]  lines       bip image lines.
-* @param[in]  bands       bip image bands.
 * @param[in]  threshold   threshold of match, default 0.8.
 **/
-unsigned char* spectrummatch(unsigned short * bip_data, unsigned short* spectrum, int samples, int lines, int bands, float threshold)
+unsigned char* spectrummatch(hyper_mat bip_mat, int spectrum[], float threshold)
 {
+	_assert(bip_mat != NULL,                       "input hyper mat must not be NULL");
+	_assert(cmpstr(bip_mat->interleave,"bip") == 1,"hyper mat interleave should be bip");
+	_assert(spectrum != NULL,                      "spectrum must not be NULL");
+
+	int samples = bip_mat -> samples;
+	int lines = bip_mat -> lines;
+	int bands = bip_mat -> bands;
+	int elem_size = get_elem_size(bip_mat->data_type);
+
 	unsigned char* match_image;
 	match_image = (unsigned char*)malloc(samples*lines);
 
-	unsigned short* bip = bip_data;
+	//todo  fix next 
+	char* bip;
+	int * sp = spectrum;
 
 	for (int i=0; i<lines; i++)
 	{
 		for (int j=0; j<samples; j++)
 		{
-			float temp = spectral_angle_mapper(bip, spectrum, bands);
+			bip =(char *)bip_mat->data + (i*samples*bands+j*bands) * elem_size;
 
-			if (temp>threshold)
-				match_image[i*samples+j] = 1;
-			else
-				match_image[i*samples+j] = 0;
-
-			*bip += bands;
 		}
 	}
 
@@ -40,7 +42,7 @@ unsigned char* spectrummatch(unsigned short * bip_data, unsigned short* spectrum
 * @param[in]  y           vector y.
 * @param[in]  length      length of two vector.
 **/
-float spectral_angle_mapper(unsigned short* x, unsigned short* y, int length)
+float spectral_angle_mapper(float * x, float * y, int length)//todo 
 {
 	_assert(x != NULL && y != NULL, "spectral angle mapper input must not be NULL");
 
@@ -51,12 +53,11 @@ float spectral_angle_mapper(unsigned short* x, unsigned short* y, int length)
 	for (int i=0; i<length; i++)
 	{
 		XY +=  abs(*x * *y);
-		X += (*x)^2;
-		Y += (*y)^2;
+		X += (*x)*(*x);
+		Y += (*y)*(*y);
 	}
 
 	res = acos(XY/sqrt(X*Y));
-
 }
 
 /**
@@ -64,15 +65,15 @@ float spectral_angle_mapper(unsigned short* x, unsigned short* y, int length)
 * @param[in]  sp_path     spectrum file path.
 * @param[in]  length      length of spectrum.
 **/
-unsigned short* readspectrum(const char* sp_path, int length)
+int* readspectrum(const char* sp_path, int length)
 {
 	FILE *fp = fopen(sp_path,"r");
 
 	_assert(fp != NULL, "spectrum file can not open");
 
-	unsigned short* spectrum = (unsigned short*)malloc(length*sizeof(unsigned short));
+	int* spectrum = (int*)malloc(length*sizeof(int));
 
-	unsigned short* sp = spectrum;
+	int* sp = spectrum;
 
 	int temp=0;
 
@@ -83,8 +84,6 @@ unsigned short* readspectrum(const char* sp_path, int length)
 	}
 
 	fclose(fp);
-
 	return spectrum;
-
 }
 

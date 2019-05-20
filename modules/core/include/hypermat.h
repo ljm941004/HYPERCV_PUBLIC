@@ -40,7 +40,7 @@ inline int cmpstr(char temp1[],char temp2[])
 * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
 * @param[in]  interleave  bil bsq bip.
 **/
-hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, const int data_type, const char interleave[]);
+hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, const int data_type,const char interleave[]);
 
 /**
 * @brief      create a hyper mat.
@@ -57,11 +57,15 @@ hyper_mat create_hyper_mat_with_data(const int samples,const int lines,const int
 * @brief      read the hyper spectral image.
 * @param[in]  image_path  hyper spectral image path.
 * @param[in]  hdr_path    hdr file path.
-* @param[in]  samples     image samples.
-* @param[in]  lines       image lines.
-* @param[in]  bands       image bands.
 **/
 hyper_mat hmread(const char* image_path, const char* hdr_path);
+
+/**
+* @brief      write the hyper spectral image.
+* @param[in]  image_path  hyper spectral image path.
+* @param[in]  hyper_mat   hyper mat.
+**/
+void hmwrite(const char* image_path, hyper_mat mat);
 
 /**
  * @brief      read the HDR to get size and data type.
@@ -72,7 +76,7 @@ hyper_mat hmread(const char* image_path, const char* hdr_path);
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-void readhdr(FILE* hdr_fp, int& samples, int& lines, int& bands, int& data_type, char interleave[]);
+void readhdr(FILE* hdr_fp, int& samples, int& lines, int& bands, int& data_type,const char interleave[]);
 
 /**
  * @brief      function to delete the hyper mat.

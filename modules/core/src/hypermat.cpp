@@ -4,6 +4,13 @@
 #define MAXLINE 20 //each line no more than 20 words
 #endif
 
+//*************************************************************  private function *****************************************************************
+
+
+
+
+
+
 //*************************************************************  public function  *****************************************************************
 /**
 * @brief      create a hyper mat.
@@ -92,15 +99,32 @@ hyper_mat hmread(const char* image_path, const char* hdr_path)
 	int elem_size = get_elem_size(data_type);
 	int data_size = samples * lines * bands;
 
-	void* data = (void*)malloc(data_size*elem_size);
+	void* data = (void *)malloc(data_size * elem_size);
 
 	fread(data, elem_size, data_size, image_fp);
 	fclose(image_fp);
 	fclose(hdr_fp);
 
-	hyper_mat mat = create_hyper_mat_with_data(samples,lines,bands,data_type,interleave,data);
+	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data);
 
 	return mat;
+}
+
+/**
+* @brief      write the hyper spectral image.
+* @param[in]  image_path  hyper spectral image path.
+* @param[in]  hyper_mat   hyper mat.
+**/
+void hmwrite(const char* image_path, hyper_mat mat)
+{
+	_assert(image_path != NULL && mat != NULL,"image_path & mat could not be NULL");
+	FILE *fp = fopen(image_path,"w");
+	int elemsize = get_elem_size(mat -> data_type);
+	int samples = mat -> samples;
+	int lines = mat -> lines;
+	int bands = mat -> bands;
+	fwrite(mat -> data, elemsize, samples * lines * bands, fp);
+	//todo fix write hdr
 }
 
 /**
@@ -112,7 +136,7 @@ hyper_mat hmread(const char* image_path, const char* hdr_path)
 * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
 * @param[in]  interleave  bil bsq bip.
 **/
-void readhdr(FILE* hdr_fp, int& samples, int& lines, int& bands, int& data_type, char interleave[]) 
+void readhdr(FILE* hdr_fp, int& samples, int& lines, int& bands, int& data_type, const char interleave[]) 
 {
 	_assert(hdr_fp != NULL, "can not open hdr file");
 
@@ -138,14 +162,20 @@ void readhdr(FILE* hdr_fp, int& samples, int& lines, int& bands, int& data_type,
 	}
 }
 
+void writehdr(FILE* hdr_fp, int samples, int lines, int bands, int data_type, const char interleave[])
+{
+//todo 
+}
+
 /**
  * @brief      function to delete the hyper mat.
  * @param[in]  mat         hyper mat.
  **/
 void delate_hyper_mat(hyper_mat mat)
 {
+	_assert(mat != NULL, "already free");
 	free(mat->data);
 	mat->data = NULL;
 	free(mat);
 	mat = NULL;
-}
+}    
