@@ -187,7 +187,6 @@ hyper_mat bsq2bip(hyper_mat bsq_mat)
 	return bip_mat;
 }
 
-
 /**
 * @brief      transform bip to bsp.
 * @param[in]  bil_mat    bip image.
@@ -320,8 +319,8 @@ hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, i
 			{
 				for (int j = start_col; j < end_col; j++)
 				{
-					src_index = (i * src_samples * src_bands + k * samples + j) * elem_size;
-					dst_index = ((i - start_row) * src_samples * src_bands + (k - start_band) * samples + j - start_col) * elem_size;
+					src_index = (i * src_samples * src_bands + k * src_samples + j) * elem_size;
+					dst_index = ((i - start_row) * samples * bands + (k - start_band) * samples + j - start_col) * elem_size;
 
 					for (int t = 0; t < elem_size; t++)
 						dst_data[dst_index + t] = src_data[src_index + t];					
@@ -337,8 +336,8 @@ hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, i
 			{
 				for (int k = start_band; k < end_band; k++)
 				{
-					src_index = (i * src_samples * src_bands + j * bands + k) * elem_size;
-					dst_index = ((i - start_row) * src_samples * src_bands + (j - start_col) * bands + k - start_band) * elem_size;
+					src_index = (i * src_samples * src_bands + j * src_bands + k) * elem_size;
+					dst_index = ((i - start_row) * samples * bands + (j - start_col) * bands + k - start_band) * elem_size;
 
 					for (int t = 0; t < elem_size; t++)
 						dst_data[dst_index + t] = src_data[src_index + t];					
@@ -355,7 +354,7 @@ hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, i
 				for (int j = start_col; j < end_col; j++)
 				{
 					src_index = (k * src_samples * src_lines + i * src_samples + j) * elem_size;
-					dst_index = ((k - start_band) * src_samples * src_lines + (i - start_row) * src_samples + j - start_col) * elem_size;
+					dst_index = ((k - start_band) * samples * lines + (i - start_row) * samples + j - start_col) * elem_size;
 
 					for (int t = 0; t < elem_size; t++)
 						dst_data[dst_index + t] = src_data[src_index + t];					
@@ -367,4 +366,29 @@ hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, i
 		printf("interleave fasle, get range ");
 	
 	return dst_mat;
+}
+
+hyper_mat reshap_mat_2D(hyper_mat src_mat, int dst_samples, int dst_lines)
+{
+	int src_samples = src_mat -> samples;
+	int src_lines = src_mat -> lines;
+	int src_bands = src_mat -> bands;
+
+	int src_size = src_samples * src_lines * src_bands;
+	int dst_size = dst_samples * dst_lines ;
+	
+	_assert(src_size == dst_size, "reshape could not change the size");
+
+
+	if (cmpstr(src_mat->interleave, "bsq"))
+	{
+
+	}
+
+
+
+	return 0;
+
+
+
 }

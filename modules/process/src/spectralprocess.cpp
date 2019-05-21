@@ -6,7 +6,7 @@
 * @param[in]  spectrum    match spectrum.
 * @param[in]  threshold   threshold of match, default 0.8.
 **/
-unsigned char* spectrummatch(hyper_mat bip_mat, int spectrum[], float threshold)
+unsigned char* spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float threshold)
 {
 	_assert(bip_mat != NULL,                       "input hyper mat must not be NULL");
 	_assert(cmpstr(bip_mat->interleave,"bip") == 1,"hyper mat interleave should be bip");
@@ -24,11 +24,20 @@ unsigned char* spectrummatch(hyper_mat bip_mat, int spectrum[], float threshold)
 	char* bip;
 	int * sp = spectrum;
 
-	for (int i=0; i<lines; i++)
+	int * bip_point_data = (int *)malloc(bands * sizeof(int));
+	memset(bip_point_data, 0, sizeof(int) * bands);
+
+
+	for (int i = 0; i < lines; i++)
 	{
-		for (int j=0; j<samples; j++)
+		for (int j = 0; j < samples; j++)
 		{
-			bip =(char *)bip_mat->data + (i*samples*bands+j*bands) * elem_size;
+			bip = (char *)bip_mat -> data + (i * samples * bands + j * bands) * elem_size;
+			for (int k = 0; k < bands; k++ )
+			{
+
+		
+			}
 
 		}
 	}
@@ -65,7 +74,7 @@ float spectral_angle_mapper(float * x, float * y, int length)//todo
 * @param[in]  sp_path     spectrum file path.
 * @param[in]  length      length of spectrum.
 **/
-int* readspectrum(const char* sp_path, int length)
+int* read_spectrum_file(const char* sp_path, int length)
 {
 	FILE *fp = fopen(sp_path,"r");
 

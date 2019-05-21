@@ -1,12 +1,10 @@
 #include "stdafx.h"
 
+//*************************************************************  private *****************************************************************
+
 #ifndef MAXLINE
 #define MAXLINE 20 //each line no more than 20 words
 #endif
-
-//*************************************************************  private function *****************************************************************
-
-
 
 
 
@@ -57,7 +55,7 @@ hyper_mat create_hyper_mat_with_data(const int samples,const int lines,const int
 
 	if (data == NULL)
 	{
-		uintptr_t address = (uintptr_t)mat + sizeof(hyper_mat);
+		uintptr_t address = (uintptr_t) mat + sizeof(hyper_mat);
 		BYTE_ALIGNMENT(address, ALLOC_BYTE_ALIGNMENT);
 		memset((void*)address,0,samples * lines * bands * elem_size);
 		mat -> data = (void*) address;
@@ -72,7 +70,6 @@ hyper_mat create_hyper_mat_with_data(const int samples,const int lines,const int
 	mat -> interleave[0] = interleave[0];
 	mat -> interleave[1] = interleave[1];
 	mat -> interleave[2] = interleave[2];
-
 	return mat;
 }
 
@@ -155,27 +152,35 @@ void readhdr(FILE* hdr_fp, int& samples, int& lines, int& bands, int& data_type,
 			sscanf(line, "%*[^=]=%d", &lines);
 		else if (cmpstr(item, "bands") == 1)
 			sscanf(line, "%*[^=]=%d", &bands);
-		else if (cmpstr(item, "data") >= 0)
+		else if (cmpstr(item, "data") > 0)
 			sscanf(line, "%*[^=]=%d", &data_type);
-		else if (cmpstr(item, "interleave") >= 0)
+		else if (cmpstr(item, "interleave") > 0)
 			sscanf(line, "%*[^=]=%s", interleave);
 	}
 }
 
 void writehdr(FILE* hdr_fp, int samples, int lines, int bands, int data_type, const char interleave[])
 {
-//todo 
+	//todo 
 }
 
 /**
- * @brief      function to delete the hyper mat.
- * @param[in]  mat         hyper mat.
- **/
+* @brief      function to delete the hyper mat.
+* @param[in]  mat         hyper mat.
+**/
 void delate_hyper_mat(hyper_mat mat)
 {
 	_assert(mat != NULL, "already free");
-	free(mat->data);
-	mat->data = NULL;
-	free(mat);
-	mat = NULL;
+	if((uintptr_t)mat + ALLOC_BYTE_ALIGNMENT >= (uintptr_t)mat->data)
+	{
+		free(mat);
+		mat = NULL;	
+	}
+	else	
+	{
+		free(mat->data);
+		mat->data = NULL;
+		free(mat);
+		mat = NULL;	
+	}
 }    

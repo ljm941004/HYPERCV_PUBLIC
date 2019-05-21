@@ -1,4 +1,3 @@
-#pragma once
 
 /**
 * @brief      the definition of hyper mat.
@@ -27,7 +26,7 @@ inline int cmpstr(char temp1[],char temp2[])
 	for (int i=0;i<3;i++)
 	{
 		if(temp1[i]!=temp2[i])
-			return -1;
+			return 0;
 	}
 	return 1;
 }
@@ -83,3 +82,6 @@ void readhdr(FILE* hdr_fp, int& samples, int& lines, int& bands, int& data_type,
  * @param[in]  mat         hyper mat.
  **/
 void delate_hyper_mat(hyper_mat mat);
+
+
+
