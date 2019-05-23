@@ -43,3 +43,16 @@ void test_hypermat_get_range()
     delate_hyper_mat(t);
 	delate_hyper_mat(s);
 }
+
+void test_reshape_hypermat_2_simplemat()
+{
+	const char* image_path = "IMAGE_20180914142522_0030.raw";
+	const char* hdr_path = "IMAGE_20180914142522_0030.hdr";
+
+	hyper_mat bil_mat = hmread(image_path,hdr_path);
+	hyper_mat bsq_mat = bil2bsq(bil_mat);
+
+	simple_mat mat = reshape_hypermat_2_simplemat(bsq_mat, bsq_mat->bands,bsq_mat->samples*bsq_mat->lines);
+
+
+}

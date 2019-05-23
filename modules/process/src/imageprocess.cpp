@@ -3,7 +3,7 @@
 /**
 * @brief      transform bil to bsq.
 * @param[in]  bil_mat    bil image.
-* @return     bsq_mat    bsq image.
+* @retval     bsq_mat    bsq image.
 **/
 hyper_mat bil2bsq(hyper_mat bil_mat)
 {
@@ -49,7 +49,7 @@ hyper_mat bil2bsq(hyper_mat bil_mat)
 /**
 * @brief      transform bil to bip.
 * @param[in]  bil_mat    bil image.
-* @return     bip_mat    bip image. 
+* @retval     bip_mat    bip image. 
 **/
 hyper_mat bil2bip(hyper_mat bil_mat)
 {
@@ -96,7 +96,7 @@ hyper_mat bil2bip(hyper_mat bil_mat)
 /**
 * @brief      transform bsq to bil.
 * @param[in]  bil_mat    bsq image.
-* @return     bip_mat    bil image. 
+* @retval     bip_mat    bil image. 
 **/
 hyper_mat bsq2bil(hyper_mat bsq_mat)
 {
@@ -143,7 +143,7 @@ hyper_mat bsq2bil(hyper_mat bsq_mat)
 /**
 * @brief      transform bsq to bip.
 * @param[in]  bil_mat    bsq image.
-* @return     bip_mat    bip image. 
+* @retval     bip_mat    bip image. 
 **/
 hyper_mat bsq2bip(hyper_mat bsq_mat)
 {
@@ -190,7 +190,7 @@ hyper_mat bsq2bip(hyper_mat bsq_mat)
 /**
 * @brief      transform bip to bsp.
 * @param[in]  bil_mat    bip image.
-* @return     bip_mat    bsq image. 
+* @retval     bip_mat    bsq image. 
 **/
 hyper_mat bip2bsq(hyper_mat bip_mat)
 {
@@ -237,7 +237,7 @@ hyper_mat bip2bsq(hyper_mat bip_mat)
 /**
 * @brief      transform bip to bil .
 * @param[in]  bip_mat    bip image.
-* @return     bil_mat    bil image. 
+* @retval     bil_mat    bil image. 
 **/
 hyper_mat bip2bil(hyper_mat bip_mat)
 {
@@ -288,7 +288,7 @@ hyper_mat bip2bil(hyper_mat bip_mat)
 * @param[in]  end_row     end row of roi.
 * @param[in]  end_col     end col of roi.
 * @param[in]  end_band    end band of roi.
-* @return     dst_mat     hyper image. 
+* @retval     dst_mat     hyper image. 
 **/
 hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, int start_band, int end_row, int end_col, int end_band)
 {
@@ -368,27 +368,29 @@ hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, i
 	return dst_mat;
 }
 
-hyper_mat reshap_mat_2D(hyper_mat src_mat, int dst_samples, int dst_lines)
+/**
+* @brief      reshape bsq hyper mat to 2d simple mat.
+* @param[in]  src_mat     hyper image.
+* @param[in]  dst_rows    rows of simple mat.
+* @param[in]  dst_cols    cols of simple mat.
+* @retval     dst_mat     simple image. 
+**/
+simple_mat reshape_hypermat_2_simplemat(hyper_mat src_mat, int dst_rows, int dst_cols)
 {
+	_assert(cmpstr(src_mat -> interleave,"bsq")==1, "input hyper mat interleave is bsq");
+
 	int src_samples = src_mat -> samples;
 	int src_lines = src_mat -> lines;
 	int src_bands = src_mat -> bands;
 
 	int src_size = src_samples * src_lines * src_bands;
-	int dst_size = dst_samples * dst_lines ;
-	
+	int dst_size = dst_rows * dst_cols ;
+
 	_assert(src_size == dst_size, "reshape could not change the size");
 
+	simple_mat dst_mat = create_simple_mat(dst_rows, dst_cols, src_mat->data_type,1);
 
-	if (cmpstr(src_mat->interleave, "bsq"))
-	{
+	memcpy(dst_mat->data, src_mat->data, dst_rows * dst_cols * dst_mat->elem_size);
 
-	}
-
-
-
-	return 0;
-
-
-
+	return dst_mat;
 }

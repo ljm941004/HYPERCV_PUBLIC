@@ -15,3 +15,8 @@ void test_delete_hyper_mat()
 	uintptr_t addrw = (uintptr_t)(s->data);
 
 }
+
+void test_smread()
+{
+	
+}

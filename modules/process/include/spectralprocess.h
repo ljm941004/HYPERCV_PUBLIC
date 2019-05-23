@@ -11,7 +11,7 @@ unsigned char* spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float thres
 * @param[in]  x           vector x.
 * @param[in]  y           vector y.
 * @param[in]  length      length of two vector.
-* @return     float
+* @retval     float
 **/
 float spectral_angle_mapper(unsigned short* x, unsigned short* y, int length);
 
@@ -19,6 +19,6 @@ float spectral_angle_mapper(unsigned short* x, unsigned short* y, int length);
 * @brief      read spectrum from txt file. 
 * @param[in]  sp_path     spectrum file path.
 * @param[in]  length      length of spectrum.
-* @return     spectrum
+* @retval     spectrum
 **/
 int* read_spectrum_file(const char* sp_path, int length);

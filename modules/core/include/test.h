@@ -30,3 +30,5 @@ inline void compare_2_mat(hyper_mat src_mat, hyper_mat dst_mat)
 void test_bi12bsq();
 void test_hypermat_get_range();
 void test_delete_hyper_mat();
+void test_smread();
+void test_reshape_hypermat_2_simplemat();

@@ -6,8 +6,8 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 
-    test_hypermat_get_range();
 
+	test_reshape_hypermat_2_simplemat();
 
 	return 0;
 }
