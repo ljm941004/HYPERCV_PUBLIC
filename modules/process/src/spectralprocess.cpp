@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "precomp.h"
 
 /**
 * @brief      using known spectrum to match all image. 

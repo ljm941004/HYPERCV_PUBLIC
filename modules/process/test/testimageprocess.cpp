@@ -1,6 +1,4 @@
-#include "stdafx.h"
-#include "test.h"
-
+#include<precomp.h>
 void test_bi12bsq()
 {
 	const char* image_path = "IMAGE_20180914142522_0030.raw";

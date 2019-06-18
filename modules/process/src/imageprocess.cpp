@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "precomp.h"
 
 /**
 * @brief      transform bil to bsq.

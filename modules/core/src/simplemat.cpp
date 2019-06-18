@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "precomp.h"
 
 /**
  * @brief	constructor for matrix headers pointing to user-allocated data
@@ -58,41 +58,41 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type, int ch
 }
 
 /**
-* @brief      read the 2D image.
-* @param[in]  image_path  hyper spectral image path.
-* @retval      simple_mat   2D mat. 
-**/
+ * @brief      read the 2D image.
+ * @param[in]  image_path  hyper spectral image path.
+ * @retval      simple_mat   2D mat. 
+ **/
 simple_mat smread(const char * image_path)
 {
 	_assert(image_path != NULL, "image path or hdr path can not be NULL");
-	
+
 	FILE* image_fp = fopen(image_path,"r");
-	
+
 	int rows, cols, data_type;
-	
+
 	if (image_fp == NULL)
 		printf("can not open file\n");
 
 	int elem_size = get_elem_size(data_type);
 	int data_size = rows * cols;
 
-	
+
 	void* data = (void *)malloc(data_size * elem_size);
 
 	fread(data, elem_size, data_size, image_fp);
 
 	fclose(image_fp);
-	
+
 	simple_mat mat;//todo fix
 	//simple_mat mat = create_simple_mat_with_data(rows, cols, data_type, data);
-	
+
 	return mat;
 }
 
 /**
-* @brief      function to delete the simple mat.
-* @param[in]  mat         simple mat.
-**/
+ * @brief      function to delete the simple mat.
+ * @param[in]  mat         simple mat.
+ **/
 void delate_simple_mat(simple_mat mat)
 {
 	if(mat == NULL)

@@ -1,7 +1,5 @@
 
-#include "stdafx.h"
-#include "test.h"
-
+#include "procomp.h"
 void test_delete_hyper_mat()
 {
 	const char* image_path = "IMAGE_20180914142522_0030.raw";
