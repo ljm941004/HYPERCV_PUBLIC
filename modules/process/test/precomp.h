@@ -1,3 +1,4 @@
-#include<core\core.h>
-#include<core\test.h>
-#include<process\process.h>
+#include <stdio.h>
+#include<core/core.h>
+#include<core/test.h>
+#include<process/process.h>

@@ -1,5 +1,4 @@
-
-#include "procomp.h"
+#include "precomp.h"
 void test_delete_hyper_mat()
 {
 	const char* image_path = "IMAGE_20180914142522_0030.raw";
@@ -14,7 +13,13 @@ void test_delete_hyper_mat()
 
 }
 
-void test_smread()
+TEST(haha, hss)
 {
-	
+    printf("haha\n");
+    //test_delete_hyper_mat();
+}
+
+TEST(haha2, hss)
+{
+    test_delete_hyper_mat();
 }

@@ -1,3 +1,3 @@
-#include<imageprocess.h>
-#include<matrixprocess.h>
-#include<spectralprocess.h>
+#include "imageprocess.h"
+#include "matrixprocess.h"
+#include "spectralprocess.h"
