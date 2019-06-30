@@ -4,7 +4,7 @@
 * @param[in]  spectrum    match spectrum.
 * @param[in]  threshold   threshold of match, default 0.8.
 **/
-unsigned char* spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float threshold);
+simple_mat spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float threshold);
 
 /**
 * @brief      calculate two vector similar. 

@@ -45,6 +45,7 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int cha
 	mat -> rows            = rows;
 	mat -> cols            = cols;
 	mat -> data_type       = data_type;
+    mat -> channels        = channels;
 	mat -> elem_size       = elem_size;
 	return mat;
 }
@@ -66,7 +67,7 @@ simple_mat smread(const char * image_path)
 	fread(data, elem_size, data_size, image_fp);
 	fclose(image_fp);
 	simple_mat mat;//todo fix
-	mat = create_simple_mat_with_data(rows, cols, data_type,1,data);//fix 1 channels
+	mat = create_simple_mat_with_data(rows, cols, data_type,1,data);//fix 3 channels
 	return mat;
 }
 /**

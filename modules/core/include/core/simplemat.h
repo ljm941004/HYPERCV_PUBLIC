@@ -4,6 +4,7 @@ typedef struct
 	int   rows;
 	int   cols;
 	int   data_type;
+	int   channels;
 	int   elem_size;
 	void* data;
 }SIMPLE_MAT;
@@ -18,7 +19,7 @@ typedef SIMPLE_MAT* simple_mat;
  * @param[in]  channels 	channels of 2d image.
  * @retval      simple_mat   2D mat. 
  **/
-simple_mat create_simple_mat(int rows, int cols, int date_type, int channels = 1);
+simple_mat create_simple_mat(int rows, int cols, int date_type, int channels);
 
 /**
  * @brief	constructor for matrix headers pointing to user-allocated data
@@ -29,7 +30,7 @@ simple_mat create_simple_mat(int rows, int cols, int date_type, int channels = 1
  * @param[in]  data			Pointer to the user data.
  * @retval     simple_mat   2D mat. 
  **/
-simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int channels, void* data);
+simple_mat create_simple_mat_with_data(int rows, int cols, int data_type, int channels, void* data);
 
 /**
 * @brief      read the 2D image.

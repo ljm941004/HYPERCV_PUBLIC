@@ -6,7 +6,7 @@
 * @param[in]  spectrum    match spectrum.
 * @param[in]  threshold   threshold of match, default 0.8.
 **/
-unsigned char* spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float threshold)
+simple_mat spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float threshold)
 {
 	_assert(bip_mat != NULL,                       "input hyper mat must not be NULL");
 	_assert(cmpstr(bip_mat->interleave,"bip") == 1,"hyper mat interleave should be bip");
@@ -17,8 +17,9 @@ unsigned char* spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float thres
 	int bands = bip_mat -> bands;
 	int elem_size = get_elem_size(bip_mat->data_type);
 
-	unsigned char* match_image;
-	match_image = (unsigned char*)malloc(samples*lines);
+	simple_mat match_image;
+	match_image = create_simple_mat(lines,samples,1,1);
+	
 
 	//todo  fix next 
 	char* bip;
@@ -26,7 +27,6 @@ unsigned char* spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float thres
 
 	int * bip_point_data = (int *)malloc(bands * sizeof(int));
 	memset(bip_point_data, 0, sizeof(int) * bands);
-
 
 	for (int i = 0; i < lines; i++)
 	{
