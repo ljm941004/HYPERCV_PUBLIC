@@ -19,7 +19,3 @@ TEST(haha, hss)
     //test_delete_hyper_mat();
 }
 
-TEST(haha2, hss)
-{
-    test_delete_hyper_mat();
-}
