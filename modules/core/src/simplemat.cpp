@@ -26,7 +26,7 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int cha
 	simple_mat mat;
 
 	int memneeded = sizeof(SIMPLE_MAT);
-	int elem_size = get_elem_size(data_type);
+	int elem_size = get_elemsize(data_type);
 
 	if (data == NULL)
 	{
@@ -66,17 +66,13 @@ simple_mat smread(const char * image_path)
 
 	FILE* image_fp;
 
-	errno_t err;
-	err = fopen_s(&image_fp, image_path, "r");
+	image_fp = fopen(image_path, "r");
 
-	_assert(err == 0, "can not open files");
+	_assert(image_fp != NULL, "can not open files");
 
 	int rows, cols, data_type;
 
-	if (image_fp == NULL)
-		printf("can not open file\n");
-
-	int elem_size = get_elem_size(data_type);
+	int elem_size = get_elemsize(data_type);
 	int data_size = rows * cols;
 	void* data = (void *)malloc(data_size * elem_size);
 

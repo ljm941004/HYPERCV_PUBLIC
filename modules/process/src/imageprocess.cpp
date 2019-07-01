@@ -17,7 +17,7 @@ hyper_mat bil2bsq(hyper_mat bil_mat)
 	int samples   = bil_mat -> samples;
 	int lines     = bil_mat -> lines;
 	int bands     = bil_mat -> bands;
-	int elem_size = get_elem_size(bil_mat->data_type);
+	int elem_size = get_elemsize(bil_mat->data_type);
 
 	char interleave[3];
 	interleave[0] = 'b';
@@ -63,7 +63,7 @@ hyper_mat bil2bip(hyper_mat bil_mat)
 	int samples   = bil_mat -> samples;
 	int lines     = bil_mat -> lines;
 	int bands     = bil_mat -> bands;
-	int elem_size = get_elem_size(bil_mat->data_type);
+	int elem_size = get_elemsize(bil_mat->data_type);
 
 	char interleave[3];
 	interleave[0] = 'b';
@@ -110,7 +110,7 @@ hyper_mat bsq2bil(hyper_mat bsq_mat)
 	int samples   = bsq_mat -> samples;
 	int lines     = bsq_mat -> lines;
 	int bands     = bsq_mat -> bands;
-	int elem_size = get_elem_size(bsq_mat->data_type);
+	int elem_size = get_elemsize(bsq_mat->data_type);
 
 	char interleave[3];
 	interleave[0] = 'b';
@@ -157,7 +157,7 @@ hyper_mat bsq2bip(hyper_mat bsq_mat)
 	int samples   = bsq_mat -> samples;
 	int lines     = bsq_mat -> lines;
 	int bands     = bsq_mat -> bands;
-	int elem_size = get_elem_size(bsq_mat->data_type);
+	int elem_size = get_elemsize(bsq_mat->data_type);
 
 	char interleave[3];
 	interleave[0] = 'b';
@@ -204,7 +204,7 @@ hyper_mat bip2bsq(hyper_mat bip_mat)
 	int samples   = bip_mat -> samples;
 	int lines     = bip_mat -> lines;
 	int bands     = bip_mat -> bands;
-	int elem_size = get_elem_size(bip_mat->data_type);
+	int elem_size = get_elemsize(bip_mat->data_type);
 
 	char interleave[3];
 	interleave[0] = 'b';
@@ -249,7 +249,7 @@ hyper_mat bip2bil(hyper_mat bip_mat)
 	int samples   = bip_mat -> samples;
 	int lines     = bip_mat -> lines;
 	int bands     = bip_mat -> bands;
-	int elem_size = get_elem_size(bip_mat->data_type);
+	int elem_size = get_elemsize(bip_mat->data_type);
 
 	char interleave[3];
 	interleave[0] = 'b';
@@ -301,7 +301,7 @@ hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, i
 
 	hyper_mat dst_mat = create_hyper_mat(samples, lines, bands, data_type, src_mat -> interleave);
 
-	int elem_size = get_elem_size(data_type);
+	int elem_size = get_elemsize(data_type);
 
 	char* src_data = (char*)src_mat->data;
 	char* dst_data = (char*)dst_mat->data;

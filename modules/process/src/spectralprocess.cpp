@@ -47,14 +47,15 @@ simple_mat spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float threshold
 	int bands = bip_mat->bands;
 	int elem_size = get_elemsize(bip_mat->data_type);
 
-	simple_mat match_image = create_simple_mat(lines, samples, 1);
+	simple_mat match_image = create_simple_mat(lines, samples, 1,1);
 
 	//only use in short datetype
 	short* bip;
 	char*  smat;
 
 	float* temp = (float*)malloc(sizeof(float)*bands);
-
+/*
+ * todo
 	for (int i = 0; i < lines; i++)
 	{
 		for (int j = 0; j < samples; j++)
@@ -77,7 +78,7 @@ simple_mat spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float threshold
 				*smat = 0;
 		}
 	}
-
+*/
 	return match_image;
 }
 
@@ -115,10 +116,9 @@ float spectral_angle_mapper(float * x, float * y, int length)
 float* read_spectrum_file(const char* sp_path, int length)
 {
 	FILE *fp;
-	errno_t err;
-	err = fopen_s(&fp, sp_path, "r");
+	fp = fopen(sp_path, "r");
 
-	_assert(err == 0, "can not open files");
+	_assert(fp != NULL, "can not open files");
 
 	float* spectrum = (float*)malloc(length*sizeof(float));
 
@@ -126,7 +126,7 @@ float* read_spectrum_file(const char* sp_path, int length)
 
 	float temp = 0;
 
-	while (fscanf_s(fp, "%d", &temp) != EOF)
+	while (fscanf(fp, "%d", &temp) != EOF)
 	{
 		*sp = temp;
 		sp++;

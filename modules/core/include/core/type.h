@@ -8,7 +8,7 @@
 	(address) = (((address) + ((alignment) - 1)) & (-alignment)); \
 }
 
-inline int get_elem_size(const int data_type)
+inline int get_elemsize(const int data_type)
 {
 	switch (data_type)
 	{

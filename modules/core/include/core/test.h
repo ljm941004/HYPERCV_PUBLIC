@@ -9,7 +9,7 @@ inline void compare_2_mat(hyper_mat src_mat, hyper_mat dst_mat)
 		return;
 	}
 
-	int elem_size = get_elem_size(src_mat->data_type);
+	int elem_size = get_elemsize(src_mat->data_type);
 	int sum = src_mat->samples*src_mat->lines*src_mat->bands*elem_size;
 
 	char*src_data = (char*)src_mat->data;

@@ -43,7 +43,7 @@ hyper_mat create_hyper_mat_with_data(const int samples,const int lines,const int
 	hyper_mat mat;
 
 	int memneeded = sizeof(HyperMat);
-	int elem_size = get_elem_size(data_type);
+	int elem_size = get_elemsize(data_type);
 
 	if (data == NULL)
 	{
@@ -88,12 +88,11 @@ hyper_mat hmread(const char* image_path, const char* hdr_path)
 	FILE* image_fp;
 	FILE* hdr_fp;
 
-	errno_t err1, err2;
-	err1 = fopen_s(&image_fp, image_path, "r");
-	err2 = fopen_s(&hdr_fp, hdr_path, "r");
+	image_fp = fopen(image_path, "r");
+	hdr_fp = fopen(hdr_path, "r");
 
-	_assert(err1 == 0, "can not open files");
-	_assert(err2 == 0, "can not open files");
+	_assert(image_fp != NULL, "can not open files");
+	_assert(hdr_fp != NULL, "can not open files");
 
 	int samples,lines,bands,data_type;
 	char interleave[3];
@@ -103,7 +102,7 @@ hyper_mat hmread(const char* image_path, const char* hdr_path)
 	else
 		readhdr(hdr_fp, samples, lines, bands, data_type, interleave);
 
-	int elem_size = get_elem_size(data_type);
+	int elem_size = get_elemsize(data_type);
 	int data_size = samples * lines * bands;
 
 	void* data = (void *)malloc(data_size * elem_size);
@@ -128,9 +127,8 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	_assert(image_path != NULL && mat != NULL, "image_path & mat could not be NULL");
 
 	FILE* image_fp;
-	errno_t err;
-	err = fopen_s(&image_fp, image_path, "r");
-	_assert(err == 0, "can not open files");
+	image_fp = fopen( image_path, "r");
+	_assert(image_fp != NULL, "can not open files");
 
 	int elemsize = get_elemsize(mat->data_type);
 	int samples = mat->samples;
