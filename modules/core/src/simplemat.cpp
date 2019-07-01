@@ -24,15 +24,19 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int cha
 {
 	_assert(rows > 0 && cols > 0, "the rows and cols of mat must be greater than zero ");
 	simple_mat mat;
+
 	int memneeded = sizeof(SIMPLE_MAT);
 	int elem_size = get_elem_size(data_type);
+
 	if (data == NULL)
 	{
 		int data_size = rows * cols * elem_size; 
 		memneeded += data_size + ALLOC_BYTE_ALIGNMENT;
 	}
+
 	mat = (simple_mat)malloc(sizeof(char) * memneeded);
 	_assert(mat != NULL, "failed to allocate memory");
+
 	if(data == NULL)
 	{
 		uintptr_t address = (uintptr_t)mat + sizeof(SIMPLE_MAT);
@@ -42,11 +46,13 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int cha
 	}
 	else
 		mat -> data = data;
+
 	mat -> rows            = rows;
 	mat -> cols            = cols;
 	mat -> data_type       = data_type;
     mat -> channels        = channels;
 	mat -> elem_size       = elem_size;
+
 	return mat;
 }
 /**
@@ -57,17 +63,29 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int cha
 simple_mat smread(const char * image_path)
 {
 	_assert(image_path != NULL, "image path or hdr path can not be NULL");
-	FILE* image_fp = fopen(image_path,"r");
+
+	FILE* image_fp;
+
+	errno_t err;
+	err = fopen_s(&image_fp, image_path, "r");
+
+	_assert(err == 0, "can not open files");
+
 	int rows, cols, data_type;
+
 	if (image_fp == NULL)
 		printf("can not open file\n");
+
 	int elem_size = get_elem_size(data_type);
 	int data_size = rows * cols;
 	void* data = (void *)malloc(data_size * elem_size);
+
 	fread(data, elem_size, data_size, image_fp);
 	fclose(image_fp);
+
 	simple_mat mat;//todo fix
 	mat = create_simple_mat_with_data(rows, cols, data_type,1,data);//fix 3 channels
+
 	return mat;
 }
 /**
@@ -78,6 +96,7 @@ void delate_simple_mat(simple_mat mat)
 {
 	if(mat == NULL)
 		return;
+
 	if((uintptr_t)mat + ALLOC_BYTE_ALIGNMENT >= (uintptr_t)mat->data)
 	{
 		free(mat);
