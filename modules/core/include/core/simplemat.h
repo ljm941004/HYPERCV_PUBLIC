@@ -37,7 +37,7 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type, int ch
 * @param[in]  image_path  hyper spectral image path.
 * @retval      simple_mat   2D mat. 
 **/
-simple_mat smread(const char * image_path);
+simple_mat smread(const char * image_path, int rows, int cols, int data_type, int channels);
 
 /**
 * @brief      function to delete the simple mat.

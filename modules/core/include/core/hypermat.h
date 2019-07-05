@@ -21,7 +21,7 @@ typedef struct
 typedef HyperMat* hyper_mat;
 
 // private function purpose to compare 2 char[]
-inline int cmpstr(char temp1[],char temp2[])
+inline int cmpstr(char temp1[],char const temp2[])
 {
 	for (int i=0;i<3;i++)
 	{

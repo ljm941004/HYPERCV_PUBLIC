@@ -126,7 +126,7 @@ float* read_spectrum_file(const char* sp_path, int length)
 
 	float temp = 0;
 
-	while (fscanf(fp, "%d", &temp) != EOF)
+	while (fscanf(fp, "%f", &temp) != EOF)
 	{
 		*sp = temp;
 		sp++;

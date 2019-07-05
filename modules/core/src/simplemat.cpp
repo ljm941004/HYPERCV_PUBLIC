@@ -60,7 +60,7 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int cha
  * @param[in]  image_path  hyper spectral image path.
  * @retval      simple_mat   2D mat. 
  **/
-simple_mat smread(const char * image_path)
+simple_mat smread(const char * image_path, int rows, int cols, int data_type, int channels)
 {
 	_assert(image_path != NULL, "image path or hdr path can not be NULL");
 
@@ -70,8 +70,6 @@ simple_mat smread(const char * image_path)
 
 	_assert(image_fp != NULL, "can not open files");
 
-	int rows, cols, data_type;
-
 	int elem_size = get_elemsize(data_type);
 	int data_size = rows * cols;
 	void* data = (void *)malloc(data_size * elem_size);
@@ -79,8 +77,8 @@ simple_mat smread(const char * image_path)
 	fread(data, elem_size, data_size, image_fp);
 	fclose(image_fp);
 
-	simple_mat mat;//todo fix
-	mat = create_simple_mat_with_data(rows, cols, data_type,1,data);//fix 3 channels
+	simple_mat mat;
+	mat = create_simple_mat_with_data(rows, cols, data_type, channels, data);
 
 	return mat;
 }
