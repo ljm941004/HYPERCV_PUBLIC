@@ -55,9 +55,8 @@ hyper_mat create_hyper_mat_with_data(const int samples,const int lines,const int
 /**
 * @brief      read the hyper spectral image.
 * @param[in]  image_path  hyper spectral image path.
-* @param[in]  hdr_path    hdr file path.
 **/
-hyper_mat hmread(const char* image_path, const char* hdr_path);
+hyper_mat hmread(const char* image_path);
 
 /**
 * @brief      write the hyper spectral image.

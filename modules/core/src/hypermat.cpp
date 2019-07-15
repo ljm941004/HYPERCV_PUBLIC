@@ -76,25 +76,39 @@ hyper_mat create_hyper_mat_with_data(const int samples,const int lines,const int
 }
 
 /**
- * @brief      read the hyper spectral image.
- * @param[in]  image_path  hyper spectral image path.
- * @param[in]  hdr_path    hdr file path.
- * @retval      hyper_mat   hyper mat. 
- **/
-hyper_mat hmread(const char* image_path, const char* hdr_path)
+* @brief      read the hyper spectral image.
+* @param[in]  image_path  hyper spectral image path.
+* @retval      hyper_mat   hyper mat.
+**/
+hyper_mat hmread(const char* image_path)
 {
-	_assert(image_path != NULL && hdr_path != NULL, "image path or hdr path can not be NULL");
+	_assert(image_path != NULL, "image path or hdr path can not be NULL");
 
+	const char* t = image_path;
+	int len = 0;
+	while (*t != '\0'&&*t != '.')
+	{
+		t++;
+		len++;
+	}
+	char* hdr_path = (char*)malloc((len + 5)*sizeof(char));
+	for (int i = 0; i < len; i++)
+		hdr_path[i] = image_path[i];
+	hdr_path[len] = '.';
+	hdr_path[len + 1] = 'h';
+	hdr_path[len + 2] = 'd';
+	hdr_path[len + 3] = 'r';
+	hdr_path[len + 4] = '\0';
 	FILE* image_fp;
 	FILE* hdr_fp;
 
-	image_fp = fopen(image_path, "r");
+	image_fp = fopen( image_path, "r");
 	hdr_fp = fopen(hdr_path, "r");
 
-	_assert(image_fp != NULL, "can not open files");
-	_assert(hdr_fp != NULL, "can not open files");
+	_assert(image_fp == NULL, "can not open image files");
+	_assert(hdr_fp == NULL, "can not open hdr files");
 
-	int samples,lines,bands,data_type;
+	int samples, lines, bands, data_type;
 	char interleave[3];
 
 	if (image_fp == NULL || hdr_fp == NULL)
@@ -108,7 +122,6 @@ hyper_mat hmread(const char* image_path, const char* hdr_path)
 	void* data = (void *)malloc(data_size * elem_size);
 
 	fread(data, elem_size, data_size, image_fp);
-	
 	fclose(image_fp);
 	fclose(hdr_fp);
 
@@ -116,6 +129,7 @@ hyper_mat hmread(const char* image_path, const char* hdr_path)
 
 	return mat;
 }
+
 
 /**
  * @brief      write the hyper spectral image.
