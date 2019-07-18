@@ -1,4 +1,5 @@
-#include <stdio.h>
-#include<core/core.h>
-#include<core/test.h>
-#include<process/process.h>
+
+#include <iostream>
+#include <gtest/gtest.h>
+#include "core/core.h"
+#include "process/process.h"

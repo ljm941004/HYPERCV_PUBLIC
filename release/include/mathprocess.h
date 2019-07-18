@@ -4,9 +4,6 @@
 	> Mail: jimin@iscas.ac.cn
 	> Created Time: 2019年06月30日 星期日 16时20分49秒
  ************************************************************************/
-
-
-
 //
 /**
 * @brief      calculate the mean value of vector x. 
@@ -14,8 +11,6 @@
 * @param[in]  x           vector x.
 * @param[in]  len         length of vector x.
 **/
-/*
-	
 template <class type>
 float mean(type* x, int len)
 {
@@ -25,14 +20,13 @@ float mean(type* x, int len)
 	res = res/len;
 	return res;
 }
-*/
+
 /**
 * @brief      calculate the variance value of vector x. 
 * @param[in]  type        template data type.
 * @param[in]  x           vector x.
 * @param[in]  len         length of vector x.
 **/
-/*
 template <class type>
 float variance(type* x, int len)
 {
@@ -43,7 +37,7 @@ float variance(type* x, int len)
 	res = res/len;
 	return res;
 }
-*/
+
 /**
 * @brief      calculate the covariance value of vector x. 
 * @param[in]  type        template data type.
@@ -51,8 +45,6 @@ float variance(type* x, int len)
 * @param[in]  y           vector y.
 * @param[in]  len         length of vector x.
 **/
-/*
- *
 template <class type1,class type2>
 float covariance(type1* x, type2* y, int len)
 {
@@ -64,4 +56,4 @@ float covariance(type1* x, type2* y, int len)
 	return res/len;
 }
 
-*/
+

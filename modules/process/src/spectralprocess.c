@@ -36,7 +36,7 @@ ________________________________________________________________________________
 * @param[in]  spectrum    match spectrum.
 * @param[in]  threshold   threshold of match, default 0.8.
 **/
-simple_mat spectrum_SAM_match(hyper_mat bip_mat, int spectrum[], float threshold)
+simple_mat spectrum_SAM_match(hyper_mat bip_mat, float* spectrum, float threshold)
 {
 	_assert(bip_mat != NULL, "input hyper mat must not be NULL");
 	_assert(cmpstr(bip_mat->interleave, "bip") == 1, "hyper mat interleave should be bip");
