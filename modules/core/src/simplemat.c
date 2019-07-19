@@ -4,7 +4,8 @@
  * @param[in]  rows			Number of rows in a 2D array.
  * @param[in]  cols			Number of columns in a 2D array.
  * @param[in]  data_type	same as hyper mat data type.
- * @retval      simple_mat   2D mat. 
+ * @param[in]  channels  	channels of simple mat.
+ * @retval     simple_mat   2D mat. 
  **/
 simple_mat create_simple_mat(int rows, int cols, int date_type, int channels)
 {
