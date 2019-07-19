@@ -15,8 +15,8 @@ process中是数据处理模块。
 
 本库由于coder的技术有限，时间不足，希望不足之处还请批评指正。
 
-coder mail 1） ： 260960918@qq.com  
-coder mail 2)  ： jimin@iscas.ac.cn
+coder mail 1）260960918@qq.com  
+coder mail 2) jimin@iscas.ac.cn
  
 
                                                            编者   李济民
