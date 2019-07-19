@@ -11,11 +11,11 @@ typedef struct
 {
 	int width;
 	int height;
-	void* data;
-}2D_STRUCT
+	unsigned char* data;
+}STRUCT_2D;
 
-typedef 2D_STRUCT* 2D_S;
+typedef STRUCT_2D* S_2D;
 
-2D_S create_2D_struct(int width, int height);
+S_2D create_2D_struct(int width, int height);
 
-2D_S create_2D_struct_with_data(int width, int height, void* data);
+S_2D create_2D_struct_with_data(int width, int height, unsigned char* data);
