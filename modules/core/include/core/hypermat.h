@@ -79,6 +79,12 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 void writehdr(const char* img_path, int samples, int lines, int bands, int data_type, const char interleave[]);
 
 /**
+ * @brief      function to show information the hyper mat.
+ * @param[in]  mat         hyper mat.
+ **/
+void showinfo_of_hyper_mat(hyper_mat mat);
+
+/**
  * @brief      function to delete the hyper mat.
  * @param[in]  mat         hyper mat.
  **/

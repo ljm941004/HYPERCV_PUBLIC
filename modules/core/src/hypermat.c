@@ -241,6 +241,26 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 	fclose(fp);
 }
 
+
+/**
+ * @brief      function to show information the hyper mat.
+ * @param[in]  mat         hyper mat.
+ **/
+void showinfo_of_hyper_mat(hyper_mat mat)
+{
+	if(mat == NULL)
+		printf("mat is NULL");
+	else
+	{
+		printf("mat's samples is %d", mat->samples);
+		printf("mat's lines is %d",mat->lines);	
+		printf("mat's bands is %d",mat->bands);
+		printf("mat's data type is %d",mat->data_type);
+		printf("mat's interleave is %c%c%c",mat->interleave[0],mat->interleave[1],mat->interleave[2]);	
+	}
+}
+
+
 /**
  * @brief      function to delete the hyper mat.
  * @param[in]  mat         hyper mat.

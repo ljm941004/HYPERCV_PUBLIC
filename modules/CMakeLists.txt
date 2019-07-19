@@ -4,6 +4,7 @@ INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/core/include" "${CMAKE_CURRENT_
 
 ADD_LIBRARY(hypermat SHARED ${HYPERMAT_src})
 
+
 find_package(GTest)
 
 if (GTest_FOUND)
