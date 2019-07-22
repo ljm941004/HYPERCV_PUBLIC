@@ -11,3 +11,11 @@
 * @retval     simple_mat    2d image mat.
 **/
 simple_mat corrosion_2d(simple_mat mat, S_2D s);
+
+/**
+* @brief      simple_mat expend with 2D struct.
+* @param[in]  simple_mat    2d image mat.
+* @param[in]  S_2D          2D struct.
+* @retval     simple_mat    2d image mat.
+**/
+simple_mat expend_2d(simple_mat mat, S_2D s);

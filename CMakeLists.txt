@@ -33,10 +33,7 @@ message("-- The install path of include file is   ${INCLUDE_INSTALL_PATH}")
 
 
 
-
 add_subdirectory(modules)
-
-
 
 add_custom_target(
     run
