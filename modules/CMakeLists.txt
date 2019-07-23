@@ -20,3 +20,6 @@ if (GTest_FOUND)
     target_link_libraries(testprocess ${GTEST_BOTH_LIBRARIES})
     target_link_libraries(testprocess hypercv)
 endif()
+
+install(TARGETS hypercv DESTINATION lib)
+#install(FILES  DESTINATION include)//todo

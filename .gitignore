@@ -1,5 +1,6 @@
 build/
 release/
+installation/
 *.so
 *.swo
 *.a
