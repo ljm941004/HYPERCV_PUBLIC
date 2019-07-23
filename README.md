@@ -17,7 +17,7 @@ process中是数据处理模块,包括高光谱和二维数据图像。
 
 coder mail 1）260960918@qq.com  
 coder mail 2) jimin@iscas.ac.cn
-coder mail 3) 13126646699@163.com
+coder mail 3) 13126646699@163.com  
 
  
 
