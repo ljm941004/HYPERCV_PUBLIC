@@ -1,7 +1,7 @@
 ﻿
- **
+**************
 高光谱图像处理库 HyperCV 项目概述
-** 
+**************
 
 高光谱数据是一种高维度的数据格式，存储方式包括bil，bsq，bip等。
 
@@ -18,9 +18,10 @@ process中是数据处理模块,包括高光谱和二维数据图像。
 
 coder mail 1) jimin@iscas.ac.cn  李济民
 
-coder mail 2) 13126646699@163.com  曹金荣
+coder mail 2) liangjs@pku.edu.cn  梁家硕
 
-coder mail 3) liangjs@pku.edu.cn  梁家硕
+coder mail 3) 13126646699@163.com  曹金荣
+
 
  
 
