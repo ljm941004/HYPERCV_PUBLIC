@@ -13,16 +13,16 @@ core中是存放核心的声明以及框架函数。
 
 process中是数据处理模块,包括高光谱和二维数据图像。
 
-本库由于coder的技术有限，时间不足，希望不足之处还请批评指正。
+本库由于PROGRAMMER的技术有限，时间不足，希望不足之处还请批评指正。
 
 
-coder mail 1) jimin@iscas.ac.cn  李济民
+PROGRAMMER mail 1) jimin@iscas.ac.cn  李济民
 
-coder mail 2) liangjs@pku.edu.cn  梁家硕
+PROGRAMMER mail 2) liangjs@pku.edu.cn  梁家硕
 
-coder mail 3) 13126646699@163.com  曹金荣
+PROGRAMMER mail 3) 13126646699@163.com  曹金荣
 
-coder mail 4) mafu19940927@buaa.edu.cn  马福
+PROGRAMMER mail 4) mafu19940927@buaa.edu.cn  马福
 
  
 
