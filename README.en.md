@@ -12,15 +12,15 @@ HYPERCV INCLUDING 2 MODULES WHICH CALLED "CORE" AND "PROCESS".
 
 "PROCESS" MEANS THE DATA PROCESS. INCLUDING ALMOST PROCESS METHOD MAY USED IN REMOTE SENSOR.
 
-BECAUSE OF THE TIME AND THE CODER'S CAPACITY IS LIMITED. PLEASE CORRECT THE BUG OF LIBRARY. 
+BECAUSE OF THE TIME AND THE PROGRAMMER'S CAPACITY IS LIMITED. PLEASE CORRECT THE BUG OF LIBRARY. 
 
-coder mail 1) jimin@iscas.ac.cn 李济民
+PROGRAMMER mail 1) jimin@iscas.ac.cn 李济民
 
-coder mail 2) liangjs@pku.edu.cn 梁家硕
+PROGRAMMER mail 2) liangjs@pku.edu.cn 梁家硕
 
-coder mail 3) 13126646699@163.com 曹金荣
+PROGRAMMER mail 3) 13126646699@163.com 曹金荣
 
-coder mail 4) mafu19940927@buaa.edu.cn 马福
+PROGRAMMER mail 4) mafu19940927@buaa.edu.cn 马福
 
 __________________________________________________________________________
 
