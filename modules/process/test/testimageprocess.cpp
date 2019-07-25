@@ -7,7 +7,7 @@ extern "C"
 #include "process/process.h"
 }
 
-void test_bi12bsq()
+void test_bil2bsq()
 {
 	const char* image_path = "IMAGE_20180914142522_0030.raw";
 	const char* hdr_path = "IMAGE_20180914142522_0030.hdr";
@@ -21,8 +21,8 @@ void test_bi12bsq()
 
 //	compare_2_mat(bil_mat,t);
 
-	delate_hyper_mat(bil_mat);
-	delate_hyper_mat(bsq_mat);
+	delete_hyper_mat(bil_mat);
+	delete_hyper_mat(bsq_mat);
 }
 
 void test_hypermat_get_range()
@@ -42,12 +42,12 @@ void test_hypermat_get_range()
 //	compare_2_mat(m,t);
 //	compare_2_mat(p,s);
 
-	delate_hyper_mat(bil_mat);
-    delate_hyper_mat(bsq_mat); 
-    delate_hyper_mat(m);
-    delate_hyper_mat(p);
-    delate_hyper_mat(t);
-	delate_hyper_mat(s);
+	delete_hyper_mat(bil_mat);
+    delete_hyper_mat(bsq_mat); 
+    delete_hyper_mat(m);
+    delete_hyper_mat(p);
+    delete_hyper_mat(t);
+	delete_hyper_mat(s);
 }
 
 void test_reshape_hypermat_2_simplemat()

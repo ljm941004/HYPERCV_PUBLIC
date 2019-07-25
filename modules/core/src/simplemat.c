@@ -87,7 +87,7 @@ simple_mat smread(const char * image_path, int rows, int cols, int data_type, in
  * @brief      function to delete the simple mat.
  * @param[in]  mat         simple mat.
  **/
-void delate_simple_mat(simple_mat mat)
+void delete_simple_mat(simple_mat mat)
 {
 	if(mat == NULL)
 		return;

@@ -24,29 +24,31 @@ using namespace std;
 #define BANDS_END    11
 #endif
 
-//static hyper_mat src_mat = NULL;
-//static hyper_mat dst_mat = NULL;
+static hyper_mat src_mat = NULL;
+static hyper_mat dst_mat = NULL;
 
 
 static void hypercv_test_setup(int samples, int lines, int bands, int data_type, char interleave[])
 {
-//	src_mat = create_hyper_mat(samples, lines, bands, data_type, interleave);
-//	test_hypercv_dataInit<unsigned char>((unsigned char*)src_mat->data,samples,lines,bands)
-
-
-
+  	src_mat = create_hyper_mat(samples, lines, bands, data_type, interleave);
+	hypercv_dataInit<unsigned char>((unsigned char*)src_mat->data,samples,lines,bands);
+	dst_mat = create_hyper_mat(samples, lines, bands, data_type, interleave);
 }
 
-
-
-void test_delete_hyper_mat()
+static void test_delete_hyper_mat()
 {
-
+	delete_hyper_mat(src_mat);
+	delete_hyper_mat(dst_mat);
 }
 
-TEST(haha, hss)
+static void test_hmread_hmdelete()
 {
-    printf("haha\n");
-    //test_delete_hyper_mat();
+	src_mat = hmread("../../../../image/image.raw","../../../../image/image.hdr");
+	test_delete_hyper_mat();
+}
+
+TEST(CORE, hmread_hmdelete)
+{
+    test_hmread_hmdelete();
 }
 

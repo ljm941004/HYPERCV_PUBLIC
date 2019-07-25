@@ -31,6 +31,7 @@ OPTION(BUILD_TESTS                  "Build accuracy & regression tests"         
 
 message("-- The output path of binary files is ${CMAKE_BINARY_DIR}/bin")
 
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/common)
 add_subdirectory(modules)
 
 message("-- The install path is ${CMAKE_INSTALL_PREFIX}")

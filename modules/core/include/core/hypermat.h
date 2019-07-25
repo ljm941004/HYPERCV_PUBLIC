@@ -88,7 +88,7 @@ void showinfo_of_hyper_mat(hyper_mat mat);
  * @brief      function to delete the hyper mat.
  * @param[in]  mat         hyper mat.
  **/
-void delate_hyper_mat(hyper_mat mat);
+void delete_hyper_mat(hyper_mat mat);
 
 
 
