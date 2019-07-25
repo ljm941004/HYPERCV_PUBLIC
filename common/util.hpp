@@ -66,4 +66,17 @@ int hypercv_mat_compare(type* mat1, type* mat2, int samples, int lines, int band
 	return flag;
 }
 
+/*-------------------------------------------
+ *              show mat
+ * -----------------------------------------*/
+template<typename type>
+void test_show_mat(type *mat, int samples, int lines, int bands)
+{
+	for(int i=0; i<samples*lines*bands;i++)
+	{
+		std::cout<<mat[i];
+	}
+}
+
+
 

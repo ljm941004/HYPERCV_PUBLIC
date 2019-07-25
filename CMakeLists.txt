@@ -41,5 +41,5 @@ add_custom_target(
     run
     @echo "[make] testing core..."
     &
-    bin/testcore --gtest_filter=haha.hss
+	bin/testcore --gtest_filter=CORE.HMDELETE
 )

@@ -8,16 +8,16 @@ using namespace std;
 #endif
 
 #ifndef TEST_HYPERCV_PERFORMANCE
-#define SAMPLE_START 10
-#define SAMPLE_END   11
+#define SAMPLES_START 10
+#define SAMPLES_END   11
 #define LINES_START  10
 #define LINES_END    11
 #define BANDS_START  10
 #define BANDS_END    11
 
 #else
-#define SAMPLE_START 10
-#define SAMPLE_END   11
+#define SAMPLES_START 10
+#define SAMPLES_END   11
 #define LINES_START  10
 #define LINES_END    11
 #define BANDS_START  10
@@ -43,12 +43,22 @@ static void test_delete_hyper_mat()
 
 static void test_hmread_hmdelete()
 {
-	src_mat = hmread("../../../../image/image.raw","../../../../image/image.hdr");
-	test_delete_hyper_mat();
+	for(int samples = SAMPLES_START; samples<SAMPLES_END; samples++)
+	{
+		for(int lines = LINES_START; lines<LINES_END; lines++)
+		{
+			for(int bands = BANDS_START; bands<BANDS_END; bands++)
+			{
+				hypercv_test_setup(samples,lines,bands,1,"bsq");
+				test_show_mat<char>((char*)src_mat->data,samples,lines,bands);
+				test_delete_hyper_mat();
+			}
+		}  
+	}
 }
 
-TEST(CORE, hmread_hmdelete)
+TEST(CORE,HMDELETE)
 {
-    test_hmread_hmdelete();
+	test_hmread_hmdelete();
 }
 
