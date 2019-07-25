@@ -24,7 +24,7 @@ PROGRAMMER mail 3) 13126646699@163.com  曹金荣
 
 PROGRAMMER mail 4) mafu19940927@buaa.edu.cn  马福
 
-PROGRAMMER mail 5)buaawangcui@163.com  王萃
+PROGRAMMER mail 5) buaawangcui@163.com  王萃
  
 
                                                            编者   李济民

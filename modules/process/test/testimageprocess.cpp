@@ -1,64 +1,68 @@
-#include <iostream>
-#include <gtest/gtest.h>
+#include "precomp.h"
 
-extern "C"
+using namespace std;
+#ifndef TEST_HYPERCV_PERFORMANCE
+#define ITERS 1
+#else
+#define ITES 20
+#endif
+
+#ifndef TEST_HYPERCV_PERFORMANCE
+#define SAMPLES_START 10
+#define SAMPLES_END   11
+#define LINES_START  10
+#define LINES_END    11
+#define BANDS_START  10
+#define BANDS_END    11
+
+#else
+#define SAMPLES_START 10
+#define SAMPLES_END   11
+#define LINES_START  10
+#define LINES_END    11
+#define BANDS_START  10
+#define BANDS_END    11
+#endif
+
+static hyper_mat src_mat = NULL;
+static hyper_mat dst_mat = NULL;
+
+
+static void hypercv_test_setup(int samples, int lines, int bands, int data_type, char interleave[])
 {
-#include "core/core.h"
-#include "process/process.h"
+  	src_mat = create_hyper_mat(samples, lines, bands, data_type, interleave);
+	hypercv_dataInit<unsigned char>((unsigned char*)src_mat->data,samples,lines,bands);
 }
 
-void test_bil2bsq()
+static void test_delete_hyper_mat()
 {
-	const char* image_path = "IMAGE_20180914142522_0030.raw";
-	const char* hdr_path = "IMAGE_20180914142522_0030.hdr";
-
-	hyper_mat bil_mat = hmread(image_path,hdr_path);
-	hyper_mat bsq_mat = bil2bsq(bil_mat);
-
-	hyper_mat t = bsq2bil(bsq_mat);
-	hyper_mat s = bil2bip(t);
-	hyper_mat q = bip2bsq(s);
-
-//	compare_2_mat(bil_mat,t);
-
-	delete_hyper_mat(bil_mat);
-	delete_hyper_mat(bsq_mat);
+	delete_hyper_mat(src_mat);
+	delete_hyper_mat(dst_mat);
 }
 
+static void test_bil2bsq()
+{
+	for(int samples = SAMPLES_START; samples<SAMPLES_END;samples++)
+	{
+		for(int lines=LINES_START; lines<LINES_END; lines++)
+		{
+			for(int bands=BANDS_START; bands<BANDS_END; bands++)
+			{
+				hypercv_test_setup(samples,lines,bands,1,"bil");
+				dst_mat = bil2bsq(src_mat);
+			}
+		}
+	}
+}
 void test_hypermat_get_range()
-{
-	const char* image_path = "IMAGE_20180914142522_0030.raw";
-	const char* hdr_path = "IMAGE_20180914142522_0030.hdr";
+{	
 
-	hyper_mat bil_mat = hmread(image_path,hdr_path);
-	hyper_mat bsq_mat = bil2bsq(bil_mat);
+	hyper_mat t = hyper_mat_get_range(src_mat,20,20,20,80,80,80);
+	hyper_mat s = hyper_mat_get_range(src_mat,20,20,20,80,80,80);
 
-	hyper_mat t = hyper_mat_get_range(bil_mat,20,20,20,80,80,80);
-	hyper_mat s = hyper_mat_get_range(bsq_mat,20,20,20,80,80,80);
-
-	hyper_mat m = bsq2bil(s);
-	hyper_mat p = bil2bsq(t);
-
-//	compare_2_mat(m,t);
-//	compare_2_mat(p,s);
-
-	delete_hyper_mat(bil_mat);
-    delete_hyper_mat(bsq_mat); 
-    delete_hyper_mat(m);
-    delete_hyper_mat(p);
-    delete_hyper_mat(t);
-	delete_hyper_mat(s);
 }
-
 void test_reshape_hypermat_2_simplemat()
 {
-	const char* image_path = "IMAGE_20180914142522_0030.raw";
-	const char* hdr_path = "IMAGE_20180914142522_0030.hdr";
-
-	hyper_mat bil_mat = hmread(image_path,hdr_path);
-	hyper_mat bsq_mat = bil2bsq(bil_mat);
-
+	hyper_mat bsq_mat = bil2bsq(src_mat);
 	simple_mat mat = reshape_hypermat_2_simplemat(bsq_mat, bsq_mat->bands,bsq_mat->samples*bsq_mat->lines);
-
-
 }
