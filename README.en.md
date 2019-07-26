@@ -18,11 +18,6 @@ PROGRAMMER mail 1) jimin@iscas.ac.cn 李济民
 
 PROGRAMMER mail 2) liangjs@pku.edu.cn 梁家硕
 
-PROGRAMMER mail 3) 13126646699@163.com 曹金荣
-
-PROGRAMMER mail 4) mafu19940927@buaa.edu.cn 马福
-
-PROGRAMMER mail 5) buaawangcui@163.com 王萃
 
 __________________________________________________________________________
 
