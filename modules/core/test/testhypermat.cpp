@@ -49,7 +49,7 @@ static void test_hmread_hmdelete()
 		{
 			for(int bands = BANDS_START; bands<BANDS_END; bands++)
 			{
-				hypercv_test_setup(samples,lines,bands,1,"bsq");
+				hypercv_test_setup(samples,lines,bands,1,(char*)"bsq");
 				test_show_mat<char>((char*)src_mat->data,samples,lines,bands);
 				test_delete_hyper_mat();
 			}

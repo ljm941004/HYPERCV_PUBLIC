@@ -48,7 +48,7 @@ static void test_bil2bsq()
 		{
 			for(int bands=BANDS_START; bands<BANDS_END; bands++)
 			{
-				hypercv_test_setup(samples,lines,bands,1,"bil");
+				hypercv_test_setup(samples,lines,bands,1,(char*)"bil");
 				dst_mat = bil2bsq(src_mat);
 			}
 		}
