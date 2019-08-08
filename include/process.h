@@ -2,3 +2,6 @@
 #include "imageprocess.h"
 #include "matrixprocess.h"
 #include "spectralprocess.h"
+#include "GaussianBlur.h"
+#include "morphology.h"
+#include "RadiometricCalibration.h"

@@ -62,3 +62,19 @@ hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, i
 * @retval     dst_mat     simple image. 
 **/
 simple_mat reshape_hypermat_2_simplemat(hyper_mat src_mat, int dst_rows, int dst_cols);
+
+/**
+* @brief      change the band data into simple mat.
+* @param[in]  src_mat     hyper image.
+* @param[in]  dst_mat     simple mat.
+* @param[in]  band        select band.
+**/
+void hyper_mat_2_simple_mat(hyper_mat src_mat, simple_mat dst_mat, int band);
+
+/**
+* @brief      change the band data into simple mat.
+* @param[in]  dst_mat     hyper mat.
+* @param[in]  src_mat     simple mat.
+* @param[in]  band        select band.
+**/
+void simple_mat_2_hyper_mat(hyper_mat dst_mat, simple_mat src_mat, int band);

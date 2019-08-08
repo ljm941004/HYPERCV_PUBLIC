@@ -18,7 +18,7 @@ int cmpstr(char temp1[],char temp2[])
 }
 
 
-//*************************************************************  public function  *****************************************************************
+//*************************************************************  public function  ********************************************************
 /**
 * @brief      create a hyper mat.
 * @param[in]  samples     image samples.
@@ -241,7 +241,6 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 	fclose(fp);
 }
 
-
 /**
  * @brief      function to show information the hyper mat.
  * @param[in]  mat         hyper mat.
@@ -281,3 +280,7 @@ void delete_hyper_mat(hyper_mat mat)
 		mat = NULL;
 	}
 }
+
+
+
+

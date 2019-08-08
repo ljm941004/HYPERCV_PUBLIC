@@ -394,3 +394,48 @@ simple_mat reshape_hypermat_2_simplemat(hyper_mat src_mat, int dst_rows, int dst
 
 	return dst_mat;
 }
+
+/**
+* @brief      change the band data into simple mat.
+* @param[in]  src_mat     hyper image.
+* @param[in]  dst_mat     simple mat.
+* @param[in]  band        select band.
+**/
+void hyper_mat_2_simple_mat(hyper_mat src_mat, simple_mat dst_mat, int band)
+{
+	_assert(cmpstr(src_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
+	int samples,lines;
+	samples = src_mat -> samples;
+	lines = src_mat -> lines;
+	dst_mat -> rows = lines;
+	dst_mat -> cols = samples;
+	dst_mat -> data_type = src_mat -> data_type;
+    
+	int elemsize = get_elemsize(src_mat->data_type);
+	char* data = src_mat->data+(samples*lines*(band-1)*elemsize);
+
+	memcpy(dst_mat->data,(void*)data,samples*lines*elemsize);
+}
+
+
+/**
+* @brief      change the band data into simple mat.
+* @param[in]  dst_mat     hyper mat.
+* @param[in]  src_mat     simple mat.
+* @param[in]  band        select band.
+**/
+void simple_mat_2_hyper_mat(hyper_mat dst_mat, simple_mat src_mat, int band)
+{
+	int samples = dst_mat->samples;
+	int lines = dst_mat->lines;
+	int bands = dst_mat->bands;
+	_assert(src_mat->rows==lines&&src_mat->cols==samples,"simple mat size unequal to hyper mat");
+	_assert(band<=bands&&band>0,"band<bands");
+	_assert(cmpstr(dst_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
+
+	char* dst = (char*)dst_mat->data + samples*lines*(band-1);
+	char* src = (char*)src_mat->data;
+
+	memcpy(dst,src,samples*lines);
+}
+
