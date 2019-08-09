@@ -5,3 +5,4 @@
 #include "GaussianBlur.h"
 #include "morphology.h"
 #include "RadiometricCalibration.h"
+#include "pca.h"

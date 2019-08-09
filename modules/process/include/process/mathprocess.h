@@ -5,6 +5,62 @@
 	> Created Time: 2019年06月30日 星期日 16时20分49秒
  ************************************************************************/
 
+/**
+* @brief      calculate the mean value . .
+* @param[in]  t          vector t
+* @param[in]  len        length of vector t
+**/
+double mean_double(double* t,int len);
+
+/**
+* @brief      calculate the mean value . .
+* @param[in]  t          vector t
+* @param[in]  len        length of vector t
+**/
+float mean_uint(unsigned int * t,int len);
+
+/**
+* @brief      calculate the mean value . .
+* @param[in]  t          vector t
+* @param[in]  len        length of vector t
+**/
+float mean_short(short *t, int len);
+
+/**
+* @brief      calculate the mean value . .
+* @param[in]  t          vector t
+* @param[in]  len        length of vector t
+**/
+float mean_ushort(unsigned short* t, int len);
+
+/**
+* @brief      calculate the mean value . .
+* @param[in]  t          vector t
+* @param[in]  len        length of vector t
+**/
+float mean_float(float* t, int len);
+
+/**
+* @brief      calculate the mean value . .
+* @param[in]  t          vector t
+* @param[in]  len        length of vector t
+**/
+float mean_uchar(unsigned char* t, int len);
+
+/**
+* @brief      calculate the mean value . .
+* @param[in]  t          vector t
+* @param[in]  len        length of vector t
+**/
+float mean_char(char* t, int len);
+
+/**
+* @brief      calculate the mean value . .
+* @param[in]  t          vector t
+* @param[in]  len        length of vector t
+**/
+float mean_int(int *t, int len);
+
 
 
 //
