@@ -7,3 +7,4 @@
 #include "pca.h"
 #include "GaussianBlur.h"
 #include "sobelprocess.h"
+#include "OtsuThreshold.h"
