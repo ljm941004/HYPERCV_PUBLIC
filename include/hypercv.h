@@ -5,3 +5,4 @@
  ************************************************************************/
 #include "core.h"
 #include "process.h"
+#include "Algorithm"

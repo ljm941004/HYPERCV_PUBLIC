@@ -1,9 +1,11 @@
 /*************************************************************************
-	> File Name: Algorithm.h
+	> File Name: pca.h
 	> Author: ljm
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
-#pragma once
-#include "pca.h"
-#include "GaussianBlur.h"
-#include "sobelprocess.h"
+
+
+
+void hyper_mat_pca(hyper_mat hmat);
+
+void simple_mat_pca(simple_mat mat);
