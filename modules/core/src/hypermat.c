@@ -20,13 +20,13 @@ int cmpstr(char temp1[],char temp2[])
 
 //*************************************************************  public function  ********************************************************
 /**
-* @brief      create a hyper mat.
-* @param[in]  samples     image samples.
-* @param[in]  lines       image lines.
-* @param[in]  bands       image bands.
-* @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
-* @param[in]  interleave  bil bsq bip.
-**/
+ * @brief      create a hyper mat.
+ * @param[in]  samples     image samples.
+ * @param[in]  lines       image lines.
+ * @param[in]  bands       image bands.
+ * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
+ * @param[in]  interleave  bil bsq bip.
+ **/
 hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, const int data_type, const char interleave[])
 {
 	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, NULL);
@@ -34,15 +34,15 @@ hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, 
 }
 
 /**
-* @brief      create a hyper mat.
-* @param[in]  samples     image samples.
-* @param[in]  lines       image lines.
-* @param[in]  bands       image bands.
-* @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
-* @param[in]  interleave  bil/bsq/bip.
-* @param[in]  data        pointer of image data.
-* @retvall     hyper_mat   hyper mat.
-**/
+ * @brief      create a hyper mat.
+ * @param[in]  samples     image samples.
+ * @param[in]  lines       image lines.
+ * @param[in]  bands       image bands.
+ * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
+ * @param[in]  interleave  bil/bsq/bip.
+ * @param[in]  data        pointer of image data.
+ * @retvall     hyper_mat   hyper mat.
+ **/
 hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const int bands, const int data_type, const char interleave[], void* data)
 {
 	_assert(samples > 0, "the samples of hyper mat must be greater than zero.");
@@ -85,10 +85,10 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 }
 
 /**
-* @brief      read the hyper spectral image.
-* @param[in]  image_path  hyper spectral image path.
-* @retval      hyper_mat   hyper mat.
-**/
+ * @brief      read the hyper spectral image.
+ * @param[in]  image_path  hyper spectral image path.
+ * @retval      hyper_mat   hyper mat.
+ **/
 hyper_mat hmread(const char* image_path,const char* hdr_path)
 {
 	_assert(image_path != NULL, "image path or hdr path can not be NULL");
@@ -177,7 +177,7 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 	char item[MAXLINE];
 
 	int sampletemp = 0, linetemp = 0, bandtemp = 0, datatypetemp = 0;
-	
+
 
 	while (fgets(line, MAXLINE, hdr_fp) != 0)
 	{   
@@ -185,10 +185,10 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 
 		if (cmpstr(item, "samples") == 1)
 			sscanf(line, "%*[^=]=%d",&sampletemp);
-		
+
 		else if (cmpstr(item, "lines") == 1)
 			sscanf(line, "%*[^=]=%d",&linetemp);
-	
+
 		else if (cmpstr(item, "bands") == 1)
 			sscanf(line, "%*[^=]=%d", &bandtemp);
 		else if (cmpstr(item, "data") > 0)
@@ -239,6 +239,32 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 	fputs("data type = ", fp); fprintf(fp, "%d\n", data_type);
 	fputs("interleave = ", fp); fprintf(fp, "%s\n", interleave);
 	fclose(fp);
+}
+
+
+/**
+ * @brief       copy hyper mat.
+ * @param[in]   mat         input hyper mat.
+ * @retval      hyper_mat   output hyper mat.
+ **/
+hyper_mat hyper_mat_copy(hyper_mat mat)
+{
+	int samples = mat->samples;
+	int lines = mat->lines;
+	int bands = mat->bands;
+	int data_type = mat->data_type;
+	int elemsize = get_elemsize(data_type);
+	char interleave[3];
+	interleave[0] = mat->interleave[0];
+	interleave[1] = mat->interleave[1];
+	interleave[2] = mat->interleave[2];
+	hyper_mat dst_mat = create_hyper_mat(samples,lines,bands,data_type,interleave);
+	char *dst_data = (char*)dst_mat->data;
+	char *src_data = (char*) mat->data;
+
+	memcpy(dst_data,src_data,samples*lines*bands*elemsize);
+
+	return dst_mat;
 }
 
 /**
