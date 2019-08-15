@@ -17,28 +17,33 @@ using namespace std;
 
 #else
 #define SAMPLES_START 10
-#define SAMPLES_END   11
+#define SAMPLES_END   1024
 #define LINES_START  10
-#define LINES_END    11
+#define LINES_END    1024
 #define BANDS_START  10
-#define BANDS_END    11
+#define BANDS_END    1024
 #endif
 
 static hyper_mat src_mat = NULL;
 static hyper_mat dst_mat = NULL;
+static hyper_mat t = NULL;
 
-
+template<typename type>
 static void hypercv_test_setup(int samples, int lines, int bands, int data_type, char interleave[])
 {
   	src_mat = create_hyper_mat(samples, lines, bands, data_type, interleave);
-	hypercv_dataInit<unsigned char>((unsigned char*)src_mat->data,samples,lines,bands);
+	hypercv_dataInit<type>((type*)src_mat->data,samples,lines,bands);
 	dst_mat = create_hyper_mat(samples, lines, bands, data_type, interleave);
 }
 
 static void test_delete_hyper_mat()
 {
-	delete_hyper_mat(src_mat);
-	delete_hyper_mat(dst_mat);
+	if(src_mat!=NULL)
+		delete_hyper_mat(src_mat);
+	if(dst_mat!=NULL)
+		delete_hyper_mat(dst_mat);
+	if(t!=NULL)
+		delete_hyper_mat(t);
 }
 
 static void test_hmread_hmdelete()
@@ -49,7 +54,7 @@ static void test_hmread_hmdelete()
 		{
 			for(int bands = BANDS_START; bands<BANDS_END; bands++)
 			{
-				hypercv_test_setup(samples,lines,bands,1,(char*)"bsq");
+				hypercv_test_setup<char>(samples,lines,bands,1,(char*)"bsq");
 				test_show_mat<char>((char*)src_mat->data,samples,lines,bands);
 				test_delete_hyper_mat();
 			}
@@ -65,19 +70,23 @@ static void test_hyper_mat_copy()
 		{
 			for(int bands = BANDS_START; bands<BANDS_END; bands++)
 			{
-				hypercv_test_setup(samples,lines,bands,1,(char*)"bsq");
-				
+				hypercv_test_setup<unsigned char>(samples,lines,bands,1,(char*)"bsq");
+					
 				hyper_mat t = hyper_mat_copy(src_mat);
-
-				delete_hyper_mat(t);
+				int tmp = hypercv_mat_compare<char>((char*)src_mat->data,(char*)t->data,samples,lines,bands);
+				
+				_assert(tmp==0,"hyper_mat_copy_wrong");
 
 				test_delete_hyper_mat();
 			}
 		}  
 	}
 
+}
 
-
+TEST(CORE,HMCOPY)
+{
+	test_hyper_mat_copy();
 }
 
 TEST(CORE,HMDELETE)

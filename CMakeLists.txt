@@ -33,5 +33,6 @@ add_custom_target(
     run
     @echo "[make] testing core..."
     &
-	bin/testcore --gtest_filter=CORE.HMDELETE
+	#bin/testcore --gtest_filter=CORE.SMCOPY
+	&bin/testcore --gtest_filter=CORE.HMCOPY
 )

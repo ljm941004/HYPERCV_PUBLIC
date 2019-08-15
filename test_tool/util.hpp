@@ -36,7 +36,7 @@ void hypercv_dataInit(type* mat, int samples, int lines, int bands)
  * ------------------------------*/
 
 template<typename type>
-int hypercv_mat_compare(type* mat1, type* mat2, int samples, int lines, int bands)
+int hypercv_mat_compare(type * mat1,type* mat2, int samples, int lines,int bands)
 {
 	int flag = 0;
 

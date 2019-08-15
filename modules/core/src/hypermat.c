@@ -249,18 +249,23 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
  **/
 hyper_mat hyper_mat_copy(hyper_mat mat)
 {
+	_assert(mat!=NULL,"mat could not be NULL");
 	int samples = mat->samples;
 	int lines = mat->lines;
 	int bands = mat->bands;
 	int data_type = mat->data_type;
 	int elemsize = get_elemsize(data_type);
+	
 	char interleave[3];
+
 	interleave[0] = mat->interleave[0];
 	interleave[1] = mat->interleave[1];
 	interleave[2] = mat->interleave[2];
-	hyper_mat dst_mat = create_hyper_mat(samples,lines,bands,data_type,interleave);
+	
+    hyper_mat dst_mat = create_hyper_mat(samples,lines,bands,data_type,interleave);
+
 	char *dst_data = (char*)dst_mat->data;
-	char *src_data = (char*) mat->data;
+	char *src_data = (char*)mat->data;
 
 	memcpy(dst_data,src_data,samples*lines*bands*elemsize);
 

@@ -100,8 +100,8 @@ simple_mat simple_mat_copy(simple_mat mat)
 	simple_mat dst = create_simple_mat(rows,cols,data_type,channels);
 	char * src_data = (char*)mat->data;
 	char * dst_data = (char*)dst->data;
-
 	memcpy(dst_data,src_data,rows*cols*elemsize);
+	return dst;
 }
 
 /**
