@@ -57,6 +57,29 @@ static void test_hmread_hmdelete()
 	}
 }
 
+static void test_hyper_mat_copy()
+{
+	for(int samples = SAMPLES_START; samples<SAMPLES_END; samples++)
+	{
+		for(int lines = LINES_START; lines<LINES_END; lines++)
+		{
+			for(int bands = BANDS_START; bands<BANDS_END; bands++)
+			{
+				hypercv_test_setup(samples,lines,bands,1,(char*)"bsq");
+				
+				hyper_mat t = hyper_mat_copy(src_mat);
+
+				delete_hyper_mat(t);
+
+				test_delete_hyper_mat();
+			}
+		}  
+	}
+
+
+
+}
+
 TEST(CORE,HMDELETE)
 {
 	test_hmread_hmdelete();

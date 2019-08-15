@@ -40,6 +40,13 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type, int ch
 simple_mat smread(const char * image_path, int rows, int cols, int data_type, int channels);
 
 /**
+ * @brief      copy simple mat.
+ * @param[in]  mat  input simple mat.
+ * @retval     simple_mat. 
+ **/
+simple_mat simple_mat_copy(simple_mat mat);
+
+/**
 * @brief      function to delete the simple mat.
 * @param[in]  mat         simple mat.
 **/

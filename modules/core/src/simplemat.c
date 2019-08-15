@@ -56,6 +56,7 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int cha
 
 	return mat;
 }
+
 /**
  * @brief      read the 2D image.
  * @param[in]  image_path  hyper spectral image path.
@@ -83,6 +84,26 @@ simple_mat smread(const char * image_path, int rows, int cols, int data_type, in
 
 	return mat;
 }
+
+/**
+ * @brief      copy simple mat.
+ * @param[in]  mat  input simple mat.
+ * @retval     simple_mat. 
+ **/
+simple_mat simple_mat_copy(simple_mat mat)
+{
+    int rows = mat -> rows;
+	int cols = mat -> cols;
+	int data_type = mat->data_type;
+	int elemsize = get_elemsize(data_type);
+	int channels = mat->channels;
+	simple_mat dst = create_simple_mat(rows,cols,data_type,channels);
+	char * src_data = (char*)mat->data;
+	char * dst_data = (char*)dst->data;
+
+	memcpy(dst_data,src_data,rows*cols*elemsize);
+}
+
 /**
  * @brief      function to delete the simple mat.
  * @param[in]  mat         simple mat.
