@@ -8,7 +8,7 @@
 #define max(a,b) a>b?a:b
 /////////////// saturate_cast ///////////////////
 
-unsigned char saturate_cast_float2uchar(float value)
+static unsigned char saturate_cast_float2uchar(float value)
 {
     int ivalue =  HYPERCV_ROUND(value);
     return (unsigned char)ivalue;

@@ -8,3 +8,4 @@
 #include "GaussianBlur.h"
 #include "sobelprocess.h"
 #include "OtsuThreshold.h"
+#include "normalize.h"

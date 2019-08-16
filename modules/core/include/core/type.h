@@ -61,6 +61,11 @@ static inline int get_elemsize(const int data_type)
 #define  BORDER_DEFAULT      BORDER_REFLECT_101
 #define  BORDER_ISOLATED     16
 
+#define  NORM_INF            1
+#define  NORM_L1             2
+#define  NORM_L2             4
+#define  NORM_MINMAX         32
+
 
 static inline int HYPERCV_ROUND( double value )
 {
