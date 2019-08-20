@@ -1,7 +1,6 @@
 ﻿
-**************
 高维度遥感图像处理库 HyperCV 项目概述
-**************
+**************************************
 
 高维度遥感数据是一种数据立方体例如高光谱多光谱等，存储方式包括bil，bsq，bip。
 
@@ -21,6 +20,16 @@ PROGRAMMER mail 1) jimin@iscas.ac.cn  李济民
 PROGRAMMER mail 2) liangjs@pku.edu.cn  梁家硕
 
  
+下载及安装
+************************
+$ git clone https://github.com/ljm941004/HYPERCV_PUBLIC.git
+$ cd HYPERCV_PUBLIC
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make install
+
+
 
                                                            编者   李济民
 
