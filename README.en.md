@@ -1,9 +1,6 @@
 # HYPERCV --the HYPERSPECTRAL COMPUTE VISION LIBRARY
 
-
 # Description
-
-——————————————————————————
 
 HYPERCV IS A LIBRARY FOR HYPERSPECTRAL IMAGE PROCESS .
 
@@ -25,8 +22,6 @@ PROGRAMMER mail 2) liangjs@pku.edu.cn 梁家硕
 
 
 # INSTALL
-
-——————————————————————————————————————
 
 $ git clone https://github.com/ljm941004/HYPERCV_PUBLIC.git
 
