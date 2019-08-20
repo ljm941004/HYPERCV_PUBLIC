@@ -37,7 +37,7 @@ $ make install
 
 __________________________________________________________________________
 
-24.7.2019 jimin li
+24.7.2019 Jimin Li
 
 Institute of Software,Chinese Academy of Sciences 
 
