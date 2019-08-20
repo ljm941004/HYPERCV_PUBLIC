@@ -12,7 +12,7 @@ core中是存放核心的声明以及框架函数。
 
 process中是数据处理模块,包括高光谱、多光谱和二维数据图像。
 
-本库由于PROGRAMMER的技术有限，时间不足，希望不足之处还请批评指正。
+欢迎各位从事遥感图像的同行提交 pull request。
 
 
 PROGRAMMER mail 1) jimin@iscas.ac.cn  李济民
