@@ -46,6 +46,14 @@ simple_mat smread(const char * image_path, int rows, int cols, int data_type, in
  **/
 simple_mat simple_mat_copy(simple_mat mat);
 
+
+/**
+* @brief      function to save the simple mat.
+* @param[in]  path        save path.
+* @param[in]  mat         simple mat.
+**/
+void sm_save_2_bmp(const char* path, simple_mat mat);
+
 /**
 * @brief      function to delete the simple mat.
 * @param[in]  mat         simple mat.
