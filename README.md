@@ -20,8 +20,11 @@ PROGRAMMER mail 1) jimin@iscas.ac.cn  李济民
 PROGRAMMER mail 2) liangjs@pku.edu.cn  梁家硕
 
  
+ 
 下载及安装
-___________________________________-
+
+___________________________________
+
 $ git clone https://github.com/ljm941004/HYPERCV_PUBLIC.git
 
 $ cd HYPERCV_PUBLIC
