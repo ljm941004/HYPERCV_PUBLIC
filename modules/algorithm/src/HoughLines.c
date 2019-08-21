@@ -1,8 +1,8 @@
 /*************************************************************************
-	> File Name: Algorithm.h
+	> File Name: HoughLines.c
 	> Author: ljm
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
-#include "pca.h"
-#include "GaussianBlur.h"
-#include "sobelprocess.h"
+
+#include "precomp.h"
+

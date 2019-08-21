@@ -24,4 +24,5 @@ if (GTest_FOUND)
 endif()
 
 install(TARGETS hypercv DESTINATION lib)
-#install(FILES  DESTINATION include)//todo
+file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h")
+install(FILES ${hdrs} DESTINATION include)
