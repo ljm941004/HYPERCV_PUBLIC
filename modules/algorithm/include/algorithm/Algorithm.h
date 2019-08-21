@@ -9,3 +9,4 @@
 #include "sobelprocess.h"
 #include "OtsuThreshold.h"
 #include "normalize.h"
+#include "HisEqualization.h"
