@@ -62,6 +62,15 @@ static void test_simple_mat_copy()
 
 }
 
+void test_sm_save_2_bmp()
+{
+	test_setup<unsigned char>(1080,1080,1,1);
+
+	sm_save_2_bmp("test.bmp",src_mat);
+	test_delete_simple_mat;
+}
+
+
 TEST(CORE,SMCOPY)
 {
 	test_simple_mat_copy();
@@ -70,5 +79,10 @@ TEST(CORE,SMCOPY)
 TEST(CORE,SMDELETE)
 {
 	test_delete_simple_mat();
+}
+
+TEST(CORE,SMSAVE)
+{
+	test_sm_save_2_bmp();
 }
 

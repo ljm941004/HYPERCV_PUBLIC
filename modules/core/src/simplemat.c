@@ -175,10 +175,6 @@ void sm_save_2_bmp(const char* path, simple_mat mat)
 	bmp=NULL;
 }
 
-
-
-
-
 /**
  * @brief      function to delete the simple mat.
  * @param[in]  mat         simple mat.
