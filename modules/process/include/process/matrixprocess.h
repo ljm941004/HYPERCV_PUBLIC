@@ -5,7 +5,7 @@
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-char* MulMatrix_char(char *x,char *y, int m,int k,int n);
+void MulMatrix_char(char *x,char *y,char*z, int m,int k,int n);
 
 //矩阵乘法
 /********参数表*******
@@ -14,7 +14,7 @@ char* MulMatrix_char(char *x,char *y, int m,int k,int n);
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-short* MulMatrix_short(short *x,short *y, int m,int k,int n);
+void MulMatrix_uchar(unsigned char *x,unsigned char *y, unsigned char*z, int m,int k,int n);
 
 //矩阵乘法
 /********参数表*******
@@ -23,7 +23,7 @@ short* MulMatrix_short(short *x,short *y, int m,int k,int n);
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-unsigned short * MulMatrix_ushort(unsigned short *x,unsigned short *y, int m,int k,int n);
+void MulMatrix_short(short *x,short *y,short*z, int m,int k,int n);
 
 //矩阵乘法
 /********参数表*******
@@ -32,7 +32,7 @@ unsigned short * MulMatrix_ushort(unsigned short *x,unsigned short *y, int m,int
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-int* MulMatrix_int(int *x,int *y, int m,int k,int n);
+void MulMatrix_ushort(unsigned short *x,unsigned short *y,unsigned short *z, int m,int k,int n);
 
 //矩阵乘法
 /********参数表*******
@@ -41,7 +41,7 @@ int* MulMatrix_int(int *x,int *y, int m,int k,int n);
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-unsigned int * MulMatrix_uint(unsigned int *x, unsigned int *y, int m,int k,int n);
+void MulMatrix_int(int *x,int *y,int*z, int m,int k,int n);
 
 //矩阵乘法
 /********参数表*******
@@ -50,7 +50,7 @@ unsigned int * MulMatrix_uint(unsigned int *x, unsigned int *y, int m,int k,int 
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-float* MulMatrix_float(float *x,float *y, int m,int k,int n);
+void MulMatrix_uint(unsigned int *x, unsigned int *y, unsigned int *z, int m,int k,int n);
 
 //矩阵乘法
 /********参数表*******
@@ -59,60 +59,70 @@ float* MulMatrix_float(float *x,float *y, int m,int k,int n);
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-double* MulMatrix_double(double *x, double *y, int m,int k,int n);
+void MulMatrix_float(float *x,float *y, float* z, int m,int k,int n);
+
+//矩阵乘法
+/********参数表*******
+@Parameter    x:    m行k列矩阵（用一维数组表示）
+@Parameter    y:    k行n列矩阵（用一维数组表示）
+@Parameter    m,k,n:    矩阵行列参数
+@Parameter    z:    m行n列输出矩阵（用一维数组表示）
+***********************/
+void MulMatrix_double(double *x, double *y, double*z, int m,int k,int n);
+
 //距阵转置
 /********参数表*******
 @Parameter    x:    m行n列矩阵（用一维数组表示）
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-double* TransMatrix_double(double *x, int m, int n);
+void TransMatrix_double(double *x,double *z, int m, int n);
 //距阵转置
 /********参数表*******
 @Parameter    x:    m行n列矩阵（用一维数组表示）
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-short* TransMatrix_short(short *x, int m, int n);
+void TransMatrix_short(short *x,short*z, int m, int n);
 //距阵转置
 /********参数表*******
 @Parameter    x:    m行n列矩阵（用一维数组表示）
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-char* TransMatrix_char(char *x, int m, int n);
+void TransMatrix_char(char *x, char *z, int m, int n);
 //距阵转置
 /********参数表*******
 @Parameter    x:    m行n列矩阵（用一维数组表示）
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-unsigned short* TransMatrix_ushort(unsigned short *x, int m, int n);
+void TransMatrix_ushort(unsigned short *x, unsigned short*z, int m, int n);
 //距阵转置
 /********参数表*******
 @Parameter    x:    m行n列矩阵（用一维数组表示）
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-unsigned char* TransMatrix_uchar(unsigned char *x, int m, int n);
+void TransMatrix_uchar(unsigned char *x,unsigned char*z, int m, int n);
 //距阵转置
 /********参数表*******
 @Parameter    x:    m行n列矩阵（用一维数组表示）
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-int* TransMatrix_int(int *x, int m, int n);
+void  TransMatrix_int(int *x,int *z , int m, int n);
 //距阵转置
 /********参数表*******
 @Parameter    x:    m行n列矩阵（用一维数组表示）
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-float* TransMatrix_float(float *x, int m, int n);
+void TransMatrix_float(float *x, float*z, int m, int n);
 //距阵转置
 /********参数表*******
 @Parameter    x:    m行n列矩阵（用一维数组表示）
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-unsigned int* TransMatrix_uint(unsigned int *x, int m, int n);
+void TransMatrix_uint(unsigned int *x, unsigned int *z, int m, int n);

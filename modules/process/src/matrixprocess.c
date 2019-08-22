@@ -8,9 +8,8 @@
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-char* MulMatrix_char(char *x,char *y, int m,int k,int n)
+void MulMatrix_char(char *x,char *y,char*z, int m,int k,int n)
 {
-	char *z =(char*)malloc(m*n*sizeof(char));
     for(int nm=0; nm<m; nm++)
         for(int nn=0; nn<n; nn++)
             for(int nk=0; nk<k; nk++)
@@ -23,9 +22,8 @@ char* MulMatrix_char(char *x,char *y, int m,int k,int n)
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-unsigned char* MulMatrix_uchar(char *x,char *y, int m,int k,int n)
+void MulMatrix_uchar(unsigned char *x,unsigned char *y, unsigned char*z, int m,int k,int n)
 {
-	unsigned char *z =(unsigned char*)malloc(m*n*sizeof(unsigned char));
     for(int nm=0; nm<m; nm++)
         for(int nn=0; nn<n; nn++)
             for(int nk=0; nk<k; nk++)
@@ -38,9 +36,8 @@ unsigned char* MulMatrix_uchar(char *x,char *y, int m,int k,int n)
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-short* MulMatrix_short(short *x,short *y, int m,int k,int n)
+void MulMatrix_short(short *x,short *y,short*z, int m,int k,int n)
 {
-	short *z =(short*)malloc(m*n*sizeof(short));
     for(int nm=0; nm<m; nm++)
         for(int nn=0; nn<n; nn++)
             for(int nk=0; nk<k; nk++)
@@ -53,9 +50,23 @@ short* MulMatrix_short(short *x,short *y, int m,int k,int n)
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-unsigned short * MulMatrix_ushort(unsigned short *x,unsigned short *y, int m,int k,int n)
+void MulMatrix_ushort(unsigned short *x,unsigned short *y,unsigned short *z, int m,int k,int n)
 {
-	unsigned short *z =(unsigned short*)malloc(m*n*sizeof(unsigned short));
+    for(int nm=0; nm<m; nm++)
+        for(int nn=0; nn<n; nn++)
+            for(int nk=0; nk<k; nk++)
+                z[nm*n+nn] += x[nm*k+nk]*y[nk*n+nn];
+}
+
+//矩阵乘法
+/********参数表*******
+@Parameter    x:    m行k列矩阵（用一维数组表示）
+@Parameter    y:    k行n列矩阵（用一维数组表示）
+@Parameter    m,k,n:    矩阵行列参数
+@Parameter    z:    m行n列输出矩阵（用一维数组表示）
+***********************/
+void MulMatrix_int(int *x,int *y,int*z, int m,int k,int n)
+{
     for(int nm=0; nm<m; nm++)
         for(int nn=0; nn<n; nn++)
             for(int nk=0; nk<k; nk++)
@@ -68,9 +79,8 @@ unsigned short * MulMatrix_ushort(unsigned short *x,unsigned short *y, int m,int
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-int* MulMatrix_int(int *x,int *y, int m,int k,int n)
+void MulMatrix_uint(unsigned int *x, unsigned int *y, unsigned int *z, int m,int k,int n)
 {
-    int *z =( int*)malloc(m*n*sizeof(int));
     for(int nm=0; nm<m; nm++)
         for(int nn=0; nn<n; nn++)
             for(int nk=0; nk<k; nk++)
@@ -83,9 +93,8 @@ int* MulMatrix_int(int *x,int *y, int m,int k,int n)
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-unsigned int * MulMatrix_uint(unsigned int *x, unsigned int *y, int m,int k,int n)
+void MulMatrix_float(float *x,float *y, float* z, int m,int k,int n)
 {
-	unsigned int *z =(unsigned int *)malloc(m*n*sizeof(unsigned int));
     for(int nm=0; nm<m; nm++)
         for(int nn=0; nn<n; nn++)
             for(int nk=0; nk<k; nk++)
@@ -98,24 +107,8 @@ unsigned int * MulMatrix_uint(unsigned int *x, unsigned int *y, int m,int k,int 
 @Parameter    m,k,n:    矩阵行列参数
 @Parameter    z:    m行n列输出矩阵（用一维数组表示）
 ***********************/
-float* MulMatrix_float(float *x,float *y, int m,int k,int n)
+void MulMatrix_double(double *x, double *y, double*z, int m,int k,int n)
 {
-    float *z =(float *)malloc(m*n*sizeof(float));
-    for(int nm=0; nm<m; nm++)
-        for(int nn=0; nn<n; nn++)
-            for(int nk=0; nk<k; nk++)
-                z[nm*n+nn] += x[nm*k+nk]*y[nk*n+nn];
-}
-//矩阵乘法
-/********参数表*******
-@Parameter    x:    m行k列矩阵（用一维数组表示）
-@Parameter    y:    k行n列矩阵（用一维数组表示）
-@Parameter    m,k,n:    矩阵行列参数
-@Parameter    z:    m行n列输出矩阵（用一维数组表示）
-***********************/
-double* MulMatrix_double(double *x, double *y, int m,int k,int n)
-{
-    double *z =(double*)malloc(m*n*sizeof(double));
     for(int nm=0; nm<m; nm++)
         for(int nn=0; nn<n; nn++)
             for(int nk=0; nk<k; nk++)
@@ -128,9 +121,8 @@ double* MulMatrix_double(double *x, double *y, int m,int k,int n)
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-double* TransMatrix_double(double *x, int m, int n)
+void TransMatrix_double(double *x,double *z, int m, int n)
 {
-	double*z = (double*)malloc(n*m*sizeof(double));
     for(int nm=0; nm<m; nm++)            //对原矩阵第nm行
         for(int nn=0; nn<n; nn++)        //对原矩阵第nn列
             z[nn*m+nm] = x[nm*n+nn];    //z矩阵第nn行第nm列
@@ -141,9 +133,8 @@ double* TransMatrix_double(double *x, int m, int n)
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-short* TransMatrix_short(short *x, int m, int n)
+void TransMatrix_short(short *x,short*z, int m, int n)
 {
-	short* z = (short*)malloc(m*n*sizeof(short));
     for(int nm=0; nm<m; nm++)            //对原矩阵第nm行
         for(int nn=0; nn<n; nn++)        //对原矩阵第nn列
             z[nn*m+nm] = x[nm*n+nn];    //z矩阵第nn行第nm列
@@ -154,9 +145,8 @@ short* TransMatrix_short(short *x, int m, int n)
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-char* TransMatrix_char(char *x, int m, int n)
+void TransMatrix_char(char *x, char *z, int m, int n)
 {
-	char* z = (char*)malloc(m*n*sizeof(char));
     for(int nm=0; nm<m; nm++)            //对原矩阵第nm行
         for(int nn=0; nn<n; nn++)        //对原矩阵第nn列
             z[nn*m+nm] = x[nm*n+nn];    //z矩阵第nn行第nm列
@@ -167,9 +157,8 @@ char* TransMatrix_char(char *x, int m, int n)
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-unsigned short* TransMatrix_ushort(unsigned short *x, int m, int n)
+void TransMatrix_ushort(unsigned short *x, unsigned short*z, int m, int n)
 {
-	unsigned short* z = (unsigned short*)malloc(m*n*sizeof(unsigned short));
     for(int nm=0; nm<m; nm++)            //对原矩阵第nm行
         for(int nn=0; nn<n; nn++)        //对原矩阵第nn列
             z[nn*m+nm] = x[nm*n+nn];    //z矩阵第nn行第nm列
@@ -180,9 +169,8 @@ unsigned short* TransMatrix_ushort(unsigned short *x, int m, int n)
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-unsigned char* TransMatrix_uchar(unsigned char *x, int m, int n)
+void TransMatrix_uchar(unsigned char *x,unsigned char*z, int m, int n)
 {
-	unsigned char* z = (unsigned char*)malloc(m*n*sizeof(unsigned char));
     for(int nm=0; nm<m; nm++)            //对原矩阵第nm行
         for(int nn=0; nn<n; nn++)        //对原矩阵第nn列
             z[nn*m+nm] = x[nm*n+nn];    //z矩阵第nn行第nm列
@@ -193,9 +181,8 @@ unsigned char* TransMatrix_uchar(unsigned char *x, int m, int n)
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-int* TransMatrix_int(int *x, int m, int n)
+void  TransMatrix_int(int *x,int *z , int m, int n)
 {
-	int* z = (int*)malloc(m*n*sizeof(int));
     for(int nm=0; nm<m; nm++)            //对原矩阵第nm行
         for(int nn=0; nn<n; nn++)        //对原矩阵第nn列
             z[nn*m+nm] = x[nm*n+nn];    //z矩阵第nn行第nm列
@@ -206,9 +193,8 @@ int* TransMatrix_int(int *x, int m, int n)
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-float* TransMatrix_float(float *x, int m, int n)
+void TransMatrix_float(float *x, float*z, int m, int n)
 {
-	float* z = (float*)malloc(m*n*sizeof(float));
     for(int nm=0; nm<m; nm++)            //对原矩阵第nm行
         for(int nn=0; nn<n; nn++)        //对原矩阵第nn列
             z[nn*m+nm] = x[nm*n+nn];    //z矩阵第nn行第nm列
@@ -219,9 +205,8 @@ float* TransMatrix_float(float *x, int m, int n)
 @Parameter    m,n:    矩阵行列数
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
-unsigned int* TransMatrix_uint(unsigned int *x, int m, int n)
+void TransMatrix_uint(unsigned int *x, unsigned int *z, int m, int n)
 {
-	unsigned int* z = (unsigned int*)malloc(m*n*sizeof(unsigned int));
     for(int nm=0; nm<m; nm++)            //对原矩阵第nm行
         for(int nn=0; nn<n; nn++)        //对原矩阵第nn列
             z[nn*m+nm] = x[nm*n+nn];    //z矩阵第nn行第nm列

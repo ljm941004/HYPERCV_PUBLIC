@@ -30,3 +30,9 @@ float* read_spectrum_file(const char* sp_path, int length);
 * @param[in]  length      length of two vector.
 **/
 float euclidean_distance(float * x, float * y, int length);
+
+/**
+* @brief      calculate a mean mat of hypermat.
+* @param[in]  mat       input hypermat bip mat.
+**/
+void hyper_mat_mean(hyper_mat bip_mat, simple_mat dst_mat);
