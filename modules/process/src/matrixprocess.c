@@ -212,4 +212,84 @@ void TransMatrix_uint(unsigned int *x, unsigned int *z, int m, int n)
             z[nn*m+nm] = x[nm*n+nn];    //z矩阵第nn行第nm列
 }
 
+float matrix_norm_float(float* m,int size)
+{
+	float ans = 0.0;
+	for(int i=0;i<size;i++)
+		ans+=m[i]*m[i];
+	ans = (float)sqrt(ans);
+	return ans;
+}
+
+void matrix_QR_float(float* a, float* q, float *r,int m)
+{
+	float* col_a = (float*)malloc(m*sizeof(float));
+	float* col_q = (float*)malloc(m*sizeof(float));
+
+	for (int j=0;j<m;j++)
+	{
+		for(int i=0;i<m;i++)
+		{
+			col_a[i] = a[i*m+j];
+			col_q[i] = a[i*m+j];
+		}
+		for(int k=0;k<j;k++)
+		{
+			r[k*m+j] = 0;
+			for(int i1=0; i1<m;i1++)
+				r[k*m+j]+=col_a[i1];
+			for(int i2=0;i2<m;i2++)
+				col_q[i2] -= r[k*m+j];
+		}
+
+		float tmp = matrix_norm_float(col_q,m);
+		r[j*m+j] = tmp;
+		for(int i = 0;i<m;i++)
+			q[i*m+j] = col_q[i]/tmp;
+	}
+}
+
+void cal_eigen_vector_float(float* a, float* eigenvector, float*eigenvalue,int m,int n)
+{
+	float* temp = (float*)malloc(m*n*sizeof(float));
+	float evalue ;
+
+	for(int count =0;count < n;count++)
+	{
+		evalue = eigenvalue[count];
+		memcpy(temp,a,m*n*sizeof(float));
+
+		for(int i=0;i<m-1;i++)
+		{
+			float coe = temp[i*n+i];
+			for(int j=1;j<n;j++)
+				temp[i*n+j]/=coe;
+			for (int i1 = i + 1; i1 < m; i1++)
+			{
+				coe = temp[i1 * n + i];
+				for (int j1 = i; j1 < n; j1++)
+				{
+					temp[i1 * n + j1] -= coe * temp[i * n + j1];
+				}
+			}
+		}
+
+		float sum1 = eigenvector[(m-1)*n+count]=1;
+		for(int i2=m-2;i2>=0;i2--)
+		{
+			float sum2 =0;
+			for(int j2 =i2+1;j2<n;j2++)
+				sum2 += temp[i2*n+j2]*eigenvector[j2*n+count];
+
+			sum2 =-sum2/temp[i2*n+i2];
+			sum1 += sum2*sum2;
+			eigenvector[i2*n*count] = sum2;
+		}
+
+		sum1 = sqrt(sum1);
+		for(int i=0;i<m;i++)
+			eigenvector[i*n+count]/=sum1;
+	}
+	free(temp);
+}
 

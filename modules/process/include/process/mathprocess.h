@@ -61,7 +61,7 @@ float mean_char(char* t, int len);
 **/
 float mean_int(int *t, int len);
 
-
+void sort_array_down_float(float* a, int n);
 
 //
 /**

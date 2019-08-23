@@ -126,3 +126,11 @@ void TransMatrix_float(float *x, float*z, int m, int n);
 @Parameter    z:    n行m列矩阵（用一维数组表示）
 ***********************/
 void TransMatrix_uint(unsigned int *x, unsigned int *z, int m, int n);
+
+
+float matrix_norm_float(float* m,int size);
+
+void matrix_QR_float(float* a, float* q, float *r,int m);
+
+
+void cal_eigen_vector_float(float* a, float* eigenvector, float*eigenvalue,int m,int n);
