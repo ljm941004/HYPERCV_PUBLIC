@@ -6,4 +6,4 @@
 #include <stdint.h>
 #include "core/core.h"
 #include "process/process.h"
-#include "Algorithm/Algorithm.h"
+#include "algorithm/Algorithm.h"

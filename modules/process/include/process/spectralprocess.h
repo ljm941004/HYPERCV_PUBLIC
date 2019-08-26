@@ -36,3 +36,11 @@ float euclidean_distance(float * x, float * y, int length);
 * @param[in]  mat       input hypermat bip mat.
 **/
 void hyper_mat_mean(hyper_mat bip_mat, simple_mat dst_mat);
+
+
+/**
+ * @brief      hypermat data reverse.
+ * @param[in]  src mat       input hypermat bsq mat.
+ * @param[in]  dst mat       revese hypermat bsq mat.
+ **/
+void hyper_mat_reverse(hyper_mat src_mat, hyper_mat dst_mat);

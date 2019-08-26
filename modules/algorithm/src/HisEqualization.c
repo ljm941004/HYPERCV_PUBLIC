@@ -21,7 +21,7 @@ void HisEqualization(simple_mat src_mat, simple_mat dst_mat)
 	unsigned char* data = (unsigned char*) src_mat ->data;
 	unsigned char* dst_data = (unsigned char*) dst_mat ->data;
 
-	hist[256] = {0};
+	int hist[256] = {0};
 	
 	for(int i=0; i<rows*cols; i++)
 		hist[*data++]+=1;

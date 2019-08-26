@@ -1,8 +1,8 @@
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/core/src/" HYPERMAT_src)
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/process/src/" HYPERMAT_src)
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/highgui/src/" HYPERMAT_src)
-AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/Algorithm/src/" HYPERMAT_src)
-INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/core/include" "${CMAKE_CURRENT_SOURCE_DIR}/process/include"  "${CMAKE_CURRENT_SOURCE_DIR}/Algorithm/include")
+AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/algorithm/src/" HYPERMAT_src)
+INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/core/include" "${CMAKE_CURRENT_SOURCE_DIR}/process/include"  "${CMAKE_CURRENT_SOURCE_DIR}/algorithm/include")
 
 ADD_LIBRARY(hypercv SHARED ${HYPERMAT_src})
 
@@ -21,6 +21,11 @@ if (GTest_FOUND)
     add_executable(testprocess ${testprocess_src})
     target_link_libraries(testprocess ${GTEST_BOTH_LIBRARIES})
     target_link_libraries(testprocess hypercv)
+    
+    AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/algorithm/test/" testalgorithm_src)
+    add_executable(testalgorithm ${testalgorithm_src})
+    target_link_libraries(testalgorithm ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(testalgorithm hypercv)
 endif()
 
 install(TARGETS hypercv DESTINATION lib)

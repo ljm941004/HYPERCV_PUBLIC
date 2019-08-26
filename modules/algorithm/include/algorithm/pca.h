@@ -6,6 +6,5 @@
 
 
 
-void hyper_mat_pca(hyper_mat hmat);
+void hyper_mat_pca(hyper_mat bip_mat,hyper_mat res_bip_mat,int iteration);
 
-void simple_mat_pca(simple_mat mat);

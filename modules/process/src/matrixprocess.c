@@ -253,7 +253,7 @@ void cal_eigen_vector_float(float* a, float* eigenvector, float*eigenvalue,int m
 {
 	float* temp = (float*)malloc(m*n*sizeof(float));
 	float evalue ;
-
+//todo fix bug
 	for(int count =0;count < n;count++)
 	{
 		evalue = eigenvalue[count];
@@ -285,7 +285,6 @@ void cal_eigen_vector_float(float* a, float* eigenvector, float*eigenvalue,int m
 			sum1 += sum2*sum2;
 			eigenvector[i2*n*count] = sum2;
 		}
-
 		sum1 = sqrt(sum1);
 		for(int i=0;i<m;i++)
 			eigenvector[i*n+count]/=sum1;

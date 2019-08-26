@@ -167,10 +167,10 @@ void hyper_mat_mean(hyper_mat bip_mat, simple_mat dst_mat)
 	int bands = bip_mat -> bands;
 	_assert(samples == dst_mat -> cols&&lines == dst_mat->rows,"dst_mat size == bip_mat size");
 	_assert(dst_mat->data_type == 4,"simple mat datatype ==4");
-	//todo fix float
-	//
+//todo other data type
 	float* src_data = (float*)bip_mat->data;
 	float* dst_data = (float*)dst_mat->data;
+
 	for(int i=0;i<lines;i++)
 	{
 		for(int j=0;j<samples;j++)
