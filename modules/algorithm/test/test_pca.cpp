@@ -52,8 +52,7 @@ void test_pca()
     hyper_mat bip_mat = bsq2bip(src_mat);
 	dst_mat = hyper_mat_copy(bip_mat);
 	hyper_mat_pca(bip_mat,dst_mat,20);
-	return;
-    hmwrite("pca",dst_mat);
+	hmwrite("pca",dst_mat);
 	test_delete_hyper_mat();
 }
 

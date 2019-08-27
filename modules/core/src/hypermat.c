@@ -145,7 +145,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	GDALDataset * dst;
 	GDALDriver * poDriver = GetGDALDriverManager()->GetDriverByName("ENVI");
 	GDALDataType DT = date_type_2_gdal_data_type(mat->data_type);
-	dst = poDriver->Create(image_path, samples, lines, bands, DT, 0);//TODO FIX OTHER TYPE
+	dst = poDriver->Create(image_path, samples, lines, bands, DT, 0);
 	dst->RasterIO(GF_Write, 0, 0, samples, lines, t, samples, lines, DT, bands, nullptr, 0, 0, 0);
 	GDALClose(dst);
 

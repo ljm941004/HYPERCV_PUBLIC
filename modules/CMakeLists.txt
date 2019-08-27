@@ -28,6 +28,13 @@ if (GTest_FOUND)
     target_link_libraries(testalgorithm hypercv)
 endif()
 
+find_package(gdal)
+if(gdal_FOUND)
+	ADD_DEFINITIONS(-Dgdal_switch=1)
+endif()
+
+
+
 install(TARGETS hypercv DESTINATION lib)
 file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h")
 install(FILES ${hdrs} DESTINATION include)

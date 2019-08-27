@@ -15,9 +15,15 @@ process中是数据处理模块,包括高光谱、多光谱和二维数据图像
 欢迎各位从事遥感图像的同行提交 pull request。
 
 
-PROGRAMMER mail 1) jimin@iscas.ac.cn  李济民
+mail 1) jimin@iscas.ac.cn  李济民
 
-PROGRAMMER mail 2) liangjs@pku.edu.cn  梁家硕
+mail 2) liangjs@pku.edu.cn  梁家硕
+
+mail 3) 13126646699@163.com 曹金荣
+
+mail 4) mafu19940927@buaa.edu.cn 马福
+
+mail 5) buaawangcui@163.com 王萃
 
  
  

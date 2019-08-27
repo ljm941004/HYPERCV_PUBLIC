@@ -253,37 +253,42 @@ void cal_eigen_vector_float(float* a, float* eigenvector, float*eigenvalue,int m
 {
 	float* temp = (float*)malloc(m*n*sizeof(float));
 	float evalue ;
-//todo fix bug
+
 	for(int count =0;count < n;count++)
 	{
 		evalue = eigenvalue[count];
 		memcpy(temp,a,m*n*sizeof(float));
 
+		for(int i=0;i<m;i++)
+			temp[i*n+i]-=evalue;
+
 		for(int i=0;i<m-1;i++)
 		{
 			float coe = temp[i*n+i];
+			
 			for(int j=1;j<n;j++)
 				temp[i*n+j]/=coe;
+
 			for (int i1 = i + 1; i1 < m; i1++)
 			{
 				coe = temp[i1 * n + i];
+
 				for (int j1 = i; j1 < n; j1++)
-				{
 					temp[i1 * n + j1] -= coe * temp[i * n + j1];
-				}
 			}
 		}
 
-		float sum1 = eigenvector[(m-1)*n+count]=1;
-		for(int i2=m-2;i2>=0;i2--)
+		float sum1=1; 
+		eigenvector[(m-1)*n+count]=1;
+		for(int i2= m-2; i2>=0; i2--)
 		{
 			float sum2 =0;
-			for(int j2 =i2+1;j2<n;j2++)
+			for(int j2 = i2+1; j2<n ;j2++)
 				sum2 += temp[i2*n+j2]*eigenvector[j2*n+count];
 
 			sum2 =-sum2/temp[i2*n+i2];
 			sum1 += sum2*sum2;
-			eigenvector[i2*n*count] = sum2;
+			eigenvector[i2*n+count] = sum2;
 		}
 		sum1 = sqrt(sum1);
 		for(int i=0;i<m;i++)
