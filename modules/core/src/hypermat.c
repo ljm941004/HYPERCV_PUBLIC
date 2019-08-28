@@ -17,6 +17,39 @@ int cmpstr(char temp1[],char temp2[])
 	return 1;
 }
 
+//* @param[in]  data_type   data_type of hyper spectral image, data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer.
+
+#if gdal_switch
+static int date_type_2_gdal_data_type(const int data_type)
+{
+	switch (data_type)
+	{
+	case 1:
+		return GDT_Byte;
+		break;
+	case 2:
+		return GDT_Int16;
+		break;
+	case 3:
+		return GDT_Int32;
+		break;
+	case 4:
+		return GDT_Float32;
+		break;
+	case 5:
+		return GDT_Float64;
+		break;
+	case 12:
+		return GDT_UInt16;
+		break;
+	case 13:
+		return GDT_UInt32;
+		break;
+	}
+	return GDT_Unknown;
+
+}
+#endif
 
 //*************************************************************  public function  ********************************************************
 /**
@@ -149,7 +182,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	for(int i=1;i<=bands;i++)
 	{
 		hBand = GDALGetRasterBand(dst,i);	
-		GDALRasterIO(hBand, GF_Write, 0, 0, samples, lines, t+(i-1)*samples*lines, samples, lines, DT, 0, 0);	
+		int tmp = GDALRasterIO(hBand, GF_Write, 0, 0, samples, lines, t+(i-1)*samples*lines, samples, lines, DT, 0, 0);	
 	}
 	GDALClose(dst);
 #else

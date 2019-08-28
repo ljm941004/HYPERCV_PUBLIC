@@ -32,7 +32,7 @@ find_package(GDAL)
 if(GDAL_FOUND)
 	ADD_DEFINITIONS(-Dgdal_switch=1)
 	include_directories(${GDAL_INCLUDE_DIRS})
-	target_link_libraries(hypercv ${GDAL_BOTH_LIBRARIES})
+	target_link_libraries(hypercv gdal)
 endif()
 
 
