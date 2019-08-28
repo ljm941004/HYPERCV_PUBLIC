@@ -1,3 +1,8 @@
+#if gdal_switch
+#pragma once
+#include "gdal/gdal.h"
+#endif
+
 #if (defined _M_X64 && defined _MSC_VER && _MSC_VER >= 1400) || (__GNUC__ >= 4 && defined __x86_64__)
 #  if defined WIN32
 #    include <intrin.h>
@@ -87,3 +92,39 @@ static inline int HYPERCV_ROUND( double value )
     return (int)(value + (value >= 0 ? 0.5 : -0.5));
 #endif
 }
+
+//* @param[in]  data_type   data_type of hyper spectral image, data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer.
+
+#if gdal_switch
+inline int date_type_2_gdal_data_type(const int data_type)
+{
+	switch (data_type)
+	{
+	case 1:
+		return GDT_Byte;
+		break;
+	case 2:
+		return GDT_Int16;
+		break;
+	case 3:
+		return GDT_Int32;
+		break;
+	case 4:
+		return GDT_Float32;
+		break;
+	case 5:
+		return GDT_Float64;
+		break;
+	case 12:
+		return GDT_UInt16;
+		break;
+	case 13:
+		return GDT_UInt32;
+		break;
+	}
+	return GDT_Unknown;
+
+}
+#endif 
+
+

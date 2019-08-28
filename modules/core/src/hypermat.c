@@ -140,15 +140,18 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	float* t = (float*)mat->data;
 
 #if gdal_switch
-
 	GDALAllRegister();
-	GDALDataset * dst;
-	GDALDriver * poDriver = GetGDALDriverManager()->GetDriverByName("ENVI");
-	GDALDataType DT = date_type_2_gdal_data_type(mat->data_type);
-	dst = poDriver->Create(image_path, samples, lines, bands, DT, 0);
-	dst->RasterIO(GF_Write, 0, 0, samples, lines, t, samples, lines, DT, bands, nullptr, 0, 0, 0);
+	GDALDatasetH  dst;
+    GDALDriverH hDriver = GDALGetDriverByName("ENVI");	
+	int DT = date_type_2_gdal_data_type(mat->data_type);
+	dst = GDALCreate(hDriver,image_path, samples, lines, bands, DT, NULL);
+	GDALRasterBandH hBand;
+	for(int i=1;i<=bands;i++)
+	{
+		hBand = GDALGetRasterBand(dst,i);	
+		GDALRasterIO(hBand, GF_Write, 0, 0, samples, lines, t+(i-1)*samples*lines, samples, lines, DT, 0, 0);	
+	}
 	GDALClose(dst);
-
 #else
 
 	FILE* image_fp;

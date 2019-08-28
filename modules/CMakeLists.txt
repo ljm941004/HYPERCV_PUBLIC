@@ -28,9 +28,11 @@ if (GTest_FOUND)
     target_link_libraries(testalgorithm hypercv)
 endif()
 
-find_package(gdal)
-if(gdal_FOUND)
+find_package(GDAL)
+if(GDAL_FOUND)
 	ADD_DEFINITIONS(-Dgdal_switch=1)
+	include_directories(${GDAL_INCLUDE_DIRS})
+	target_link_libraries(hypercv ${GDAL_BOTH_LIBRARIES})
 endif()
 
 
