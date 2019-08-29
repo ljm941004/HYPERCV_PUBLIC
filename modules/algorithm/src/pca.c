@@ -58,8 +58,8 @@ void hyper_mat_pca(hyper_mat bip_mat,hyper_mat res_bip_mat,int iteration)
 	simple_mat r_mat = create_simple_mat(cov_mat->rows,cov_mat->cols,4,1); 
 	for(int i=0;i<iteration;i++)//迭代
 	{
-		matrix_QR_float(temp->data,q_mat->data,r_mat->data,bands);
-		MulMatrix_float(q_mat->data,r_mat->data,temp->data,bands,bands,bands);
+		matrix_QR_float((float*)temp->data,(float*)q_mat->data,(float*)r_mat->data,bands);
+		MulMatrix_float((float*)q_mat->data,(float*)r_mat->data,(float*)temp->data,bands,bands,bands);
 	}
 	
 	float* evalue = (float*)malloc(bands*sizeof(float));
@@ -71,21 +71,15 @@ void hyper_mat_pca(hyper_mat bip_mat,hyper_mat res_bip_mat,int iteration)
 
 	simple_mat eigen_vector = simple_mat_copy(q_mat);
 
-	cal_eigen_vector_float(cov_mat->data,eigen_vector->data,evalue,bands,bands);
+	cal_eigen_vector_float((float*)cov_mat->data,(float*)eigen_vector->data,evalue,bands,bands);
 
-	MulMatrix_float(xmat->data,eigen_vector->data,res_bip_mat->data,samples*lines,bands,bands);
-
+	MulMatrix_float((float*)xmat->data,(float*)eigen_vector->data,(float*)res_bip_mat->data,samples*lines,bands,bands);
 
 	/*
-
 	simple_mat eigen_vector_q = create_simple_mat(samples*lines, bands,4,1);
 	   simple_mat reverse_eigen_vector_q = copy_simple_mat(eigen_vector_q);
 
 	TransMatrix_float(eigen_vector_q->data,reverse_eigen_vector_q->data,eigen_vector_q->rows,eigen_vector_q->cols);
-
-
 */
-
-
 
 }
