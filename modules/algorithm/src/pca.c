@@ -15,7 +15,7 @@ static void cal_covariance_matrix(hyper_mat bip_mat,simple_mat mean_mat,hyper_ma
 
 	hyper_mat t = create_hyper_mat(lines,samples,bands,4,"bsq");
 	hyper_mat bsq_mat = bip2bsq(bip_mat);
-	hyper_mat_reverse(bsq_mat,t);
+	hyper_mat_transport(bsq_mat,t);
 
 	float* src_data = (float*)src_mat->data;
 	float* mean_data = (float*)mean_mat->data;
@@ -77,9 +77,9 @@ void hyper_mat_pca(hyper_mat bip_mat,hyper_mat res_bip_mat,int iteration)
 
 	/*
 	simple_mat eigen_vector_q = create_simple_mat(samples*lines, bands,4,1);
-	   simple_mat reverse_eigen_vector_q = copy_simple_mat(eigen_vector_q);
+	   simple_mat transport_eigen_vector_q = copy_simple_mat(eigen_vector_q);
 
-	TransMatrix_float(eigen_vector_q->data,reverse_eigen_vector_q->data,eigen_vector_q->rows,eigen_vector_q->cols);
+	TransMatrix_float(eigen_vector_q->data,transport_eigen_vector_q->data,eigen_vector_q->rows,eigen_vector_q->cols);
 */
 
 }
