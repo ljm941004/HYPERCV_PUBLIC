@@ -9,7 +9,11 @@
 // private function purpose to compare 2 char[]
 int cmpstr(char temp1[],char temp2[])
 {
-	for (int i=0;i<2;i++)
+
+	if(strlen(temp1)!=strlen(temp2))
+		return 0;
+
+	for (int i=0;i<strlen(temp1);i++)
 	{
 		if(temp1[i]!=temp2[i])
 			return 0;
