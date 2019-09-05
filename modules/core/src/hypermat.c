@@ -196,7 +196,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	_assert(image_fp == NULL, "can not open files");
 	fwrite(mat->data, elemsize, samples * lines * bands, image_fp);
 	writehdr(image_path, samples, lines, bands, mat->data_type, mat->interleave);
-
+	fclose(image_fp);
 #endif
 }
 
