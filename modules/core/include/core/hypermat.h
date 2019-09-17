@@ -43,12 +43,22 @@ hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, 
 hyper_mat create_hyper_mat_with_data(const int samples,const int lines,const int bands,const int data_type, const char interleave[], void* data);
 
 /**
- * @brief      read the hyper spectral image.
+ * @brief      read the hyper spectral image with hdr.
  * @param[in]  image_path  hyper spectral image path.
  * @param[in]  hdr_path    hdr file path.
  **/
-hyper_mat hmread(const char* image_path,const char* hdr_path);
+hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path);
 
+/**
+ * @brief      read the hyper spectral image with size.
+ * @param[in]  image_path  hyper spectral image path.
+ * @param[in]  samples     hyper spectral image samples.
+ * @param[in]  lines       hyper spectral image lines.
+ * @param[in]  bands       hyper spectral image bands.
+ * @param[in]  data_type   hyper spectral image data_type.
+ * @param[in]  interleave  bsq,bil,bip.
+ **/
+hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int bands, int data_type, char* interleave);
 /**
  * @brief      write the hyper spectral image.
  * @param[in]  image_path  hyper spectral image path.

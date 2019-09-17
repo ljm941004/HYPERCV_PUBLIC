@@ -28,27 +28,27 @@ static int date_type_2_gdal_data_type(const int data_type)
 {
 	switch (data_type)
 	{
-	case 1:
-		return GDT_Byte;
-		break;
-	case 2:
-		return GDT_Int16;
-		break;
-	case 3:
-		return GDT_Int32;
-		break;
-	case 4:
-		return GDT_Float32;
-		break;
-	case 5:
-		return GDT_Float64;
-		break;
-	case 12:
-		return GDT_UInt16;
-		break;
-	case 13:
-		return GDT_UInt32;
-		break;
+		case 1:
+			return GDT_Byte;
+			break;
+		case 2:
+			return GDT_Int16;
+			break;
+		case 3:
+			return GDT_Int32;
+			break;
+		case 4:
+			return GDT_Float32;
+			break;
+		case 5:
+			return GDT_Float64;
+			break;
+		case 12:
+			return GDT_UInt16;
+			break;
+		case 13:
+			return GDT_UInt32;
+			break;
 	}
 	return GDT_Unknown;
 
@@ -126,7 +126,7 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
  * @param[in]  image_path  hyper spectral image path.
  * @retval      hyper_mat   hyper mat.
  **/
-hyper_mat hmread(const char* image_path,const char* hdr_path)
+hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 {
 	_assert(image_path != NULL, "image path or hdr path can not be NULL");
 
@@ -162,6 +162,41 @@ hyper_mat hmread(const char* image_path,const char* hdr_path)
 }
 
 /**
+ * @brief      read the hyper spectral image with size.
+ * @param[in]  image_path  hyper spectral image path.
+ * @param[in]  samples     hyper spectral image samples.
+ * @param[in]  lines       hyper spectral image lines.
+ * @param[in]  bands       hyper spectral image bands.
+ * @param[in]  data_type   hyper spectral image data_type.
+ * @param[in]  interleave  bsq,bil,bip.
+ **/
+hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int bands, int data_type, char* interleave)
+{
+	_assert(image_path != NULL, "image path or hdr path can not be NULL");
+	_assert(samples >0 && lines>0 && bands>0, "image size must >0 ");
+
+	FILE* image_fp = NULL;
+	image_fp = fopen( image_path, "r");
+
+	if (image_fp == NULL)
+	{
+		printf("can not open file\n");
+		return 0;
+	}
+
+	int elem_size = get_elemsize(data_type);
+	int data_size = samples * lines * bands;
+
+	void* data = (void *)malloc(data_size * elem_size);
+
+	fread(data, elem_size, data_size, image_fp);
+	fclose(image_fp);
+
+	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data);
+
+	return mat;
+}
+/**
  * @brief      write the hyper spectral image.
  * @param[in]  image_path  hyper spectral image path.
  * @param[in]  hyper_mat   hyper mat.
@@ -179,7 +214,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
 #if gdal_switch
 	GDALAllRegister();
 	GDALDatasetH  dst;
-    GDALDriverH hDriver = GDALGetDriverByName("ENVI");	
+	GDALDriverH hDriver = GDALGetDriverByName("ENVI");	
 	int DT = date_type_2_gdal_data_type(mat->data_type);
 	dst = GDALCreate(hDriver,image_path, samples, lines, bands, DT, NULL);
 	GDALRasterBandH hBand;
@@ -295,14 +330,14 @@ hyper_mat hyper_mat_copy(hyper_mat mat)
 	int bands = mat->bands;
 	int data_type = mat->data_type;
 	int elemsize = get_elemsize(data_type);
-	
+
 	char interleave[3];
 
 	interleave[0] = mat->interleave[0];
 	interleave[1] = mat->interleave[1];
 	interleave[2] = mat->interleave[2];
-	
-    hyper_mat dst_mat = create_hyper_mat(samples,lines,bands,data_type,interleave);
+
+	hyper_mat dst_mat = create_hyper_mat(samples,lines,bands,data_type,interleave);
 
 	char *dst_data = (char*)dst_mat->data;
 	char *src_data = (char*)mat->data;

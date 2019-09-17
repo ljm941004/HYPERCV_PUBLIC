@@ -46,7 +46,7 @@ static void test_delete_hyper_mat()
 		delete_hyper_mat(t);
 }
 
-static void test_hmread_hmdelete()
+static void test_hmread_with_hdr_hmdelete()
 {
 	for(int samples = SAMPLES_START; samples<SAMPLES_END; samples++)
 	{
@@ -91,6 +91,6 @@ TEST(CORE,HMCOPY)
 
 TEST(CORE,HMDELETE)
 {
-	test_hmread_hmdelete();
+	test_hmread_with_hdr_hmdelete();
 }
 
