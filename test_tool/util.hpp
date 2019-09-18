@@ -72,11 +72,40 @@ int hypercv_mat_compare(type * mat1,type* mat2, int samples, int lines,int bands
 template<typename type>
 void test_show_mat(type *mat, int samples, int lines, int bands)
 {
-	for(int i=0; i<samples*lines*bands;i++)
+	for(int i=0; i<bands;i++)
 	{
-		std::cout<<mat[i];
+		for(int j=0;j<lines;j++)
+		{
+			for(int k=0;k<samples;k++)
+			{
+		
+				std::cout<<mat[i*samples*lines+j*samples+k]<<" ";
+			
+			}
+		 std::cout<<std::endl;
+		}
+		 std::cout<<std::endl;
+		 std::cout<<std::endl;
 	}
 }
 
+template<typename type>
+void test_show_mat_bip(type *mat, int samples, int lines, int bands)
+{
+	for(int i=0; i<lines;i++)
+	{
+		for(int j=0;j<samples;j++)
+		{
+			for(int k=0;k<bands;k++)
+			{
+		
+				std::cout<<mat[i*samples*bands + j*bands + k]<<" ";
+			
+			}
+			std::cout<<"  ";
+		}
+		 std::cout<<std::endl;
+	}
+}
 
 
