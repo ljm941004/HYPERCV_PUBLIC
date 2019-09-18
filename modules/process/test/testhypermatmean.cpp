@@ -34,7 +34,7 @@ static hyper_mat dst_mat = NULL;
 static hyper_mat t = NULL;
 
 template<typename type>
-static void hypercv_test_setup(int samples, int lines, int bands, int data_type, char interleave[])
+static void hypercv_test_setup(int samples, int lines, int bands, int data_type, const char interleave[])
 {
   	src_mat = create_hyper_mat(samples, lines, bands, data_type, interleave);
 	hypercv_dataInit<type>((type*)src_mat->data,samples,lines,bands);
