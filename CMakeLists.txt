@@ -35,6 +35,6 @@ add_custom_target(
     &
 	#bin/testcore --gtest_filter=CORE.SMSAVE
 	#bin/testcore --gtest_filter=CORE.HMCOPY
-	bin/testprocess --gtest_filter=PROCESS.TRANSPORT
-	#bin/testalgorithm --gtest_filter=ALGORITHM.PCA
+    #bin/testprocess --gtest_filter=PROCESS.TRANSPORT
+	bin/testalgorithm --gtest_filter=ALGORITHM.PCA
 )

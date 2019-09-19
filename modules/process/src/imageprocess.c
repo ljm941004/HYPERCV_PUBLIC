@@ -377,7 +377,6 @@ hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, i
 **/
 simple_mat reshape_hypermat_2_simplemat(hyper_mat src_mat, int dst_rows, int dst_cols)
 {
-	_assert(cmpstr(src_mat -> interleave,"bsq")==1, "input hyper mat interleave is bsq");
 
 	int src_samples = src_mat -> samples;
 	int src_lines = src_mat -> lines;
@@ -437,5 +436,30 @@ void simple_mat_2_hyper_mat(hyper_mat dst_mat, simple_mat src_mat, int band)
 	char* src = (char*)src_mat->data;
 
 	memcpy(dst,src,samples*lines);
+}
+
+/**
+* @brief      simple mat transport.
+* @param[in]  res_mat     simple mat.
+* @param[in]  src_mat     simple mat.
+**/
+void simple_mat_transport(simple_mat res,simple_mat src)
+{
+	int rows = res->rows;
+	int cols = res->cols;
+	
+	_assert(rows == src->cols && cols == src->rows && res->data_type == src->data_type, "data size of transport image equal to srcmat ");
+
+	int data_type = src->data_type;
+	int elemsize = get_elemsize(data_type);
+
+	char *res_data = (char*)res->data;
+	char *src_data = (char*)src->data;
+
+	for(int i=0;i<rows;i++)
+		for(int j=0;j<cols;j++)
+			for(int k=0;k<elemsize;k++)
+				res_data[i*cols*elemsize+j*elemsize+k] = src_data[j*rows*elemsize+i*elemsize+k];
+
 }
 

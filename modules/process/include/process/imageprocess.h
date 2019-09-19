@@ -78,3 +78,10 @@ void hyper_mat_2_simple_mat(hyper_mat src_mat, simple_mat dst_mat, int band);
 * @param[in]  band        select band.
 **/
 void simple_mat_2_hyper_mat(hyper_mat dst_mat, simple_mat src_mat, int band);
+
+/**
+* @brief      simple mat transport.
+* @param[in]  res_mat     simple mat.
+* @param[in]  src_mat     simple mat.
+**/
+void simple_mat_transport(simple_mat res, simple_mat src);

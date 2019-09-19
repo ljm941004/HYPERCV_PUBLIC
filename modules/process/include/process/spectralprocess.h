@@ -43,4 +43,4 @@ void hyper_mat_mean(hyper_mat bip_mat, simple_mat dst_mat);
  * @param[in]  src mat       input hypermat bsq mat.
  * @param[in]  dst mat       revese hypermat bsq mat.
  **/
-void hyper_mat_transport(hyper_mat src_mat, hyper_mat dst_mat);
+void hyper_mat_transport(hyper_mat dst_mat, hyper_mat src_mat);

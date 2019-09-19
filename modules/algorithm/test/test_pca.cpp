@@ -48,8 +48,8 @@ static void test_delete_hyper_mat()
 
 void test_pca()
 {
-	src_mat = hmread_with_hdr("/home/ljm/sm","/home/ljm/sm.hdr");
-    hyper_mat bip_mat = bsq2bip(src_mat);
+	src_mat = hmread_with_hdr("/home/ljm/image","/home/ljm/image.hdr");
+	hyper_mat bip_mat = bsq2bip(src_mat);
 	dst_mat = hyper_mat_copy(bip_mat);
 	hyper_mat_pca(bip_mat,dst_mat,20);
 	hmwrite("pca",dst_mat);
