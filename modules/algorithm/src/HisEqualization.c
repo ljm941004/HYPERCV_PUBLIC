@@ -38,13 +38,12 @@ void HisEqualization(simple_mat dst_mat, simple_mat src_mat)
 
 void hyper_mat_linear_tension(hyper_mat dst_mat, hyper_mat bsq_mat)
 {
-	//_assert(cmpstr(bsq_mat->interleave,"bsq")==1,"input src mat must be bsq");
-
+	_assert(cmpstr(bsq_mat->interleave,"bsq")==1,"input src mat must be bsq");
 	int samples = bsq_mat -> samples;
 	int lines = bsq_mat -> lines;
 	int bands = bsq_mat -> bands;
 	_assert(dst_mat->samples == samples&& dst_mat->lines == lines&&dst_mat->bands == bands,"src mat size == dst mat size");
-	//_assert(dst_mat ->data_type ==1,"dst data type char");
+	_assert(dst_mat ->data_type ==1,"dst data type char");
 	float * srcdata = (float*)bsq_mat -> data;
 	unsigned char* dstdata = (unsigned char*) dst_mat->data;
 	float maxdata = 0.0;
@@ -69,7 +68,6 @@ void hyper_mat_linear_tension(hyper_mat dst_mat, hyper_mat bsq_mat)
 					mindata = tmp;
 			}
 		}
-		return;
 		float m = 255/(maxdata-mindata);
 		float n = -mindata*255/(maxdata-mindata);
 		for(int i=0; i<lines;i++)

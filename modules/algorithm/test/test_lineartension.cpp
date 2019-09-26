@@ -1,5 +1,5 @@
 /*************************************************************************
-	> File Name: test_linear_tension.cpp
+	> File Name: test_lineartension.cpp
 	> Author: ljm
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
@@ -48,23 +48,16 @@ static void test_delete_hyper_mat()
 		delete_hyper_mat(dst_mat);
 }
 
-void test_linear_tension()
+void test_hyper_mat_linear_tension()
 {
-	hyper_mat t = create_hyper_mat(3,3,3,4,"bsq");
-	if(t->data ==NULL)
-		cout<<"r";
-    else
-	    cout<<"d";
-//	hypercv_dataInit<float>((float*)t->data,3,3,3);
-	float * m = (float*)t->data;
-	std::cout<< m[28];
-	
-	
-	//test_show_mat<float>((float*)src_mat->data,3,3,3);
+	hypercv_test_setup<float>(3,3,3,4,"bsq");
+	test_show_mat<float>((float*)src_mat->data,3,3,3);
+
+	hyper_mat_linear_tension(dst_mat,src_mat);
+	test_show_mat<unsigned char>((unsigned char*)dst_mat->data,3,3,3);
 	test_delete_hyper_mat();
 }
-TEST(ALGORITHM,LINEAR_TENSION)
+TEST(ALGORITHM,L)
 {
-	test_linear_tension();
+	test_hyper_mat_linear_tension();
 }
-
