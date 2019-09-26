@@ -9,11 +9,11 @@
  * @param[in]  src_mat             input mat.        
  * @param[in]  dst_mat             result mat.
 **/
-void HisEqualization(simple_mat src_mat, simple_mat dst_mat);
+void HisEqualization(simple_mat dst_mat, simple_mat src_mat);
 
 /**            
  * @brief      function to  linear tension 
  * @param[in]  bsq_mat             input mat.        
  * @param[in]  dst_mat             result mat.
 **/
-void hyper_mat_linear_tension(hyper_mat bsq_mat, hyper_mat dst_mat);
+void hyper_mat_linear_tension(hyper_mat dst_mat, hyper_mat bsq_mat);

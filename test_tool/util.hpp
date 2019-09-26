@@ -27,8 +27,10 @@ void hypercv_dataInit(type* mat, int samples, int lines, int bands)
 
 				mat[lines*samples*k+ i*samples + j]=data;
 			}
+
 		}
 	}
+
 }
 
 /*--------------------------------
