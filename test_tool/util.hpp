@@ -82,14 +82,11 @@ void test_show_mat(type *mat, int samples, int lines, int bands)
 			{
 				if(sizeof(type) == 1||sizeof(type)==2)
 				{
-					int tmp = mat[i*samples*lines+j*samples+k];
+					int tmp =(int)mat[i*samples*lines+j*samples+k];
 					std::cout<<tmp<<" ";
 				}
 				else
-				{
-					double t = mat[i*samples*lines+j*samples+k];
-					std::cout<<t<<" ";
-				}
+					std::cout<<mat[i*samples*lines+j*samples+k]<<" ";
 			}
 			std::cout<<std::endl;
 		}
@@ -108,7 +105,13 @@ void test_show_mat_bip(type *mat, int samples, int lines, int bands)
 			for(int k=0;k<bands;k++)
 			{
 
-				std::cout<<mat[i*samples*bands + j*bands + k]<<" ";
+				if(sizeof(type) == 1||sizeof(type)==2)
+				{
+					int tmp =(int)mat[i*samples*bands + j*bands + k];
+					std::cout<<tmp<<" ";
+				}
+				else
+					std::cout<<mat[i*samples*bands + j*bands + k]<<" ";
 
 			}
 			std::cout<<"  ";

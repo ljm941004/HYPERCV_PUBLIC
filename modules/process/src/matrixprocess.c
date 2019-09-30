@@ -297,3 +297,110 @@ void cal_eigen_vector_float(float* a, float* eigenvector, float*eigenvalue,int m
 	free(temp);
 }
 
+void correlation_matrix_uchar(unsigned char* res, unsigned char* mat1, unsigned char* mat2, int l, int n, int m)
+{
+	MulMatrix_uchar(mat1,mat2,res,l,n,m);
+
+	for(int i=0; i<l*m; i++)
+		res[i] =(int)(res[i]/n);
+}
+
+void correlation_matrix_char(char* res, char* mat1, char* mat2, int l, int n, int m)
+{
+	MulMatrix_char(mat1,mat2,res,l,n,m);
+
+	for(int i=0; i<l*m; i++)
+		res[i] =(int)(res[i]/n);
+}
+
+void correlation_matrix_short(short* res, short* mat1, short* mat2, int l, int n, int m)
+{
+	MulMatrix_short(mat1,mat2,res,l,n,m);
+
+	for(int i=0; i<l*m; i++)
+		res[i] =(int)(res[i]/n);
+}
+
+void correlation_matrix_ushort(unsigned short* res, unsigned short* mat1,unsigned short* mat2, int l, int n, int m)
+{
+	MulMatrix_ushort(mat1,mat2,res,l,n,m);
+
+	for(int i=0; i<l*m; i++)
+		res[i] =(int)(res[i]/n);
+}
+
+void correlation_matrix_int(int* res, int* mat1, int* mat2, int l, int n, int m)
+{
+	MulMatrix_int(mat1,mat2,res,l,n,m);
+
+	for(int i=0; i<l*m; i++)
+		res[i] =(int)(res[i]/n);
+}
+
+void correlation_matrix_uint(unsigned int* res,unsigned  int* mat1, unsigned int* mat2, int l, int n, int m)
+{
+	MulMatrix_uint(mat1,mat2,res,l,n,m);
+
+	for(int i=0; i<l*m; i++)
+		res[i] =(int)(res[i]/n);
+}
+
+void correlation_matrix_float(float* res, float* mat1, float* mat2, int l, int n, int m)
+{
+	MulMatrix_float(mat1,mat2,res,l,n,m);
+
+	for(int i=0; i<l*m; i++)
+		res[i] =(res[i]/n);
+}
+
+void set_identity_matrix_float(float* mat,int m)
+{
+	for(int i=0;i<m;i++)
+	{	
+		for(int j=0;j<m;j++)
+		{
+			if(i==j)
+				mat[i*m+j] = 1.0;
+			else
+				mat[i*m+j] = 0.0;
+		}
+	}
+}
+
+void swap_rows(float* mat,int m,int n, int r1, int r2)
+{
+	_assert(r1>=0&&r1<m&&r2>=0&&r2<m,"select rows from 0 2 lines")
+;
+	_assert(r1!=r2,"select row can not equal");
+
+	float * d1 =(float*)malloc(n*sizeof(float));
+
+//todo finish
+}
+
+
+
+
+void invert_matrix_float(float* res, float* mat, int m)
+{
+	set_identity_matrix_float(res,m);
+	int i,j,r;
+	for(i=0;i<m;i++)
+	{
+		if(mat[i*m+i] == 0.0)
+		{
+			for(r=i+1;r<m;r++)
+			{
+				if(mat[r*m+i]!=0.0)
+					break;
+			}
+		
+		}
+		if(r == m)
+			return;
+
+	}
+
+
+
+}

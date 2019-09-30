@@ -159,7 +159,7 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data);
 
 #if _DEBUG 
-	showinfo_of_hyper_mat(mat);
+	hyper_mat_showinfo(mat);
 #endif
 
 	return mat;
@@ -355,7 +355,7 @@ hyper_mat hyper_mat_copy(hyper_mat mat)
  * @brief      function to show information the hyper mat.
  * @param[in]  mat         hyper mat.
  **/
-void showinfo_of_hyper_mat(hyper_mat mat)
+void hyper_mat_showinfo(hyper_mat mat)
 {
 	if(mat == NULL)
 		printf("mat is NULL");

@@ -99,7 +99,7 @@ hyper_mat hyper_mat_copy(hyper_mat mat);
  * @brief      function to show information the hyper mat.
  * @param[in]  mat         hyper mat.
  **/
-void showinfo_of_hyper_mat(hyper_mat mat);
+void hyper_mat_showinfo(hyper_mat mat);
 
 /**
  * @brief      function to delete the hyper mat.

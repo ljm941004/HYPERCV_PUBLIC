@@ -127,10 +127,27 @@ void TransMatrix_float(float *x, float*z, int m, int n);
 ***********************/
 void TransMatrix_uint(unsigned int *x, unsigned int *z, int m, int n);
 
-
 float matrix_norm_float(float* m,int size);
 
 void matrix_QR_float(float* a, float* q, float *r,int m);
 
-
 void cal_eigen_vector_float(float* a, float* eigenvector, float*eigenvalue,int m,int n);
+
+void correlation_matrix_uchar(unsigned char* res, unsigned char* mat1, unsigned char* mat2, int l, int n, int m);
+
+void correlation_matrix_char(char* res, char* mat1, char* mat2, int l, int n, int m);
+
+void correlation_matrix_short(short* res, short* mat1, short* mat2, int l, int n, int m);
+
+void correlation_matrix_ushort(unsigned short* res, unsigned short* mat1,unsigned short* mat2, int l, int n, int m);
+
+void correlation_matrix_int(int* res, int* mat1, int* mat2, int l, int n, int m);
+
+void correlation_matrix_uint(unsigned int* res,unsigned  int* mat1, unsigned int* mat2, int l, int n, int m);
+
+void correlation_matrix_float(float* res, float* mat1, float* mat2, int l, int n, int m);
+
+
+
+
+
