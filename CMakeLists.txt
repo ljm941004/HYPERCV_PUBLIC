@@ -34,7 +34,8 @@ add_custom_target(
     @echo "[make] testing core..."
     &
 	#bin/testcore --gtest_filter=CORE.SMSAVE
+	bin/testcore --gtest_filter=CORE.WRITEHDR
 	#bin/testcore --gtest_filter=CORE.HMCOPY
 	#bin/testprocess --gtest_filter=PROCESS.MEAN
-	bin/testalgorithm --gtest_filter=ALGORITHM.L
+	#	bin/testalgorithm --gtest_filter=ALGORITHM.L
 )

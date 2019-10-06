@@ -6,6 +6,12 @@
 
 #include "precomp.h"
 
+/**
+* @brief      data type change .
+* @param[in]  f_mat      float image.
+* @retval     dst        int image.
+**/
+//todo write all brief and fix order data type
 hyper_mat hyper_mat_float2int(hyper_mat f_mat)
 {
 	_assert(f_mat->data_type == 4,"intput mat datatype == float");
@@ -95,4 +101,3 @@ hyper_mat hyper_mat_float2ushort(hyper_mat f_mat)
 	}
 	return dst;
 }
-

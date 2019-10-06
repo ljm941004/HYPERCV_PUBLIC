@@ -84,6 +84,19 @@ static void test_hyper_mat_copy()
 
 }
 
+static void test_write_hdr()
+{
+	char* image_path = "image";
+	int samples = 10;
+	int lines = 10;
+	int bands = 10;
+	int data_type = 1;
+	char* interleave = "bsq";
+
+	writehdr(image_path, samples, lines, bands, data_type, interleave);
+}
+
+
 TEST(CORE,HMCOPY)
 {
 	test_hyper_mat_copy();
@@ -92,5 +105,10 @@ TEST(CORE,HMCOPY)
 TEST(CORE,HMDELETE)
 {
 	test_hmread_with_hdr_hmdelete();
+}
+
+TEST(CORE,WRITEHDR)
+{
+	test_write_hdr();
 }
 

@@ -308,7 +308,7 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 	hdr_path[len + 2] = 'd';
 	hdr_path[len + 3] = 'r';
 	hdr_path[len + 4] = '\0';
-	//todo fix write hdr
+	//todo fix write hdr with bands
 	FILE *fp;
 	fp = fopen(hdr_path, "w");
 	fputs("ENVI\n", fp);
