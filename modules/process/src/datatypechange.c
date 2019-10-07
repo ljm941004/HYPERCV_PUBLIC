@@ -32,6 +32,11 @@ hyper_mat hyper_mat_float2int(hyper_mat f_mat)
 	return dst;
 }
 
+/**
+* @brief      data type change .
+* @param[in]  f_mat      float image.
+* @retval     dst        char image.
+**/
 hyper_mat hyper_mat_float2char(hyper_mat f_mat)
 {
 	_assert(f_mat->data_type == 4,"intput mat datatype == float")
@@ -60,6 +65,11 @@ hyper_mat hyper_mat_float2char(hyper_mat f_mat)
 	return dst;
 }
 
+/**
+* @brief      data type change .
+* @param[in]  f_mat      float image.
+* @retval     dst        short image.
+**/
 hyper_mat hyper_mat_float2short(hyper_mat f_mat)
 {
 	_assert(f_mat->data_type == 4,"intput mat datatype == float");
@@ -78,6 +88,11 @@ hyper_mat hyper_mat_float2short(hyper_mat f_mat)
 	return dst;
 }
 
+/**
+ * @brief      data type change .
+ * @param[in]  f_mat      float image.
+ * @retval     dst        unsigned short image.
+ **/
 hyper_mat hyper_mat_float2ushort(hyper_mat f_mat)
 {
 	_assert(f_mat->data_type == 4,"intput mat datatype == float");
@@ -101,3 +116,70 @@ hyper_mat hyper_mat_float2ushort(hyper_mat f_mat)
 	}
 	return dst;
 }
+
+/**
+ * @brief      data type change .
+ * @param[in]  f_mat      float image.
+ * @retval     dst        unsigned char image.
+ **/
+hyper_mat hyper_mat_float2uchar(hyper_mat f_mat)
+{
+	_assert(f_mat->data_type == 4,"intput mat datatype == float");
+	int samples = f_mat->samples;
+	int lines = f_mat->lines;
+	int bands = f_mat->bands;
+
+	hyper_mat dst = create_hyper_mat(samples,lines,bands,1,f_mat->interleave);
+
+	unsigned char* data = dst->data;
+	float* fdata = f_mat->data;
+	int tmp = 0;
+	int datasize = samples*lines*bands;
+	for(int i=0;i<datasize;i++)
+	{
+		tmp = HYPERCV_ROUND(fdata[i]);
+
+		if(tmp>255)
+			data[i] = 255;
+		else if(tmp<0)
+			data[i] = 0;
+		else
+			data[i] = tmp;
+
+	}
+	return dst;
+}
+
+/**
+ * @brief      data type change .
+ * @param[in]  f_mat      float image.
+ * @retval     dst        unsigned int image.
+ **/
+hyper_mat hyper_mat_float2uint(hyper_mat f_mat)
+{
+	_assert(f_mat->data_type == 4,"intput mat datatype == float");
+	int samples = f_mat->samples;
+	int lines = f_mat->lines;
+	int bands = f_mat->bands;
+
+	hyper_mat dst = create_hyper_mat(samples,lines,bands,13,f_mat->interleave);
+
+	unsigned int * data = dst->data;
+	float* fdata = f_mat->data;
+	int tmp = 0;
+	int datasize = samples*lines*bands;
+	for(int i=0;i<datasize;i++)
+	{
+		tmp = HYPERCV_ROUND(fdata[i]);
+
+		if(tmp>4294967295)
+			data[i] =4294967295;
+		else if(tmp<0)
+			data[i] = 0;
+		else
+			data[i] = tmp;
+
+	}
+	return dst;
+}
+
