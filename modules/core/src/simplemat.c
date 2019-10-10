@@ -89,7 +89,7 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int cha
 
 	if (data == NULL)
 	{
-		int data_size = rows * cols * elem_size; 
+		int data_size = rows * cols * elem_size * channels; 
 		memneeded += data_size + ALLOC_BYTE_ALIGNMENT;
 	}
 
