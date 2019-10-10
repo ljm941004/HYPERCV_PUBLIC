@@ -1,3 +1,4 @@
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 //#include <tchar.h>
@@ -15,4 +16,4 @@
 
 #include "core/core.h"
 #include "process/process.h"
-
+#include "algorithm/Algorithm.h"

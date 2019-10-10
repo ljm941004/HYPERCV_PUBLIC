@@ -64,10 +64,19 @@ static void test_simple_mat_copy()
 
 void test_sm_save_2_bmp()
 {
-	test_setup<unsigned char>(1080,1080,1,1);
+	test_setup<unsigned char>(1080,1080,3,1);
 
-	sm_save_2_bmp("test.bmp",src_mat);
-	test_delete_simple_mat;
+//	sm2bmp("test.bmp",src_mat,NULL);
+    RGBQUAD * m;	
+	//simple_mat t = bmp2sm("/home/ljm/q.bmp",m);
+
+	sm2bmp("test.bmp",src_mat,m);
+//	test_show_mat<unsigned char>((unsigned char*)src_mat->data,1080,1080,1);
+/*
+	printf("%d",m->rgbBlue);
+	printf("%d",m->rgbGreen);
+	printf("%d",m->rgbRed);
+*/	test_delete_simple_mat;
 }
 
 
