@@ -1,4 +1,3 @@
-
 typedef struct 
 {	
 	int   rows;
@@ -8,8 +7,49 @@ typedef struct
 	int   elem_size;
 	void* data;
 }SIMPLE_MAT;
-
 typedef SIMPLE_MAT* simple_mat;
+
+typedef struct FileHeader
+{
+	unsigned short	bfType;
+	unsigned int	bfSize;
+	unsigned short	bfReserved1;
+	unsigned short	bfReserved2;
+	unsigned int	bfOffBits;
+}__attribute__((packed))FileHeader;
+ 
+/*bmp info header*/
+typedef struct InfoHeader
+{
+	unsigned int	biSize;
+	int				biWidth;
+	int				biHeight;
+	unsigned short	biPlanes;
+	unsigned short	biBitCount;
+	unsigned int	biCompression;
+	unsigned int	biSizeImage;
+	int				biXPelsPerMeter;
+	int 			biYPelsPerMeter;
+	unsigned int	biClrUsed;
+	unsigned int	biClrImportant;
+}__attribute__((packed))InfoHeader;
+ 
+//we won't use it while BitCount=24
+typedef struct tagRGBQUAD
+{
+	unsigned char	rgbBlue;
+	unsigned char	rgbGreen;
+	unsigned char	rgbRed;
+	unsigned char	rgbReserved;
+}RGBQUAD;
+	
+typedef struct
+{
+	unsigned char b;
+	unsigned char g;
+	unsigned char r;
+}RGB_data;
+
 
 /**
  * @brief	constructor for matrix headers pointing to user-allocated data
@@ -46,7 +86,6 @@ simple_mat smread(const char * image_path, int rows, int cols, int data_type, in
  **/
 simple_mat simple_mat_copy(simple_mat mat);
 
-
 /**
 * @brief      function to save the simple mat.
 * @param[in]  path        save path.
@@ -59,3 +98,7 @@ void sm_save_2_bmp(const char* path, simple_mat mat);
 * @param[in]  mat         simple mat.
 **/
 void delete_simple_mat(simple_mat mat);
+
+simple_mat bmp2sm(char *bmpName);
+
+void sm2bmp(char *bmpName, simple_mat src_mat);

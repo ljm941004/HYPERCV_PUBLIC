@@ -2,13 +2,13 @@
 
 //______________________ private fuction _______________________
 
-void write_bmp_header(unsigned char* bitmap, int offset, int bytes, int value)
+static void write_bmp_header(unsigned char* bitmap, int offset, int bytes, int value)
 {
 	for(int i=0; i<bytes; i++)
 		bitmap[offset+i] = (value>>(i<<3)) & 0xFF;
 }
 
-unsigned char* convert2bmp(simple_mat mat, int* size)
+static unsigned char* convert2bmp(simple_mat mat, int* size)
 {
 	int width = mat->cols;
 	int height = mat->rows;
@@ -175,6 +175,100 @@ void sm_save_2_bmp(const char* path, simple_mat mat)
 	bmp=NULL;
 }
 
+simple_mat smread_bmp(char *bmpName)
+{
+	FILE *fp = fopen(bmpName, "rb");
+	if (NULL == fp)
+	{
+		printf("There is no fp!!!\n");
+		return 0;
+	}
+ 
+	fseek(fp, sizeof(FileHeader), SEEK_SET);
+	InfoHeader head;
+	fread(&head, sizeof(InfoHeader), 1, fp);
+ 
+	int bmpWidth = head.biWidth;
+	int bmpHeight = head.biHeight;
+	int biBitCount = head.biBitCount;
+ 
+	int lineByte = (bmpWidth * biBitCount / 8 + 3) / 4 * 4;
+	if (biBitCount == 8)
+	{
+		RGBQUAD *pColorTable = (RGBQUAD *)malloc(sizeof(RGBQUAD) * 1024);
+		fread(pColorTable, sizeof(RGBQUAD), 256, fp);
+	}
+
+	unsigned char* pBmpBuf = (unsigned char *)malloc(sizeof(unsigned char) * lineByte * bmpHeight);
+	fread(pBmpBuf, 1, lineByte * bmpHeight, fp);
+	fclose(fp);
+
+	simple_mat res = create_simple_mat_with_data(bmpHeight,bmpWidth,1,3,pBmpBuf);
+
+	return res;
+}
+
+void smwrite_bmp(char *bmpName, simple_mat src_mat)
+{
+	_assert(src_mat != NULL,"save mat can not be null");
+	_assert(src_mat -> channels == 3 ,"save mat channels == 3,must be rgb image");
+	FILE *fp = fopen(bmpName, "wb");
+	_assert(fp != NULL,"save file can not open");
+	
+	unsigned char* imgBuf = (unsigned char*) src_mat->data;
+	int width = src_mat -> cols;
+	int height = src_mat -> rows;
+
+	int data_type = src_mat -> data_type;
+	// default 24 ,also can use in byte
+	int biBitCount = 24;
+ 
+	int colorTablesize = 0;
+	if (biBitCount == 8)
+	{
+		colorTablesize=1024;
+	}
+	
+	int lineByte = (width * biBitCount / 8 + 3) / 4 * 4;
+ 
+	
+	FileHeader fileHead;
+	fileHead.bfType=0x4D42;
+ 
+	fileHead.bfSize = sizeof(FileHeader) + sizeof(InfoHeader) + colorTablesize + lineByte * height;
+	
+	fileHead.bfReserved1 = 0;
+	fileHead.bfReserved2 = 0;
+ 
+	fileHead.bfOffBits = 54 + colorTablesize;
+ 
+	fwrite(&fileHead, sizeof(FileHeader), 1, fp);
+ 
+	InfoHeader infoHead;
+	infoHead.biBitCount = biBitCount;
+	infoHead.biClrImportant = 0;
+	infoHead.biClrUsed = 0;
+	infoHead.biCompression = 0;
+	infoHead.biHeight = height;
+	infoHead.biPlanes = 1;
+	infoHead.biSize = 40;
+	infoHead.biSizeImage = lineByte * height;
+	infoHead.biWidth = width;
+	infoHead.biXPelsPerMeter = 0;
+	infoHead.biYPelsPerMeter = 0;
+ 
+	fwrite(&infoHead, sizeof(InfoHeader), 1, fp);
+ 
+/*	if (biBitCount == 8)
+	{
+		fwrite(pColorTable,sizeof(RGBQUAD),256,fp);
+	}
+*/	
+	fwrite(imgBuf, height * lineByte, 1, fp);
+ 
+	fclose(fp);
+}
+
 /**
  * @brief      function to delete the simple mat.
  * @param[in]  mat         simple mat.
@@ -197,3 +291,4 @@ void delete_simple_mat(simple_mat mat)
 		mat = NULL;	
 	}
 }
+
