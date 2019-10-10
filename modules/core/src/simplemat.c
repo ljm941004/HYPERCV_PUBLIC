@@ -161,7 +161,7 @@ simple_mat simple_mat_copy(simple_mat mat)
 	memcpy(dst_data,src_data,rows*cols*elemsize);
 	return dst;
 }
-
+/* instead by smwrite_bmp
 void sm_save_2_bmp(const char* path, simple_mat mat)
 {
 	int size;
@@ -174,7 +174,12 @@ void sm_save_2_bmp(const char* path, simple_mat mat)
 	free(bmp);
 	bmp=NULL;
 }
-
+*/
+/**
+* @brief      function to read a bmp image into simple mat.
+* @param[in]  bmpName     bmp image path.
+* @retval     simple_mat. 
+**/
 simple_mat smread_bmp(char *bmpName)
 {
 	FILE *fp = fopen(bmpName, "rb");
@@ -184,9 +189,9 @@ simple_mat smread_bmp(char *bmpName)
 		return 0;
 	}
  
-	fseek(fp, sizeof(FileHeader), SEEK_SET);
-	InfoHeader head;
-	fread(&head, sizeof(InfoHeader), 1, fp);
+	fseek(fp, sizeof(BmpFileHeader), SEEK_SET);
+	BmpInfoHeader head;
+	fread(&head, sizeof(BmpInfoHeader), 1, fp);
  
 	int bmpWidth = head.biWidth;
 	int bmpHeight = head.biHeight;
@@ -208,6 +213,11 @@ simple_mat smread_bmp(char *bmpName)
 	return res;
 }
 
+/**
+* @brief      function to save the simple mat into bmp image.
+* @param[in]  bmpName     save path.
+* @param[in]  mat         simple mat.
+**/
 void smwrite_bmp(char *bmpName, simple_mat src_mat)
 {
 	_assert(src_mat != NULL,"save mat can not be null");
@@ -232,19 +242,19 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 	int lineByte = (width * biBitCount / 8 + 3) / 4 * 4;
  
 	
-	FileHeader fileHead;
+	BmpFileHeader fileHead;
 	fileHead.bfType=0x4D42;
  
-	fileHead.bfSize = sizeof(FileHeader) + sizeof(InfoHeader) + colorTablesize + lineByte * height;
+	fileHead.bfSize = sizeof(BmpFileHeader) + sizeof(BmpInfoHeader) + colorTablesize + lineByte * height;
 	
 	fileHead.bfReserved1 = 0;
 	fileHead.bfReserved2 = 0;
  
 	fileHead.bfOffBits = 54 + colorTablesize;
  
-	fwrite(&fileHead, sizeof(FileHeader), 1, fp);
+	fwrite(&fileHead, sizeof(BmpFileHeader), 1, fp);
  
-	InfoHeader infoHead;
+	BmpInfoHeader infoHead;
 	infoHead.biBitCount = biBitCount;
 	infoHead.biClrImportant = 0;
 	infoHead.biClrUsed = 0;
@@ -257,7 +267,7 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 	infoHead.biXPelsPerMeter = 0;
 	infoHead.biYPelsPerMeter = 0;
  
-	fwrite(&infoHead, sizeof(InfoHeader), 1, fp);
+	fwrite(&infoHead, sizeof(BmpInfoHeader), 1, fp);
  
 /*	if (biBitCount == 8)
 	{

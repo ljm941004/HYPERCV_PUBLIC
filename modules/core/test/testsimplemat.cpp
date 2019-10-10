@@ -65,16 +65,9 @@ static void test_simple_mat_copy()
 void test_sm_save_2_bmp()
 {
 	test_setup<unsigned char>(1080,1080,3,1);
+//	simple_mat t = smread_bmp("q.bmp");
 
-	sm_save_2_bmp("test.bmp",src_mat);
-
-
-
-
-//	sm2bmp("test.bmp",src_mat,NULL);
- //   RGBQUAD * m;	
-	//simple_mat t = bmp2sm("/home/ljm/q.bmp",m);
-
+//	sm_save_2_bmp("test.bmp",t);
 //	sm2bmp("test.bmp",src_mat,NULL);
 //	test_show_mat<unsigned char>((unsigned char*)src_mat->data,1080,1080,1);
 /*

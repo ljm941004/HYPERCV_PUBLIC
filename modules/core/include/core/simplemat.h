@@ -9,17 +9,17 @@ typedef struct
 }SIMPLE_MAT;
 typedef SIMPLE_MAT* simple_mat;
 
-typedef struct FileHeader
+typedef struct BmpFileHeader
 {
 	unsigned short	bfType;
 	unsigned int	bfSize;
 	unsigned short	bfReserved1;
 	unsigned short	bfReserved2;
 	unsigned int	bfOffBits;
-}__attribute__((packed))FileHeader;
+}__attribute__((packed))BmpFileHeader;
  
 /*bmp info header*/
-typedef struct InfoHeader
+typedef struct BmpInfoHeader
 {
 	unsigned int	biSize;
 	int				biWidth;
@@ -32,7 +32,7 @@ typedef struct InfoHeader
 	int 			biYPelsPerMeter;
 	unsigned int	biClrUsed;
 	unsigned int	biClrImportant;
-}__attribute__((packed))InfoHeader;
+}__attribute__((packed))BmpInfoHeader;
  
 //we won't use it while BitCount=24
 typedef struct tagRGBQUAD
@@ -94,11 +94,22 @@ simple_mat simple_mat_copy(simple_mat mat);
 void sm_save_2_bmp(const char* path, simple_mat mat);
 
 /**
+* @brief      function to read a bmp image into simple mat.
+* @param[in]  bmpName     bmp image path.
+* @retval     simple_mat. 
+**/
+simple_mat smread_bmp(char *bmpName);
+
+/**
+* @brief      function to save the simple mat into bmp image.
+* @param[in]  bmpName     save path.
+* @param[in]  mat         simple mat.
+**/
+void smwrite_bmp(char *bmpName, simple_mat src_mat);
+
+/**
 * @brief      function to delete the simple mat.
 * @param[in]  mat         simple mat.
 **/
 void delete_simple_mat(simple_mat mat);
 
-simple_mat bmp2sm(char *bmpName);
-
-void sm2bmp(char *bmpName, simple_mat src_mat);
