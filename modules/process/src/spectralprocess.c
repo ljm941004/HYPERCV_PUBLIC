@@ -38,47 +38,43 @@ float sp_standard_deviation(float *x, int length)
  **/
 simple_mat spectrum_SAM_match(hyper_mat bip_mat, float* spectrum, float threshold)
 {
-	_assert(bip_mat != NULL, "input hyper mat must not be NULL");
-	_assert(cmpstr(bip_mat->interleave, "bip") == 1, "hyper mat interleave should be bip");
-	_assert(spectrum != NULL, "spectrum must not be NULL");
+	_assert(bip_mat != NULL,                       "input hyper mat must not be NULL");
+	_assert(cmpstr(bip_mat->interleave,"bip") == 1,"hyper mat interleave should be bip");
+	_assert(spectrum != NULL,                      "spectrum must not be NULL");
 
-	int samples = bip_mat->samples;
-	int lines = bip_mat->lines;
-	int bands = bip_mat->bands;
+	int samples = bip_mat -> samples;
+	int lines = bip_mat -> lines;
+	int bands = bip_mat -> bands;
 	int elem_size = get_elemsize(bip_mat->data_type);
 
 	simple_mat match_image = create_simple_mat(lines, samples, 1,1);
 
-	//only use in short datetype
-	short* bip;
+	float* bip;
 	char*  smat;
 
 	float* temp = (float*)malloc(sizeof(float)*bands);
-	/*
-	 * todo
-	 for (int i = 0; i < lines; i++)
-	 {
-	 for (int j = 0; j < samples; j++)
-	 {
-	 bip = (short*)((char *)bip_mat->data + (i * samples * bands + j * bands) * elem_size);
 
-	 for (int k = 0; k < bands; k++)
-	 {
-	 float t = (float)(*bip);
-	 temp[k] = t;
-	 bip++;
-	 }
+	for (int i = 0; i < lines; i++)
+	{
+		for (int j = 0; j < samples; j++)
+		{
+			bip =(float*)bip_mat -> data + i * samples * bands + j * bands;
+			for (int k = 0; k < bands; k++ )
+				temp[k] = bip[k];
 
-	 float res = spectral_angle_mapper(temp, spectrum, bands);
+			float res =	spectral_angle_mapper(temp ,spectrum, bands);
 
-	 smat = (char*)match_image->data + i*samples + j;
-	 if (res >= threshold)
-	 *smat = 1;
-	 else
-	 *smat = 0;
-	 }
-	 }
-	 */
+			printf("%f\n",res);
+			smat = (char*)match_image->data + i*samples +j;
+			
+			if(res>=threshold)
+				*smat = 1;
+			else
+				*smat = 0;
+		}
+	}
+	free(temp);
+
 	return match_image;
 }
 
@@ -98,9 +94,9 @@ float spectral_angle_mapper(float * x, float * y, int length)
 
 	for (int i = 0; i<length; i++)
 	{
-		XY += abs(*x * *y);
-		X += (*x)*(*x);
-		Y += (*y)*(*y);
+		XY += abs(x[i] * y[i]);
+		X += (x[i])*(x[i]);
+		Y += (y[i])*(y[i]);
 	}
 
 	res = acos(XY / sqrt(X*Y));
