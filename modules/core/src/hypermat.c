@@ -66,7 +66,7 @@ static int date_type_2_gdal_data_type(const int data_type)
  **/
 hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, const int data_type, const char interleave[])
 {
-	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, NULL);
+	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, NULL,NULL);
 	return mat;
 }
 
@@ -80,7 +80,7 @@ hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, 
  * @param[in]  data        pointer of image data.
  * @retvall     hyper_mat   hyper mat.
  **/
-hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const int bands, const int data_type, const char interleave[], void* data)
+hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const int bands, const int data_type, const char interleave[], void* data,float* wavelength)
 {
 	_assert(samples > 0, "the samples of hyper mat must be greater than zero.");
 	_assert(lines > 0, "the lines of hyper mat must be greater than zero.");
@@ -118,6 +118,7 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 	mat->interleave[1] = interleave[1];
 	mat->interleave[2] = interleave[2];
 	mat->interleave[3] = '\0';
+	mat->wavelength = wavelength;
 	return mat;
 }
 
@@ -139,13 +140,15 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	int samples, lines, bands, data_type;
 	char interleave[3];
 
+	float* wavelength = (float*)malloc(bands*sizeof(float));
+
 	if (image_fp == NULL || hdr_fp == NULL)
 	{
 		printf("can not open file\n");
 		return 0;
 	}
 	else
-		readhdr(hdr_fp, &samples, &lines,&bands, &data_type, interleave);
+		readhdr(hdr_fp, &samples, &lines,&bands, &data_type, interleave, wavelength);
 
 	int elem_size = get_elemsize(data_type);
 	int data_size = samples * lines * bands;
@@ -156,7 +159,7 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	fclose(image_fp);
 	fclose(hdr_fp);
 
-	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data);
+	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data,wavelength);
 
 #if _DEBUG 
 	hyper_mat_showinfo(mat);
@@ -196,7 +199,7 @@ hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int b
 	fread(data, elem_size, data_size, image_fp);
 	fclose(image_fp);
 
-	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data);
+	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data,NULL);
 
 	return mat;
 }
@@ -234,7 +237,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	image_fp = fopen( image_path, "w");
 	_assert(image_fp == NULL, "can not open files");
 	fwrite(mat->data, elemsize, samples * lines * bands, image_fp);
-	writehdr(image_path, samples, lines, bands, mat->data_type, mat->interleave);
+	writehdr(image_path, samples, lines, bands, mat->data_type, mat->interleave,mat->wavelength);
 	fclose(image_fp);
 #endif
 }
@@ -248,7 +251,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char interleave[])
+void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char interleave[],float* wavelength)
 {
 	_assert(hdr_fp != NULL, "can not open hdr file");
 
@@ -292,7 +295,7 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-void writehdr(const char* img_path, int samples, int lines, int bands, int data_type, const char interleave[])
+void writehdr(const char* img_path, int samples, int lines, int bands, int data_type, const char interleave[],float* wavelength)
 {
 	const char* t = img_path;
 	int len = 0;
@@ -386,6 +389,8 @@ void delete_hyper_mat(hyper_mat mat)
 	{
 		free(mat->data);
 		mat->data = NULL;
+		free(mat->wavelength);
+		mat->wavelength = NULL;
 		free(mat);
 		mat = NULL;
 	}

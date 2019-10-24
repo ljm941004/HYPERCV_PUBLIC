@@ -93,7 +93,7 @@ static void test_write_hdr()
 	int data_type = 1;
 	char* interleave = "bsq";
 
-	writehdr(image_path, samples, lines, bands, data_type, interleave);
+	writehdr(image_path, samples, lines, bands, data_type, interleave,NULL );
 }
 
 

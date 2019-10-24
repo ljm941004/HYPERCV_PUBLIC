@@ -16,6 +16,7 @@ typedef struct
 	int   data_type;
 	char  interleave[4];
 	void* data;
+	float* wavelength;
 }HyperMat;
 
 typedef HyperMat* hyper_mat;
@@ -40,7 +41,7 @@ hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, 
  * @param[in]  interleave  bil bsq bip.
  * @param[in]  data        pointer of image data.
  **/
-hyper_mat create_hyper_mat_with_data(const int samples,const int lines,const int bands,const int data_type, const char interleave[], void* data);
+hyper_mat create_hyper_mat_with_data(const int samples,const int lines,const int bands,const int data_type, const char interleave[], void* data, float* wavelength);
 
 /**
  * @brief      read the hyper spectral image with hdr.
@@ -75,7 +76,7 @@ void hmwrite(const char* image_path, hyper_mat mat);
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char interleave[]);
+void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char interleave[], float* wavelength);
 
 /**
  * @brief      write the HDR file.
@@ -86,7 +87,7 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-void writehdr(const char* img_path, int samples, int lines, int bands, int data_type, const char interleave[]);
+void writehdr(const char* img_path, int samples, int lines, int bands, int data_type, const char interleave[], float*wavelength);
 
 /**
  * @brief       copy hyper mat.
