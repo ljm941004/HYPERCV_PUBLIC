@@ -375,6 +375,8 @@ void swap_rows(float* mat,int m,int n, int r1, int r2)
 
 	float * d1 =(float*)malloc(n*sizeof(float));
 
+	//memcpy();
+
 //todo finish
 }
 

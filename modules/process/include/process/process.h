@@ -5,3 +5,4 @@
 #include "morphology.h"
 #include "RadiometricCalibration.h"
 #include "datatypechange.h"
+#include "colortransform.h"

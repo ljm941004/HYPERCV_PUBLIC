@@ -17,7 +17,7 @@ int hypercv_otsu_threshold(simple_mat mat)
 	unsigned char * data = mat->data;
 
 	int pixelcount[256] = {0};
-	int pixelpro[256] = {0.0};
+    float pixelpro[256] = {0.0};
 
 	int rows = mat->rows;
 	int cols = mat->cols;

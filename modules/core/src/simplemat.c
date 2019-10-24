@@ -1,60 +1,5 @@
 #include "precomp.h"
 
-//______________________ private fuction _______________________
-
-static void write_bmp_header(unsigned char* bitmap, int offset, int bytes, int value)
-{
-	for(int i=0; i<bytes; i++)
-		bitmap[offset+i] = (value>>(i<<3)) & 0xFF;
-}
-
-static unsigned char* convert2bmp(simple_mat mat, int* size)
-{
-	int width = mat->cols;
-	int height = mat->rows;
-	unsigned char * data =(unsigned char*) mat->data;
-	int bitmap_x = (int)ceil((double)width*3/4)*4;
-	unsigned char* bitmap = (unsigned char*)malloc(sizeof(unsigned char)*height*bitmap_x+54);
-
-	bitmap[0] = 'B';
-	bitmap[1] = 'M';
-	write_bmp_header(bitmap, 2, 4, height*bitmap_x + 54);
-	write_bmp_header(bitmap, 0xA, 4, 54);
-	write_bmp_header(bitmap, 0XE, 4, 40);
-	write_bmp_header(bitmap, 0X12, 4, width);
-	write_bmp_header(bitmap, 0X16, 4, height);
-    write_bmp_header(bitmap, 0X1A, 2, 1);
-	write_bmp_header(bitmap, 0X1C, 2, 24);
-	write_bmp_header(bitmap, 0X1E, 4, 0);
-	write_bmp_header(bitmap, 0X22, 4, height*bitmap_x);
-
-	for(int i=0x26; i<0x36; i++)
-		bitmap[i] = 0;
-	int k = 54;
-	for(int i=height-1;i>=0;i--)
-	{
-		int j;
-		for(j=0;j<width;j++)
-		{
-			int index = i*width +j;
-			for(int l=0;l<3;l++)
-				bitmap[k++] = data[index];
-		}
-		j*=3;
-		while(j<bitmap_x)
-		{
-			bitmap[k++] = 0;
-			j++;
-		}
-	}
-
-	*size = k;
-	return bitmap;
-}
-
-//______________________________________________________________
-
-
 
 
 /**
@@ -161,20 +106,7 @@ simple_mat simple_mat_copy(simple_mat mat)
 	memcpy(dst_data,src_data,rows*cols*elemsize);
 	return dst;
 }
-/* instead by smwrite_bmp
-void sm_save_2_bmp(const char* path, simple_mat mat)
-{
-	int size;
-	unsigned char* bmp = convert2bmp(mat,&size);
-	FILE* fp = fopen(path,"wb+");
-	
-	fwrite(bmp,1,size,fp);
-	fclose(fp);
 
-	free(bmp);
-	bmp=NULL;
-}
-*/
 /**
 * @brief      function to read a bmp image into simple mat.
 * @param[in]  bmpName     bmp image path.

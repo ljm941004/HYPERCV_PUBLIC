@@ -6,9 +6,6 @@
 #include "precomp.h"
 
 
-
-
-
 void cem(float* res, hyper_mat bsq_mat, float* spectral)
 {
 	//todo fix float

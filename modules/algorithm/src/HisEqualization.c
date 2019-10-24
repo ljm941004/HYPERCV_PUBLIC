@@ -24,7 +24,7 @@ void HisEqualization(simple_mat dst_mat, simple_mat src_mat)
 	int hist[256] = {0};
 	
 	for(int i=0; i<rows*cols; i++)
-		hist[*data++]+=1;
+		hist[data[i]]+=1;
 	
 	for(int i=1; i<256; i++)
 	{

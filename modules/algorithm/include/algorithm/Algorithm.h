@@ -11,3 +11,4 @@
 #include "normalize.h"
 #include "HisEqualization.h"
 #include "cem.h"
+#include "shapematch.h"
