@@ -140,7 +140,7 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	int samples, lines, bands, data_type;
 	char interleave[3];
 
-	float* wavelength = (float*)malloc(bands*sizeof(float));
+	float* wavelength = NULL;
 
 	if (image_fp == NULL || hdr_fp == NULL)
 	{
@@ -259,7 +259,6 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 	char item[MAXLINE];
 
 	int sampletemp = 0, linetemp = 0, bandtemp = 0, datatypetemp = 0;
-
 
 	while (fgets(line, MAXLINE, hdr_fp) != 0)
 	{   
