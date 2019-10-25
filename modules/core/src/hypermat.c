@@ -3,24 +3,41 @@
 //*************************************************************  private *****************************************************************
 
 #ifndef MAXLINE
-#define MAXLINE 20 //each line no more than 20 words
+#define MAXLINE 10000 //each line no more than 20 words
 #endif
-
+//------------------------------------------------------------
 // private function purpose to compare 2 char[]
 int cmpstr(char temp1[],char temp2[])
 {
 
-	if(strlen(temp1)!=strlen(temp2))
-		return 0;
-
-	for (int i=0;i<strlen(temp1);i++)
+	int len = strlen(temp1)>strlen(temp2)?strlen(temp2):strlen(temp1);
+	_assert(len>=1,"cmpstr input strlen >= 1");
+	for (int i=0;i<len;i++)
 	{
 		if(temp1[i]!=temp2[i])
-			return 0;
+			return -1;
 	}
 	return 1;
 }
 
+static void read_wavelength(char* w, float* wavelength)
+{
+	
+	for (int i=0;i<strlen(w);i++)
+	{
+		
+	
+	
+	}
+
+
+
+}
+
+
+
+
+//---------------------------------------------------------
 //* @param[in]  data_type   data_type of hyper spectral image, data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer.
 
 #if gdal_switch
@@ -78,9 +95,10 @@ hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, 
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil/bsq/bip.
  * @param[in]  data        pointer of image data.
- * @retvall     hyper_mat   hyper mat.
+ * @param[in]  wavelength  wavelength of each bands.
+ * @retvall    hyper_mat   hyper mat.
  **/
-hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const int bands, const int data_type, const char interleave[], void* data,float* wavelength)
+hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const int bands, const int data_type, const char interleave[], void* data, float* wavelength)
 {
 	_assert(samples > 0, "the samples of hyper mat must be greater than zero.");
 	_assert(lines > 0, "the lines of hyper mat must be greater than zero.");
@@ -258,6 +276,7 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 	char line[MAXLINE];
 	char item[MAXLINE];
 
+
 	int sampletemp = 0, linetemp = 0, bandtemp = 0, datatypetemp = 0;
 
 	while (fgets(line, MAXLINE, hdr_fp) != 0)
@@ -265,24 +284,37 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 		sscanf(line, "%[^=]", item);
 
 		if (cmpstr(item, "samples") == 1)
+		{
 			sscanf(line, "%*[^=]=%d",&sampletemp);
-
+	        *samples = sampletemp ;
+		}
 		else if (cmpstr(item, "lines") == 1)
+		{
 			sscanf(line, "%*[^=]=%d",&linetemp);
-
+	        *lines = linetemp;
+		}
 		else if (cmpstr(item, "bands") == 1)
+		{
 			sscanf(line, "%*[^=]=%d", &bandtemp);
-		else if (cmpstr(item, "data") > 0)
+	        *bands = bandtemp;
+		}
+		else if (cmpstr(item, "data") == 1)
+		{
 			sscanf(line, "%*[^=]=%d", &datatypetemp);
-		else if (cmpstr(item, "interleave") > 0)
+	        *data_type = datatypetemp;
+		}
+		else if (cmpstr(item, "interleave") == 1)
 			sscanf(line, "%*[^=]=%s", interleave);
 
+		else if (cmpstr(item,"wavelength = {")==1)
+		{	
+			char* w;
+			sscanf(line, "%*[^=]=%s",w);
+			wavelength = (float*)malloc(bands*sizeof(float));
+
+		}
 	}
 
-	*samples = sampletemp ;
-	*lines = linetemp;
-	*bands = bandtemp;
-	*data_type = datatypetemp;
 }
 
 /**
