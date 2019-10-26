@@ -183,3 +183,66 @@ hyper_mat hyper_mat_float2uint(hyper_mat f_mat)
 	return dst;
 }
 
+double my_atof(const char *str)
+{
+	const char *p = str;
+	int sign = 1;
+	while(*p == ' ')++p;
+	if(*p == '-')
+	{
+		sign = -1;
+		++p;
+	}
+	
+	else if (*p == '+')
+		++p;
+	int hasDot = 0,hasE = 0;
+	double integerPart = 0.0,decimalPart = 0.0;
+
+	for (; *p; ++p)
+	{
+		if (isdigit(*p)) 
+			integerPart = 10 * integerPart + *p - '0';
+		else if (*p == '.')
+		{
+			hasDot = 1;
+			p++;
+			break;
+		}
+		else if (*p == 'e' || *p == 'E')
+		{
+			hasE = 1;
+			p++;
+			break;
+		}
+		else
+			return integerPart;
+	}
+
+	int decimalDigits = 1;
+	int exponential = 0;    
+
+	for (; *p; p++)
+	{
+		if (hasDot && isdigit(*p))
+			decimalPart += (*p - '0') / pow(10, decimalDigits++);
+		else if (hasDot && (*p == 'e' || *p == 'E'))
+		{
+			integerPart += decimalPart;
+			decimalPart = 0.0;
+			hasE = 1;
+			++p;
+			break;
+		}
+		else if (hasE && isdigit(*p))
+			exponential = 10 * exponential + *p - '0';
+		else break;
+	}
+
+	if (hasE && hasDot)
+		for (; *p; p++)
+			if (isdigit(*p))
+				exponential = 10 * exponential + *p - '0';
+	return sign * (integerPart * pow(10, exponential) + decimalPart);
+
+}

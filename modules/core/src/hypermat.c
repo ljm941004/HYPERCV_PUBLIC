@@ -20,18 +20,26 @@ int cmpstr(char temp1[],char temp2[])
 	return 1;
 }
 
+
 static void read_wavelength(char* w, float* wavelength)
 {
-	
+
 	for (int i=0;i<strlen(w);i++)
 	{
-		
-	
-	
+		char* tmp = "0000000";
+		int t = 0;
+		int n = 0;
+		if(w[i]!=','&&w[i]!='}')
+			tmp[t++];
+		else
+		{
+			double d = my_atof(tmp);
+			wavelength[n++] = (float)d;
+			t=0;
+			for(int j=0;j<7;j++)
+				tmp[j]='0';
+		}
 	}
-
-
-
 }
 
 
@@ -286,22 +294,22 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 		if (cmpstr(item, "samples") == 1)
 		{
 			sscanf(line, "%*[^=]=%d",&sampletemp);
-	        *samples = sampletemp ;
+			*samples = sampletemp ;
 		}
 		else if (cmpstr(item, "lines") == 1)
 		{
 			sscanf(line, "%*[^=]=%d",&linetemp);
-	        *lines = linetemp;
+			*lines = linetemp;
 		}
 		else if (cmpstr(item, "bands") == 1)
 		{
 			sscanf(line, "%*[^=]=%d", &bandtemp);
-	        *bands = bandtemp;
+			*bands = bandtemp;
 		}
 		else if (cmpstr(item, "data") == 1)
 		{
 			sscanf(line, "%*[^=]=%d", &datatypetemp);
-	        *data_type = datatypetemp;
+			*data_type = datatypetemp;
 		}
 		else if (cmpstr(item, "interleave") == 1)
 			sscanf(line, "%*[^=]=%s", interleave);
@@ -309,9 +317,9 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 		else if (cmpstr(item,"wavelength = {")==1)
 		{	
 			char* w;
-			sscanf(line, "%*[^=]=%s",w);
-			wavelength = (float*)malloc(bands*sizeof(float));
-
+			sscanf(line,"%*[^=]=%s",w);
+			wavelength = (float*)malloc((*bands)*sizeof(float));
+			read_wavelength(w,wavelength);
 		}
 	}
 

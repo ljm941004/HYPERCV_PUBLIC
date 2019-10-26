@@ -36,6 +36,6 @@ add_custom_target(
 	#bin/testcore --gtest_filter=CORE.SMSAVE
 	#bin/testcore --gtest_filter=CORE.WRITEHDR
 	#bin/testcore --gtest_filter=CORE.HMCOPY
-	#bin/testprocess --gtest_filter=PROCESS.MEAN
+	bin/testprocess --gtest_filter=PROCESS.ATOF
 	#	bin/testalgorithm --gtest_filter=ALGORITHM.L
 )

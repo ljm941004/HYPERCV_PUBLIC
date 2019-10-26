@@ -15,3 +15,4 @@ hyper_mat hyper_mat_float2short(hyper_mat f_mat);
 
 hyper_mat hyper_mat_float2ushort(hyper_mat f_mat);
 
+double my_atof(const char *str);
