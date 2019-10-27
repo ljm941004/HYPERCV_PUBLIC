@@ -11,9 +11,10 @@ void test_my_atof()
 {
 	const char* w = "2323.1";
 
-	double t = my_atof(w);
-
-	cout<< t<<endl;
+	float t = hypercv_atof(w);
+//	flaot t2 = atof(w);
+	
+	
 
 }
 

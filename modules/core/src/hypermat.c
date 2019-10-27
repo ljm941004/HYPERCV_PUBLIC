@@ -33,7 +33,7 @@ static void read_wavelength(char* w, float* wavelength)
 			tmp[t++];
 		else
 		{
-			double d = my_atof(tmp);
+			double d = hypercv_atof(tmp);
 			wavelength[n++] = (float)d;
 			t=0;
 			for(int j=0;j<7;j++)
@@ -42,6 +42,11 @@ static void read_wavelength(char* w, float* wavelength)
 	}
 }
 
+static void write_wavelength(char *w, float* wavelength)
+{
+	
+
+}
 
 
 

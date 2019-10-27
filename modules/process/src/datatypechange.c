@@ -183,7 +183,7 @@ hyper_mat hyper_mat_float2uint(hyper_mat f_mat)
 	return dst;
 }
 
-double my_atof(const char *str)
+float hypercv_atof(const char *str)
 {
 	const char *p = str;
 	int sign = 1;
@@ -197,7 +197,7 @@ double my_atof(const char *str)
 	else if (*p == '+')
 		++p;
 	int hasDot = 0,hasE = 0;
-	double integerPart = 0.0,decimalPart = 0.0;
+	float integerPart = 0.0,decimalPart = 0.0;
 
 	for (; *p; ++p)
 	{
@@ -246,3 +246,25 @@ double my_atof(const char *str)
 	return sign * (integerPart * pow(10, exponential) + decimalPart);
 
 }
+
+char* hypercv_ftoa(float* wavelength)
+{
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
