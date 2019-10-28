@@ -96,6 +96,15 @@ static void test_write_hdr()
 	writehdr(image_path, samples, lines, bands, data_type, interleave,NULL );
 }
 
+static void test_hmread_with_hdr()
+{
+	char* image_path = "/home/ljm/image1.raw";
+	char* hdr_path = "/home/ljm/image1.hdr";
+	hyper_mat t = hmread_with_hdr(image_path,hdr_path);
+	hyper_mat_showinfo(t);
+//todo have some bugs
+
+}
 
 TEST(CORE,HMCOPY)
 {
@@ -110,5 +119,9 @@ TEST(CORE,HMDELETE)
 TEST(CORE,WRITEHDR)
 {
 	test_write_hdr();
+}
+TEST(CORE,HMREAD_WITH_HDR)
+{
+	test_hmread_with_hdr();
 }
 

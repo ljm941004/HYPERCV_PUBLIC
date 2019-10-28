@@ -44,8 +44,18 @@ static void read_wavelength(char* w, float* wavelength)
 
 static void write_wavelength(char *w, float* wavelength)
 {
-	
-
+	char t[7]="";
+	for(int i=0;i<7;i++)
+		t[i]=' ';
+	float* n = wavelength;
+	int k=0;
+	while(n++!=NULL)
+	{
+		sprintf(t,"%.2f",*n);
+		for(int i=0;i<7;i++)
+			w[k++]=t[i];
+		w[k++] = ',';
+	}
 }
 
 
@@ -364,7 +374,16 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 	fputs("bands = ", fp); fprintf(fp, "%d\n", bands);
 	fputs("data type = ", fp); fprintf(fp, "%d\n", data_type);
 	fputs("interleave = ", fp); fprintf(fp, "%s\n", interleave);
+
+	if(wavelength!=NULL)
+	{
+		char* w = (char*)malloc(8*bands*sizeof(char)+1);
+		for(int i=0;i<strlen(w);i++)
+			w[i] = ' ';
+		write_wavelength(w,wavelength);	
+	}
 	fclose(fp);
+
 }
 
 
@@ -413,6 +432,11 @@ void hyper_mat_showinfo(hyper_mat mat)
 		printf("mat's bands is %d",mat->bands);
 		printf("mat's data type is %d",mat->data_type);
 		printf("mat's interleave is %c%c%c",mat->interleave[0],mat->interleave[1],mat->interleave[2]);	
+		printf("mat's wavelength is");
+		for(int i=0;i<mat->bands;i++)
+		{
+			printf("%f,",(mat->wavelength)[i]);
+		}
 	}
 }
 
