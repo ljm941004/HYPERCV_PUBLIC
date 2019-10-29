@@ -76,7 +76,7 @@ void hmwrite(const char* image_path, hyper_mat mat);
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char interleave[], float* wavelength);
+void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char interleave[], float** wavelength);
 
 /**
  * @brief      write the HDR file.

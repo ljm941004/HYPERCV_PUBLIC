@@ -101,9 +101,8 @@ static void test_hmread_with_hdr()
 	char* image_path = "/home/ljm/image1.raw";
 	char* hdr_path = "/home/ljm/image1.hdr";
 	hyper_mat t = hmread_with_hdr(image_path,hdr_path);
-	hyper_mat_showinfo(t);
-//todo have some bugs
-
+	
+	hmwrite("test.raw",t);
 }
 
 TEST(CORE,HMCOPY)

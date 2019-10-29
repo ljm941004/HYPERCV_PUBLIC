@@ -1,6 +1,7 @@
 #include "precomp.h"
 #include <errno.h>
 //*************************************************************  private *****************************************************************
+#define gdal_switch 0
 
 #ifndef MAXLINE
 #define MAXLINE 10000 //each line no more than 20 words
@@ -23,35 +24,36 @@ int cmpstr(char temp1[],char temp2[])
 
 static void read_wavelength(char* w, float* wavelength)
 {
-
+	char* tmp = (char*)malloc(8*sizeof(char));
+	for(int i=0;i<8;i++)
+		tmp[i]=' ';
+	int t = 0;
+	int n = 0;
 	for (int i=0;i<strlen(w);i++)
 	{
-		char* tmp = "0000000";
-		int t = 0;
-		int n = 0;
 		if(w[i]!=','&&w[i]!='}')
-			tmp[t++];
+			tmp[t++] = w[i];
 		else
 		{
-			double d = hypercv_atof(tmp);
-			wavelength[n++] = (float)d;
+			wavelength[n++] = atof(tmp);
 			t=0;
-			for(int j=0;j<7;j++)
-				tmp[j]='0';
+			for(int j=0;j<8;j++)
+				tmp[j]=' ';
 		}
 	}
 }
 
 static void write_wavelength(char *w, float* wavelength)
 {
-	char t[7]="";
-	for(int i=0;i<7;i++)
-		t[i]=' ';
+	char* t = (char*)malloc(7*sizeof(char));
 	float* n = wavelength;
 	int k=0;
+
 	while(n++!=NULL)
 	{
-		sprintf(t,"%.2f",*n);
+		for(int i=0;i<7;i++)
+			t[i]=' ';
+		sprintf(t,"%.1f",*n);
 		for(int i=0;i<7;i++)
 			w[k++]=t[i];
 		w[k++] = ',';
@@ -182,14 +184,13 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	char interleave[3];
 
 	float* wavelength = NULL;
-
 	if (image_fp == NULL || hdr_fp == NULL)
 	{
 		printf("can not open file\n");
 		return 0;
 	}
 	else
-		readhdr(hdr_fp, &samples, &lines,&bands, &data_type, interleave, wavelength);
+		readhdr(hdr_fp, &samples, &lines,&bands, &data_type, interleave, &wavelength);
 
 	int elem_size = get_elemsize(data_type);
 	int data_size = samples * lines * bands;
@@ -199,8 +200,7 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	fread(data, elem_size, data_size, image_fp);
 	fclose(image_fp);
 	fclose(hdr_fp);
-
-	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data,wavelength);
+	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data, wavelength);
 
 #if _DEBUG 
 	hyper_mat_showinfo(mat);
@@ -257,8 +257,6 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	int lines = mat->lines;
 	int bands = mat->bands;
 
-	float* t = (float*)mat->data;
-
 #if gdal_switch
 	GDALAllRegister();
 	GDALDatasetH  dst;
@@ -269,14 +267,14 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	for(int i=1;i<=bands;i++)
 	{
 		hBand = GDALGetRasterBand(dst,i);	
-		int tmp = GDALRasterIO(hBand, GF_Write, 0, 0, samples, lines, t+(i-1)*samples*lines, samples, lines, DT, 0, 0);	
+		int tmp = GDALRasterIO(hBand, GF_Write, 0, 0, samples, lines, (char*)mat->data+(i-1)*samples*lines*elemsize, samples, lines, DT, 0, 0);	
 	}
 	GDALClose(dst);
 #else
 
 	FILE* image_fp;
-	image_fp = fopen( image_path, "w");
-	_assert(image_fp == NULL, "can not open files");
+	image_fp = fopen(image_path, "wb");
+	_assert(image_fp != NULL, "can not open files");
 	fwrite(mat->data, elemsize, samples * lines * bands, image_fp);
 	writehdr(image_path, samples, lines, bands, mat->data_type, mat->interleave,mat->wavelength);
 	fclose(image_fp);
@@ -292,7 +290,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char interleave[],float* wavelength)
+void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char interleave[], float** wavelength)
 {
 	_assert(hdr_fp != NULL, "can not open hdr file");
 
@@ -332,9 +330,12 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 		else if (cmpstr(item,"wavelength = {")==1)
 		{	
 			char* w;
-			sscanf(line,"%*[^=]=%s",w);
-			wavelength = (float*)malloc((*bands)*sizeof(float));
-			read_wavelength(w,wavelength);
+			w = (char*)malloc(strlen(line)-16);
+			char* wavestart = &line[14];
+			memcpy(w,wavestart,strlen(line)-16);
+			float* wave = (float*)malloc((bandtemp)*sizeof(float));
+			read_wavelength(w,wave);	
+			*wavelength = wave;
 		}
 	}
 
@@ -365,7 +366,6 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 	hdr_path[len + 2] = 'd';
 	hdr_path[len + 3] = 'r';
 	hdr_path[len + 4] = '\0';
-	//todo fix write hdr with bands
 	FILE *fp;
 	fp = fopen(hdr_path, "w");
 	fputs("ENVI\n", fp);
@@ -377,8 +377,10 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 
 	if(wavelength!=NULL)
 	{
+	    fputs("wavelength = {", fp); fprintf(fp, "%s", interleave);
 		char* w = (char*)malloc(8*bands*sizeof(char)+1);
-		for(int i=0;i<strlen(w);i++)
+
+		for(int i=0;i<=8*bands*sizeof(char);i++)
 			w[i] = ' ';
 		write_wavelength(w,wavelength);	
 	}
@@ -424,18 +426,18 @@ hyper_mat hyper_mat_copy(hyper_mat mat)
 void hyper_mat_showinfo(hyper_mat mat)
 {
 	if(mat == NULL)
-		printf("mat is NULL");
+		printf("mat is NULL\n");
 	else
 	{
-		printf("mat's samples is %d", mat->samples);
-		printf("mat's lines is %d",mat->lines);	
-		printf("mat's bands is %d",mat->bands);
-		printf("mat's data type is %d",mat->data_type);
-		printf("mat's interleave is %c%c%c",mat->interleave[0],mat->interleave[1],mat->interleave[2]);	
-		printf("mat's wavelength is");
+		printf("mat's samples is %d\n", mat->samples);
+		printf("mat's lines is %d\n",mat->lines);	
+		printf("mat's bands is %d\n",mat->bands);
+		printf("mat's data type is %d\n",mat->data_type);
+		printf("mat's interleave is %c%c%c\n",mat->interleave[0],mat->interleave[1],mat->interleave[2]);	
+		printf("mat's wavelength is\n");
 		for(int i=0;i<mat->bands;i++)
 		{
-			printf("%f,",(mat->wavelength)[i]);
+			printf("%f,",((float*)mat->wavelength)[i]);
 		}
 	}
 }
