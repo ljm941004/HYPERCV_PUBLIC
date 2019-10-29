@@ -377,12 +377,13 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 
 	if(wavelength!=NULL)
 	{
-	    fputs("wavelength = {", fp); fprintf(fp, "%s", interleave);
+	    fputs("wavelength = {", fp); 
 		char* w = (char*)malloc(8*bands*sizeof(char)+1);
 
 		for(int i=0;i<=8*bands*sizeof(char);i++)
 			w[i] = ' ';
 		write_wavelength(w,wavelength);	
+		fprintf(fp, "%s", w);
 	}
 	fclose(fp);
 
