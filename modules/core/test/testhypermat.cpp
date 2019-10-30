@@ -120,6 +120,6 @@ TEST(CORE,WRITEHDR)
 }
 TEST(CORE,HMREAD_WITH_HDR)
 {
-	test_hmread_with_hdr();
+//	test_hmread_with_hdr();
 }
 

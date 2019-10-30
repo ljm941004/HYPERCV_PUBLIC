@@ -367,21 +367,20 @@ void set_identity_matrix_float(float* mat,int m)
 	}
 }
 
-void swap_rows(float* mat,int m,int n, int r1, int r2)
+void swap_rows_float(float* data, int m,int n, int r1, int r2)
 {
-	_assert(r1>=0&&r1<m&&r2>=0&&r2<m,"select rows from 0 2 lines")
-;
+	_assert(r1>=0&&r1<m&&r2>=0&&r2<m,"select rows from 0 2 lines");
 	_assert(r1!=r2,"select row can not equal");
 
-	float * d1 =(float*)malloc(n*sizeof(float));
+	float* tmp =(float*)malloc(n*sizeof(float));
+	float* dr1 = data + r1*n;
+	float* dr2 = data + r2*n;
 
-	//memcpy();
-
-//todo finish
+	memcpy(tmp,dr1,n*sizeof(float));
+	memcpy(dr1,dr2,n*sizeof(float));
+	memcpy(dr2,tmp,n*sizeof(float));
+	free(tmp);
 }
-
-
-
 
 void invert_matrix_float(float* res, float* mat, int m)
 {

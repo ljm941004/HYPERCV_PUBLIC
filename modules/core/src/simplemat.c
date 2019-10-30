@@ -115,12 +115,8 @@ simple_mat simple_mat_copy(simple_mat mat)
 simple_mat smread_bmp(char *bmpName)
 {
 	FILE *fp = fopen(bmpName, "rb");
-	if (NULL == fp)
-	{
-		printf("There is no fp!!!\n");
-		return 0;
-	}
- 
+	_assert(fp!=NULL,"BMP IMAGE NOT EXIST");
+
 	fseek(fp, sizeof(BmpFileHeader), SEEK_SET);
 	BmpInfoHeader head;
 	fread(&head, sizeof(BmpInfoHeader), 1, fp);

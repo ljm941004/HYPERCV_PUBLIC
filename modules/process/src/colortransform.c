@@ -6,6 +6,9 @@
 #include "precomp.h"
 simple_mat sm_binary2rgb(simple_mat binary_image)
 {
+
+	_assert(binary_image->channels == 1,"input binary_image channels == 1");
+
 	int rows = binary_image -> rows;
 	int cols = binary_image -> cols;
 	int channels = 3;
@@ -23,7 +26,9 @@ simple_mat sm_binary2rgb(simple_mat binary_image)
 
 
 simple_mat sm_gray2rgb(simple_mat gray_image)
-{
+{	
+	_assert(gray_image->channels == 1,"input gray image channels == 1");
+
 	int rows = gray_image -> rows;
 	int cols = gray_image -> cols;
 	int channels = 3;
@@ -41,6 +46,8 @@ simple_mat sm_gray2rgb(simple_mat gray_image)
 
 simple_mat sm_rgb2gray(simple_mat rgb_image)
 {
+	_assert(rgb_image->channels == 3,"input rgb_image channels == 3");
+
 	int rows = rgb_image -> rows;
 	int cols = rgb_image -> cols;
     simple_mat gray_image = create_simple_mat(rows,cols,1,1);

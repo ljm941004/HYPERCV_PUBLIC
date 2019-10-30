@@ -148,6 +148,7 @@ void correlation_matrix_uint(unsigned int* res,unsigned  int* mat1, unsigned int
 void correlation_matrix_float(float* res, float* mat1, float* mat2, int l, int n, int m);
 
 
+void swap_rows_float(float* data, int m, int n, int r1, int r2);
 
 
 

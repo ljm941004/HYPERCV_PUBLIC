@@ -87,6 +87,7 @@ void hypercv_sobel(simple_mat src, simple_mat dst, int threshold, int border_typ
 			||border_type == BORDER_REPLICATE
 			||border_type == BORDER_WRAP
 			||border_type == BORDER_CONSTANT ,"Unknown/unsupported border type" );
+	_assert(src->channels == 1,"sobel image channels == 1")
 
 	int rows = src->rows;
 	int cols = src->cols;

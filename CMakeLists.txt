@@ -35,7 +35,7 @@ add_custom_target(
     &
 	#bin/testcore --gtest_filter=CORE.SMSAVE
 	#bin/testcore --gtest_filter=CORE.WRITEHDR
-	bin/testcore --gtest_filter=CORE.HMREAD_WITH_HDR
+	#	bin/testcore --gtest_filter=CORE.HMREAD_WITH_HDR
 	#bin/testprocess --gtest_filter=PROCESS.ATOF
-	#	bin/testalgorithm --gtest_filter=ALGORITHM.L
+	bin/testalgorithm --gtest_filter=ALGORITHM.SOBEL
 )

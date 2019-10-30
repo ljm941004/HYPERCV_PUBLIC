@@ -1,7 +1,6 @@
 #include "precomp.h"
 #include <errno.h>
 //*************************************************************  private *****************************************************************
-#define gdal_switch 0
 
 #ifndef MAXLINE
 #define MAXLINE 10000 //each line no more than 20 words
@@ -40,23 +39,6 @@ static void read_wavelength(char* w, float* wavelength)
 			for(int j=0;j<8;j++)
 				tmp[j]=' ';
 		}
-	}
-}
-
-static void write_wavelength(char *w, float* wavelength)
-{
-	char* t = (char*)malloc(7*sizeof(char));
-	float* n = wavelength;
-	int k=0;
-
-	while(n++!=NULL)
-	{
-		for(int i=0;i<7;i++)
-			t[i]=' ';
-		sprintf(t,"%.1f",*n);
-		for(int i=0;i<7;i++)
-			w[k++]=t[i];
-		w[k++] = ',';
 	}
 }
 
@@ -377,13 +359,10 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 
 	if(wavelength!=NULL)
 	{
-	    fputs("wavelength = {", fp); 
-		char* w = (char*)malloc(8*bands*sizeof(char)+1);
-
-		for(int i=0;i<=8*bands*sizeof(char);i++)
-			w[i] = ' ';
-		write_wavelength(w,wavelength);	
-		fprintf(fp, "%s", w);
+		fputs("wavelength = {", fp); 
+		for(int i=0;i<bands-1;i++)
+			fprintf(fp,"%.1f,",wavelength[i]);
+		fprintf(fp,"%.1f}",wavelength[bands-1]);
 	}
 	fclose(fp);
 
