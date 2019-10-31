@@ -1,6 +1,20 @@
 /*************************************************************************
-	> File Name: cem.h
+	> File Name: modules/algorithm/test/testcem.cpp
 	> Author: ljm
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
-simple_mat hyper_mat_cem(hyper_mat bsq_mat, float* spectral);
+#include "precomp.h"
+
+using namespace std;
+
+
+void test_cem()
+{
+	
+
+}
+
+TEST(ALGORITHM,CEM)
+{
+	test_cem();
+}

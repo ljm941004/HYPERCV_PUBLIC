@@ -183,6 +183,35 @@ hyper_mat hyper_mat_float2uint(hyper_mat f_mat)
 	return dst;
 }
 
+
+/**
+ * @brief      data type change .
+ * @param[in]  f_mat      unsined short image.
+ * @retval     dst        float image.
+ **/
+hyper_mat hyper_mat_ushort2float(hyper_mat us_mat)
+{
+	_assert(us_mat->data_type == 12,"intput mat datatype == unsigned short");
+	int samples = us_mat->samples;
+	int lines = us_mat->lines;
+	int bands = us_mat->bands;
+
+	hyper_mat dst = create_hyper_mat(samples,lines,bands,4,us_mat->interleave);
+
+	unsigned short* usdata = us_mat->data;
+	float* fdata = dst->data;
+	int tmp = 0;
+	int datasize = samples*lines*bands;
+	for(int i=0;i<datasize;i++)
+	{
+	
+			fdata[i] = usdata[i]*1.0;
+	}
+	return dst;
+}
+
+
+
 float hypercv_atof(const char *str)
 {
 	const char *p = str;

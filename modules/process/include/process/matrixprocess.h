@@ -151,4 +151,6 @@ void correlation_matrix_float(float* res, float* mat1, float* mat2, int l, int n
 void swap_rows_float(float* data, int m, int n, int r1, int r2);
 
 
+void set_identity_matrix_float(float* mat,int m);
 
+void invert_matrix_float(float* res, float* mat, int m);

@@ -382,6 +382,23 @@ void swap_rows_float(float* data, int m,int n, int r1, int r2)
 	free(tmp);
 }
 
+void matrix_row_multi_scalar_float(float* mat, int rows, int cols,int r,float scalar)
+{
+	_assert(r>=0&&r<rows,"select rows in [o,rows)");
+
+	for(int i=0;i<cols;i++)
+		mat[r*cols+i] = mat[r*cols+i]*scalar;
+}
+
+
+void shear_row(float* mat, int rows, int cols, int r1, int r2, float scalar)
+{
+	_assert(r1!=r2&&r1>=0&&r1<rows&&r2>=0&&r2<rows,"shear_row r1!=r2,r1,r2<rows");
+	for(int i=0;i<cols;i++)
+		mat[r1*cols+i]+=scalar*mat[r2*cols+i];
+}
+
+
 void invert_matrix_float(float* res, float* mat, int m)
 {
 	set_identity_matrix_float(res,m);
@@ -395,13 +412,22 @@ void invert_matrix_float(float* res, float* mat, int m)
 				if(mat[r*m+i]!=0.0)
 					break;
 			}
-		
+			if(r == m)
+				return;
+			swap_rows_float(mat,m,m,i,r);
+			swap_rows_float(res,m,m,i,r);
 		}
-		if(r == m)
-			return;
+		float scalar = 1.0/mat[i*m+i];
+		matrix_row_multi_scalar_float(mat,m,m,i,scalar);
+		matrix_row_multi_scalar_float(res,m,m,i,scalar);
 
+		for(j=0;j<m;j++)
+		{
+			if(i == j)
+				continue;
+			float shear_needed = -mat[j*m+i];
+			shear_row(mat,m,m,j,i,shear_needed);
+			shear_row(res,m,m,j,i,shear_needed);
+		}
 	}
-
-
-
 }
