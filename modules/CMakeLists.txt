@@ -35,7 +35,12 @@ if(GDAL_FOUND)
 	target_link_libraries(hypercv gdal)
 endif()
 
-
+find_package(X11)
+if(X11_FOUND)
+	ADD_DEFINITIONS(-DX11_switch=1)
+	include_directories(${X11_INCLUDE_DIRS})
+	target_link_libraries(hypercv X11)
+endif()
 
 install(TARGETS hypercv DESTINATION lib)
 file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h")
