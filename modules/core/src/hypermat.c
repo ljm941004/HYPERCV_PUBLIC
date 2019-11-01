@@ -1,12 +1,15 @@
 #include "precomp.h"
 #include <errno.h>
-//*************************************************************  private *****************************************************************
 
 #ifndef MAXLINE
-#define MAXLINE 10000 //each line no more than 20 words
+#define MAXLINE 10000 //each line no more than 10000 words
 #endif
-//------------------------------------------------------------
-// private function purpose to compare 2 char[]
+
+//*************************************************************
+//                       private 
+//*************************************************************
+
+// function purpose to compare 2 char[]
 int cmpstr(char temp1[],char temp2[])
 {
 
@@ -20,7 +23,8 @@ int cmpstr(char temp1[],char temp2[])
 	return 1;
 }
 
-
+// private function purpose to read wavelength from hdr file
+// default wavelength charlength < 8
 static void read_wavelength(char* w, float* wavelength)
 {
 	char* tmp = (char*)malloc(8*sizeof(char));
@@ -43,9 +47,7 @@ static void read_wavelength(char* w, float* wavelength)
 }
 
 
-
-//---------------------------------------------------------
-//* @param[in]  data_type   data_type of hyper spectral image, data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer.
+//data_type   data_type of hyper spectral image, data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer.
 
 #if gdal_switch
 static int date_type_2_gdal_data_type(const int data_type)
@@ -79,7 +81,11 @@ static int date_type_2_gdal_data_type(const int data_type)
 }
 #endif
 
-//*************************************************************  public function  ********************************************************
+
+//************************************************************* 
+//                   public function 
+//*************************************************************
+
 /**
  * @brief      create a hyper mat.
  * @param[in]  samples     image samples.
@@ -150,7 +156,7 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 /**
  * @brief      read the hyper spectral image.
  * @param[in]  image_path  hyper spectral image path.
- * @retval      hyper_mat   hyper mat.
+ * @retval     hyper_mat   hyper mat.
  **/
 hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 {
@@ -226,6 +232,7 @@ hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int b
 
 	return mat;
 }
+
 /**
  * @brief      write the hyper spectral image.
  * @param[in]  image_path  hyper spectral image path.
@@ -240,6 +247,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	int bands = mat->bands;
 
 #if gdal_switch
+	
 	GDALAllRegister();
 	GDALDatasetH  dst;
 	GDALDriverH hDriver = GDALGetDriverByName("ENVI");	
@@ -252,6 +260,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
 		int tmp = GDALRasterIO(hBand, GF_Write, 0, 0, samples, lines, (char*)mat->data+(i-1)*samples*lines*elemsize, samples, lines, DT, 0, 0);	
 	}
 	GDALClose(dst);
+
 #else
 
 	FILE* image_fp;
@@ -260,6 +269,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	fwrite(mat->data, elemsize, samples * lines * bands, image_fp);
 	writehdr(image_path, samples, lines, bands, mat->data_type, mat->interleave,mat->wavelength);
 	fclose(image_fp);
+
 #endif
 }
 
@@ -278,7 +288,6 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 
 	char line[MAXLINE];
 	char item[MAXLINE];
-
 
 	int sampletemp = 0, linetemp = 0, bandtemp = 0, datatypetemp = 0;
 
@@ -320,7 +329,6 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 			*wavelength = wave;
 		}
 	}
-
 }
 
 /**
@@ -336,20 +344,26 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 {
 	const char* t = img_path;
 	int len = 0;
+
 	while (*t++ != '\0')
 	{
 		len++;
 	}
+	
 	char* hdr_path = (char*)malloc((len + 5)*sizeof(char));
+	
 	for (int i = 0; i < len; i++)
 		hdr_path[i] = img_path[i];
+	
 	hdr_path[len] = '.';
 	hdr_path[len + 1] = 'h';
 	hdr_path[len + 2] = 'd';
 	hdr_path[len + 3] = 'r';
 	hdr_path[len + 4] = '\0';
+	
 	FILE *fp;
 	fp = fopen(hdr_path, "w");
+	
 	fputs("ENVI\n", fp);
 	fputs("samples = ", fp); fprintf(fp, "%d\n", samples);
 	fputs("lines = ", fp); fprintf(fp, "%d\n", lines);
@@ -364,8 +378,8 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 			fprintf(fp,"%.1f,",wavelength[i]);
 		fprintf(fp,"%.1f}",wavelength[bands-1]);
 	}
+	
 	fclose(fp);
-
 }
 
 
@@ -377,6 +391,7 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 hyper_mat hyper_mat_copy(hyper_mat mat)
 {
 	_assert(mat!=NULL,"mat could not be NULL");
+
 	int samples = mat->samples;
 	int lines = mat->lines;
 	int bands = mat->bands;
@@ -395,6 +410,14 @@ hyper_mat hyper_mat_copy(hyper_mat mat)
 	char *src_data = (char*)mat->data;
 
 	memcpy(dst_data,src_data,samples*lines*bands*elemsize);
+
+	if(mat->wavelength!=NULL)
+	{
+		float *src_wavelength = mat->wavelength;
+		float *dst_wavelength = (float*)malloc(bands*sizeof(float));
+		memcpy(dst_wavelength,src_wavelength,bands*sizeof(float));
+		dst_mat->wavelength = dst_wavelength;
+	}
 
 	return dst_mat;
 }
@@ -422,7 +445,6 @@ void hyper_mat_showinfo(hyper_mat mat)
 	}
 }
 
-
 /**
  * @brief      function to delete the hyper mat.
  * @param[in]  mat         hyper mat.
@@ -430,6 +452,7 @@ void hyper_mat_showinfo(hyper_mat mat)
 void delete_hyper_mat(hyper_mat mat)
 {
 	_assert(mat != NULL, "already free");
+
 	if ((uintptr_t)mat + ALLOC_BYTE_ALIGNMENT >= (uintptr_t)mat->data)
 	{
 		free(mat);

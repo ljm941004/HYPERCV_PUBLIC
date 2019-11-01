@@ -38,6 +38,7 @@ hyper_mat bil2bsq(hyper_mat bil_mat)
 			{
 				bil_index = (i*samples*bands + k*samples + j)*elem_size;
 				bsq_index = (k*samples*lines + i*samples + j)*elem_size;
+
 				for (int t=0; t<elem_size; t++)
 					bsq_data[bsq_index + t] = bil_data[bil_index + t];
 			}
@@ -85,6 +86,7 @@ hyper_mat bil2bip(hyper_mat bil_mat)
 			{
 				bil_index = (i*samples*bands + k*samples + j)*elem_size;
 				bip_index = (i*samples*bands + j*bands + k)*elem_size;
+
 				for (int t=0; t<elem_size; t++)
 					bip_data[bip_index + t] = bil_data[bil_index + t];
 			}
@@ -132,6 +134,7 @@ hyper_mat bsq2bil(hyper_mat bsq_mat)
 			{
 				bsq_index = (k*samples*lines + i*samples + j)*elem_size;
 				bil_index = (i*samples*bands + k*samples + j)*elem_size;
+
 				for (int t=0; t<elem_size; t++)
 					bil_data[bil_index + t] = bsq_data[bsq_index + t];
 			}
@@ -179,6 +182,7 @@ hyper_mat bsq2bip(hyper_mat bsq_mat)
 			{
 				bsq_index = (k*samples*lines + i*samples + j)*elem_size;
 				bip_index = (i*samples*bands + j*bands + k)*elem_size;
+
 				for (int t=0; t<elem_size; t++)
 					bip_data[bip_index + t] = bsq_data[bsq_index + t];
 			}
@@ -226,6 +230,7 @@ hyper_mat bip2bsq(hyper_mat bip_mat)
 			{
 				bsq_index = (k*samples*lines + i*samples + j)*elem_size;
 				bip_index = (i*samples*bands + j*bands + k)*elem_size;
+
 				for (int t=0; t<elem_size; t++)
 					bsq_data[bsq_index + t] = bip_data[bip_index + t]  ;
 			}
@@ -271,6 +276,7 @@ hyper_mat bip2bil(hyper_mat bip_mat)
 			{
 				bil_index = (i*samples*bands + k*samples + j)*elem_size;
 				bip_index = (i*samples*bands + j*bands + k)*elem_size;
+
 				for (int t=0; t<elem_size; t++)
 					bil_data[bil_index + t] = bip_data[bip_index + t];
 			}

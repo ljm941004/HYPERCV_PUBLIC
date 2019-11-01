@@ -8,6 +8,112 @@
 
 /**
 * @brief      data type change .
+* @param[in]  uc_mat    unsigned char image.
+* @retval     dst       short image.
+**/
+hyper_mat hyper_mat_uchar2short(hyper_mat uc_mat)
+{
+	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
+
+	int samples = uc_mat->samples;
+	int lines = uc_mat->lines;
+	int bands = uc_mat->bands;
+
+	hyper_mat dst = create_hyper_mat(samples,lines,bands,2,uc_mat->interleave);
+
+	short * data = (short*)dst->data;
+	unsigned char* uc_data = (unsigned char*)uc_mat->data;
+
+	int datasize = samples*lines*bands;
+
+	for(int i=0;i<datasize;i++)
+		data[i]=uc_data[i];
+
+	dst->wavelength = uc_mat->wavelength;
+
+	return dst;
+}
+
+/**
+* @brief      data type change .
+* @param[in]  uc_mat    unsigned char image.
+* @retval     dst       int image.
+**/
+hyper_mat hyper_mat_uchar2int(hyper_mat uc_mat)
+{
+	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
+
+	int samples = uc_mat->samples;
+	int lines = uc_mat->lines;
+	int bands = uc_mat->bands;
+
+	hyper_mat dst = create_hyper_mat(samples,lines,bands,3,uc_mat->interleave);
+
+	int* data = (int*)dst->data;
+	unsigned char* uc_data = (unsigned char*)uc_mat->data;
+
+	int datasize = samples*lines*bands;
+
+	for(int i=0;i<datasize;i++)
+		data[i]=uc_data[i];
+
+	return dst;
+}
+
+/**
+* @brief      data type change .
+* @param[in]  uc_mat    unsigned char image.
+* @retval     dst       float image.
+**/
+hyper_mat hyper_mat_uchar2float(hyper_mat uc_mat)
+{
+	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
+
+	int samples = uc_mat->samples;
+	int lines = uc_mat->lines;
+	int bands = uc_mat->bands;
+
+	hyper_mat dst = create_hyper_mat(samples,lines,bands,4,uc_mat->interleave);
+
+	float* data = (float*)dst->data;
+	unsigned char* uc_data = (unsigned char*)uc_mat->data;
+
+	int datasize = samples*lines*bands;
+
+	for(int i=0;i<datasize;i++)
+		data[i]=uc_data[i]*1.0;
+
+	return dst;
+}
+
+/**
+* @brief      data type change .
+* @param[in]  uc_mat    unsigned char image.
+* @retval     dst       unsigned short image.
+**/
+hyper_mat hyper_mat_uchar2ushort(hyper_mat uc_mat)
+{
+	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
+
+	int samples = uc_mat->samples;
+	int lines = uc_mat->lines;
+	int bands = uc_mat->bands;
+
+	hyper_mat dst = create_hyper_mat(samples,lines,bands,12,uc_mat->interleave);
+
+	unsigned short* data = (unsigned short*)dst->data;
+	unsigned char*  uc_data = (unsigned char*)uc_mat->data;
+
+	int datasize = samples*lines*bands;
+
+	for(int i=0;i<datasize;i++)
+		data[i]=uc_data[i];
+
+	return dst;
+}
+
+/**
+* @brief      data type change .
 * @param[in]  f_mat      float image.
 * @retval     dst        int image.
 **/
@@ -200,17 +306,17 @@ hyper_mat hyper_mat_ushort2float(hyper_mat us_mat)
 
 	unsigned short* usdata = us_mat->data;
 	float* fdata = dst->data;
+	
 	int tmp = 0;
 	int datasize = samples*lines*bands;
+	
 	for(int i=0;i<datasize;i++)
 	{
-	
-			fdata[i] = usdata[i]*1.0;
+		fdata[i] = usdata[i]*1.0;
 	}
+	
 	return dst;
 }
-
-
 
 float hypercv_atof(const char *str)
 {
@@ -273,14 +379,6 @@ float hypercv_atof(const char *str)
 			if (isdigit(*p))
 				exponential = 10 * exponential + *p - '0';
 	return sign * (integerPart * pow(10, exponential) + decimalPart);
-
-}
-
-char* hypercv_ftoa(float* wavelength)
-{
-
-
-
 
 }
 

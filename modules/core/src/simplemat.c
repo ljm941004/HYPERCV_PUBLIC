@@ -1,7 +1,5 @@
 #include "precomp.h"
 
-
-
 /**
  * @brief	constructor for matrix headers pointing to user-allocated data
  * @param[in]  rows			Number of rows in a 2D array.
@@ -15,6 +13,7 @@ simple_mat create_simple_mat(int rows, int cols, int date_type, int channels)
 	simple_mat mat = create_simple_mat_with_data(rows, cols, date_type, channels, NULL);
 	return mat;
 }
+
 /**
  * @brief	constructor for matrix headers pointing to user-allocated data
  * @param[in]  rows			Number of rows in a 2D array.
@@ -27,6 +26,7 @@ simple_mat create_simple_mat(int rows, int cols, int date_type, int channels)
 simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int channels, void* data)
 {
 	_assert(rows > 0 && cols > 0, "the rows and cols of mat must be greater than zero ");
+
 	simple_mat mat;
 
 	int memneeded = sizeof(SIMPLE_MAT);
@@ -70,7 +70,6 @@ simple_mat smread(const char * image_path, int rows, int cols, int data_type, in
 	_assert(image_path != NULL, "image path or hdr path can not be NULL");
 
 	FILE* image_fp;
-
 	image_fp = fopen(image_path, "r");
 
 	_assert(image_fp != NULL, "can not open files");
@@ -100,12 +99,17 @@ simple_mat simple_mat_copy(simple_mat mat)
 	int data_type = mat->data_type;
 	int elemsize = get_elemsize(data_type);
 	int channels = mat->channels;
+	
 	simple_mat dst = create_simple_mat(rows,cols,data_type,channels);
+	
 	char * src_data = (char*)mat->data;
 	char * dst_data = (char*)dst->data;
+	
 	memcpy(dst_data,src_data,rows*cols*elemsize);
+	
 	return dst;
 }
+
 
 /**
 * @brief      function to read a bmp image into simple mat.
@@ -114,7 +118,10 @@ simple_mat simple_mat_copy(simple_mat mat)
 **/
 simple_mat smread_bmp(char *bmpName)
 {
+	_assert(bmpName!=NULL,"read bmp file name can not be NULL");
+	
 	FILE *fp = fopen(bmpName, "rb");
+
 	_assert(fp!=NULL,"BMP IMAGE NOT EXIST");
 
 	fseek(fp, sizeof(BmpFileHeader), SEEK_SET);
@@ -124,8 +131,8 @@ simple_mat smread_bmp(char *bmpName)
 	int bmpWidth = head.biWidth;
 	int bmpHeight = head.biHeight;
 	int biBitCount = head.biBitCount;
- 
-	int lineByte = (bmpWidth * biBitCount / 8 + 3) / 4 * 4;
+    int lineByte = (bmpWidth * biBitCount / 8 + 3) / 4 * 4;
+	
 	if (biBitCount == 8)
 	{
 		RGBQUAD *pColorTable = (RGBQUAD *)malloc(sizeof(RGBQUAD) * 1024);
@@ -148,16 +155,23 @@ simple_mat smread_bmp(char *bmpName)
 **/
 void smwrite_bmp(char *bmpName, simple_mat src_mat)
 {
+	_assert(bmpName != NULL, "write bmp image path can not be NULL");
 	_assert(src_mat != NULL,"save mat can not be null");
-	_assert(src_mat -> channels == 3 ,"save mat channels == 3,must be rgb image");
+
 	FILE *fp = fopen(bmpName, "wb");
 	_assert(fp != NULL,"save file can not open");
 	
-	unsigned char* imgBuf = (unsigned char*) src_mat->data;
-	int width = src_mat -> cols;
-	int height = src_mat -> rows;
+	simple_mat mat;
+	if(src_mat -> channels != 3)
+		mat = sm_gray2rgb(src_mat);
+	else 
+		mat = src_mat;
 
-	int data_type = src_mat -> data_type;
+	unsigned char* imgBuf = (unsigned char*) mat->data;
+	int width = mat -> cols;
+	int height = mat -> rows;
+	int data_type = mat -> data_type;
+
 	// default 24 ,also can use in byte
 	int biBitCount = 24;
  
@@ -168,7 +182,6 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 	}
 	
 	int lineByte = (width * biBitCount / 8 + 3) / 4 * 4;
- 
 	
 	BmpFileHeader fileHead;
 	fileHead.bfType=0x4D42;
@@ -205,6 +218,11 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 	fwrite(imgBuf, height * lineByte, 1, fp);
  
 	fclose(fp);
+
+	if(mat != src_mat)
+	{
+		delete_simple_mat(mat);
+	}
 }
 
 /**

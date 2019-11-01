@@ -7,6 +7,7 @@ typedef struct
 	int   elem_size;
 	void* data;
 }SIMPLE_MAT;
+
 typedef SIMPLE_MAT* simple_mat;
 
 typedef struct BmpFileHeader
@@ -49,7 +50,6 @@ typedef struct
 	unsigned char g;
 	unsigned char r;
 }RGB_data;
-
 
 /**
  * @brief	constructor for matrix headers pointing to user-allocated data

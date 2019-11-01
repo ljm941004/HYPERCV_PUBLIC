@@ -4,18 +4,25 @@
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
 #include "precomp.h"
+
+/**
+* @brief      change binary image 2 rgb image.
+* @param[in]  binary_image       binary image.
+* @retval     rgb image.
+**/
 simple_mat sm_binary2rgb(simple_mat binary_image)
 {
-
 	_assert(binary_image->channels == 1,"input binary_image channels == 1");
 
 	int rows = binary_image -> rows;
 	int cols = binary_image -> cols;
 	int channels = 3;
+
 	simple_mat rgb_image = create_simple_mat(rows,cols,1,channels);
 
 	unsigned char* binary_data = (unsigned char*)binary_image->data;
 	unsigned char* rgb_data = (unsigned char*)rgb_image->data;
+	
 	for(int i=0;i<rows;i++)
 		for(int j=0;j<cols;j++)
 			for(int k=0;k<channels;k++)
@@ -24,7 +31,11 @@ simple_mat sm_binary2rgb(simple_mat binary_image)
 	return rgb_image;
 }
 
-
+/**
+* @brief      change gray image 2 rgb image.
+* @param[in]  gray_image       gray image.
+* @retval     rgb image.
+**/
 simple_mat sm_gray2rgb(simple_mat gray_image)
 {	
 	_assert(gray_image->channels == 1,"input gray image channels == 1");
@@ -32,10 +43,12 @@ simple_mat sm_gray2rgb(simple_mat gray_image)
 	int rows = gray_image -> rows;
 	int cols = gray_image -> cols;
 	int channels = 3;
+
 	simple_mat rgb_image = create_simple_mat(rows,cols,1,channels);
 
 	unsigned char* gray_data = (unsigned char*)gray_image->data;
 	unsigned char* rgb_data = (unsigned char*)rgb_image->data;
+	
 	for(int i=0;i<rows;i++)
 		for(int j=0;j<cols;j++)
 			for(int k=0;k<channels;k++)
@@ -44,31 +57,40 @@ simple_mat sm_gray2rgb(simple_mat gray_image)
 	return rgb_image;
 }
 
+/**
+* @brief      change rgb image 2 gray image .
+* @param[in]  rgb image.
+* @retval     gray_image.
+**/
 simple_mat sm_rgb2gray(simple_mat rgb_image)
 {
 	_assert(rgb_image->channels == 3,"input rgb_image channels == 3");
 
 	int rows = rgb_image -> rows;
 	int cols = rgb_image -> cols;
-    simple_mat gray_image = create_simple_mat(rows,cols,1,1);
+    
+	simple_mat gray_image = create_simple_mat(rows,cols,1,1);
 
 	unsigned char* gray_data = (unsigned char*)gray_image->data;
 	unsigned char* rgb_data = (unsigned char*)rgb_image->data;
-	int tmp=0;
+
+	float tmp=0;
+	
 	for(int i=0;i<rows;i++)
 	{
 		for(int j=0;j<cols;j++)
 		{
-			tmp=0;
+			tmp=0.0;
+
 			for(int k=0;k<3;k++)
 			{
 				tmp+=rgb_data[i*cols*3+j*3+k];
 			}
-			tmp =(int)(tmp/3);
 
-			gray_data[i*cols+j] = tmp;
+			gray_data[i*cols+j] = (int)(tmp/3+0.5);
 		}
 	}
+
 	return gray_image;
 }
 
