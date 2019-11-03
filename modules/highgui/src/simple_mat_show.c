@@ -45,7 +45,6 @@ void smshow(char* display_name, simple_mat mat)
 		ximage=XCreateImage(display, visual, 24,ZPixmap, 0, buffer,WIDTH, HEIGHT, 32, 0);
 		XPutImage(display, window,gc, ximage, 0, 0, 0, 0,WIDTH, HEIGHT);
 	}
-	return 0;	
 
 }
 
