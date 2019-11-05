@@ -6,3 +6,4 @@
 #include <stdint.h>
 #include "core/core.h"
 #include "process/process.h"
+#include "highgui/hypercv_gui.h"

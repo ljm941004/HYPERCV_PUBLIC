@@ -38,5 +38,6 @@ add_custom_target(
 	#	bin/testcore --gtest_filter=CORE.HMREAD_WITH_HDR
 	#bin/testprocess --gtest_filter=PROCESS.ATOF
 	#bin/testprocess --gtest_filter=PROCESS.INVERT
-	bin/testalgorithm --gtest_filter=ALGORITHM.CEM
+	#bin/testalgorithm --gtest_filter=ALGORITHM.CEM
+    bin/testhighgui --gtest_filter=HIGHGUI.SMSHOW
 )
