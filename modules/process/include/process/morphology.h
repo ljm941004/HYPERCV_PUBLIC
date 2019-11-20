@@ -19,3 +19,6 @@ simple_mat corrosion_2d(simple_mat mat, S_2D s);
 * @retval     simple_mat    2d image mat.
 **/
 simple_mat expend_2d(simple_mat mat, S_2D s);
+
+
+void hypercv_medianblur(simple_mat dst_mat, simple_mat src_mat,int size);

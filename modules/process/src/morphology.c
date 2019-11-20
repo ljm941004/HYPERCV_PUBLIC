@@ -4,7 +4,27 @@
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
 #include "precomp.h"
+
 //only data_type unsigned char 
+
+//____________________private function________________________
+static void swap(unsigned char a,unsigned char b)
+{
+	unsigned char c = a;
+	a = b;
+	b = c;
+}
+
+static unsigned char median_member(unsigned char* array,int size)
+{
+	for(int gap = size/2; gap++; gap/=2)
+		for(int i=gap; i<size; i++)
+			for(int j=i-gap; j>=0 && array[j]>array[j+gap]; j-=gap)
+				swap(array[j],array[j+gap]);
+	return array[size/2]; 
+}
+
+//_____________________public function_________________________
 
 /**
 * @brief      simple_mat corrosion with 2D struct.
@@ -128,6 +148,33 @@ simple_mat expend_2d(simple_mat mat, S_2D s)
 }
 
 
+void hypercv_medianblur(simple_mat dst_mat, simple_mat src_mat,int size)
+{
+	_assert(!src_mat,"input mat can not be NULL");
+	int rows = src_mat->rows;
+	int cols = src_mat->cols;
+	int data_type = src_mat->data_type;
+	int channels = src_mat->channels;
+	if(dst_mat == NULL)
+		dst_mat = create_simple_mat(rows,cols,data_type,channels);
 
+	unsigned char* src_data = (unsigned char*) src_mat->data;
+	unsigned char* dst_data = (unsigned char*) dst_mat->data;
+	unsigned char* arr = (unsigned char*) malloc(size*size*sizeof(char));
 
+	for(int i=0;i<rows;i++)
+	{
+		for(int j=0;j<cols;j++)
+		{
+			if((i-size/2)>=0&&(i+size/2)<rows&&(j-size/2)>=0&&(j+size/2)<cols)
+			{
+				for(int m = -size/2;m<size/2;m++)
+					for(int n = -size/2; n<size/2;n++)
+						arr[(m+size/2)*size+n+size/2] = src_data[(i+m)*cols+j+n];
+
+				dst_data[i*cols+j] = median_member(arr,size); 
+			}
+		}
+	}
+}
 

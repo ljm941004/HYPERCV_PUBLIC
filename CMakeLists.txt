@@ -33,11 +33,10 @@ add_custom_target(
     run
     @echo "[make] testing core..."
     &
-	#bin/testcore --gtest_filter=CORE.MAKEIMAGE
-	#bin/testcore --gtest_filter=CORE.WRITEHDR
+    #bin/testcore --gtest_filter=CORE.WRITEHDR
 	#bin/testcore --gtest_filter=CORE.HMREAD_WITH_HDR
 	#bin/testprocess --gtest_filter=PROCESS.ATOF
 	#bin/testprocess --gtest_filter=PROCESS.INVERT
-	bin/testalgorithm --gtest_filter=ALGORITHM.PCA
+	#bin/testalgorithm --gtest_filter=ALGORITHM.PCA
 	#bin/testhighgui --gtest_filter=HIGHGUI.SMSHOW
 )
