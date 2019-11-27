@@ -6,13 +6,6 @@
 #include "precomp.h"
 
 #define max(a,b) a>b?a:b
-/////////////// saturate_cast ///////////////////
-
-static unsigned char saturate_cast_float2uchar(float value)
-{
-    int ivalue =  HYPERCV_ROUND(value);
-    return (unsigned char)ivalue;
-}
 
 /**            
  * @brief      find border correspondence index

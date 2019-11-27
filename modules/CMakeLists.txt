@@ -2,7 +2,8 @@ AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/core/src/" HYPERMAT_src)
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/process/src/" HYPERMAT_src)
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/highgui/src/" HYPERMAT_src)
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/algorithm/src/" HYPERMAT_src)
-INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/core/include" "${CMAKE_CURRENT_SOURCE_DIR}/process/include"  "${CMAKE_CURRENT_SOURCE_DIR}/algorithm/include" "${CMAKE_CURRENT_SOURCE_DIR}/highgui/include")
+AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/gradient/src/" HYPERMAT_src)
+INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/core/include" "${CMAKE_CURRENT_SOURCE_DIR}/process/include"  "${CMAKE_CURRENT_SOURCE_DIR}/algorithm/include" "${CMAKE_CURRENT_SOURCE_DIR}/highgui/include" "${CMAKE_CURRENT_SOURCE_DIR}/gradient/include")
 
 ADD_LIBRARY(hypercv SHARED ${HYPERMAT_src})
 
@@ -49,5 +50,5 @@ if(X11_FOUND)
 endif()
 
 install(TARGETS hypercv DESTINATION lib)
-file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h" "highgui/include/highgui/*.h")
+file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h" "highgui/include/highgui/*.h" "gradient/include/gradient/*.h")
 install(FILES ${hdrs} DESTINATION include)

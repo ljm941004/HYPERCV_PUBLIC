@@ -5,13 +5,6 @@
  ************************************************************************/
 
 #include "precomp.h"
-/////////////// saturate_cast ///////////////////
-
-static unsigned char saturate_cast_float2uchar(float value)
-{
-    int ivalue =  HYPERCV_ROUND(value);
-    return (unsigned char)ivalue;
-}
 
 /**
  * @brief      User-callable function to normalize array or simplemat 

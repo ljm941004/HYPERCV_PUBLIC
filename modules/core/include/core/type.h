@@ -89,3 +89,12 @@ static inline int HYPERCV_ROUND( double value )
 	return (int)(value + (value >= 0 ? 0.5 : -0.5));
 #endif
 }
+
+
+/////////////// saturate_cast ///////////////////
+
+static unsigned char saturate_cast_float2uchar(float value)
+{
+    int ivalue =  HYPERCV_ROUND(value);
+    return (unsigned char)ivalue;
+}

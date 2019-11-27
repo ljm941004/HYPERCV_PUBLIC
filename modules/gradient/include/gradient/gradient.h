@@ -1,13 +1,8 @@
 /*************************************************************************
-	> File Name: Algorithm.h
+	> File Name: gradient.h
 	> Author: ljm
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
+
 #pragma once
-#include "pca.h"
-#include "GaussianBlur.h"
-#include "OtsuThreshold.h"
-#include "normalize.h"
-#include "HisEqualization.h"
-#include "cem.h"
-#include "shapematch.h"
+#include "sobelprocess.h"
