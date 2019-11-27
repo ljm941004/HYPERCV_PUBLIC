@@ -32,7 +32,7 @@ S_2D create_2D_struct(int width, int height)
  * @param[in]  data   	    2D struct data.
  * @retval     S_2D         2 dimension struct. 
  **/
-S_2D create_2D_struct_with_data(int width, int height, unsigned char* data)
+S_2D create_2D_struct_with_data(int width, int height, void* data)
 {
 	_assert(width>=1 && height>=1, "2D struct's width or height must bigger than 0");
 

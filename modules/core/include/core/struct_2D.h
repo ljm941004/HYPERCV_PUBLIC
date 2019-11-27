@@ -11,7 +11,7 @@ typedef struct
 {
 	int width;
 	int height;
-	unsigned char* data;
+	void* data;
 }STRUCT_2D;
 
 typedef STRUCT_2D* S_2D;
@@ -31,7 +31,7 @@ S_2D create_2D_struct(int width, int height);
  * @param[in]  data   	    2D struct data.
  * @retval     S_2D         2 dimension struct. 
  **/
-S_2D create_2D_struct_with_data(int width, int height, unsigned char* data);
+S_2D create_2D_struct_with_data(int width, int height, void* data);
 
 /**
  * @brief	   delete a 2 dimension struct. 
