@@ -54,7 +54,6 @@ void hypercv_sobel(simple_mat src, simple_mat dst, int threshold, int border_typ
 						index_m = hypercv_border_Interpolate(i+m-1,rows,border_type);
 					else
 						index_m = i+m-1;
-
 					if(j+n-1<0||j+n>cols)
 						index_n = hypercv_border_Interpolate(j+n-1,cols,border_type);
 					else

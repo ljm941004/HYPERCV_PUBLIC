@@ -43,7 +43,7 @@ static void test_delete_simple_mat()
 void test_sobel()
 {
 	src_mat = smread_bmp("/home/ljm/test.bmp");
-	simple_mat sm = sm_rgb2gray(src_mat);
+	simple_mat sm = sm_rgb2gray(src_mat,0);
 	simple_mat dsm = create_simple_mat(sm->rows,sm->cols,sm->data_type,sm->channels);
 	hypercv_sobel(sm, dsm, 200, 1);
 	simple_mat dst_mat  = sm_gray2rgb(dsm);

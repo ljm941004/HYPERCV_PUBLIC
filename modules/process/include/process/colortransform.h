@@ -6,4 +6,4 @@
 
 simple_mat sm_binary2rgb(simple_mat binary_image);
 simple_mat sm_gray2rgb(simple_mat gray_image);
-simple_mat sm_rgb2gray(simple_mat rgb_image);
+simple_mat sm_rgb2gray(simple_mat rgb_image,int method);

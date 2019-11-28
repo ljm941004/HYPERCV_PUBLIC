@@ -32,6 +32,11 @@ if (GTest_FOUND)
     add_executable(testhighgui ${testhighgui_src})
     target_link_libraries(testhighgui ${GTEST_BOTH_LIBRARIES})
     target_link_libraries(testhighgui hypercv)
+   
+    AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/gradient/test/" testgradient_src)
+    add_executable(testgradient ${testgradient_src})
+    target_link_libraries(testgradient ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries(testgradient hypercv)
 
 endif()
 

@@ -5,6 +5,20 @@
  ************************************************************************/
 #include "precomp.h"
 
+#ifndef AVERAGE_METHOD 
+#define AVERAGE_METHOD 0
+#endif
+
+#ifndef MAX_METHOD 
+#define MAX_METHOD 1
+#endif
+
+#ifndef WEIGHTED_AVERAGE_METHOD 
+#define WEIGHTED_AVERAGE_METHOD 2
+#endif
+
+
+
 /**
 * @brief      change binary image 2 rgb image.
 * @param[in]  binary_image       binary image.
@@ -48,7 +62,7 @@ simple_mat sm_gray2rgb(simple_mat gray_image)
 
 	unsigned char* gray_data = (unsigned char*)gray_image->data;
 	unsigned char* rgb_data = (unsigned char*)rgb_image->data;
-	
+
 	for(int i=0;i<rows;i++)
 		for(int j=0;j<cols;j++)
 			for(int k=0;k<channels;k++)
@@ -62,7 +76,7 @@ simple_mat sm_gray2rgb(simple_mat gray_image)
 * @param[in]  rgb image.
 * @retval     gray_image.
 **/
-simple_mat sm_rgb2gray(simple_mat rgb_image)
+simple_mat sm_rgb2gray(simple_mat rgb_image, int method)
 {
 	_assert(rgb_image->channels == 3,"input rgb_image channels == 3");
 
@@ -75,19 +89,33 @@ simple_mat sm_rgb2gray(simple_mat rgb_image)
 	unsigned char* rgb_data = (unsigned char*)rgb_image->data;
 
 	float tmp=0;
-	
+
 	for(int i=0;i<rows;i++)
 	{
 		for(int j=0;j<cols;j++)
 		{
 			tmp=0.0;
 
-			for(int k=0;k<3;k++)
+			if (method == 1)
 			{
-				tmp+=rgb_data[i*cols*3+j*3+k];
-			}
+				for(int k=0;k<3;k++)
+					tmp = tmp>rgb_data[i*cols*3+j*3+k]?tmp:rgb_data[i*cols*3+j*3+k];
 
-			gray_data[i*cols+j] = (int)(tmp/3+0.5);
+				gray_data[i*cols+j] = (int)tmp;
+			}
+			else if (method == 2)
+			{
+				tmp = rgb_data[i*cols*3+j*3]*0.299+rgb_data[i*cols*3+j*3+1]*0.578+rgb_data[i*cols*3+j*3+2]*0.114;
+				gray_data[i*cols+j] = (int)tmp;
+			}
+			else
+			{
+				for(int k=0;k<3;k++)
+					tmp+=rgb_data[i*cols*3+j*3+k];
+
+				gray_data[i*cols+j] = (int)(tmp/3+0.5);
+			}
+		
 		}
 	}
 
