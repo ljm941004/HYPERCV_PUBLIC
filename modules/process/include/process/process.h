@@ -6,3 +6,4 @@
 #include "RadiometricCalibration.h"
 #include "datatypechange.h"
 #include "colortransform.h"
+#include "filter.h"

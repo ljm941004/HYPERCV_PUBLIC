@@ -5,7 +5,6 @@
  ************************************************************************/
 #pragma once
 #include "pca.h"
-#include "GaussianBlur.h"
 #include "OtsuThreshold.h"
 #include "normalize.h"
 #include "HisEqualization.h"

@@ -1,8 +1,12 @@
 /*************************************************************************
-	> File Name: ../include/process/GaussianBlur.h
+	> File Name: modules/process/include/process/filter.h
 	> Author: ljm
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
+
+void hypercv_filter2D(simple_mat src, simple_mat dst, unsigned char* kernel, int k_rows, int k_cols, int border_type);
+
+void hypercv_medianblur(simple_mat dst_mat, simple_mat src_mat, int size);
 
 /**
  * @brief   User-callable function to create an unidimensional gaussian kernel.
@@ -12,7 +16,6 @@
  * retva       simple_mat.
  **/
 simple_mat gaussian_kernel(int kernel_size, double sigma, int ktype);
-
 
 /**
  * @brief      User-callable function to gaussian filter.
@@ -24,8 +27,7 @@ simple_mat gaussian_kernel(int kernel_size, double sigma, int ktype);
  * @param[in]  border_type      pixel extrapolation method
  * retva       simple_mat.
  **/
-simple_mat hypercv_gaussian_blur(simple_mat src_mat, int ksize_width, int ksize_height, double sigma1, double sigma2, int border_type);
-
+void hypercv_gaussian_blur(simple_mat src_mat, simple_mat dst_mat, int ksize_width, int ksize_height, double sigma1, double sigma2, int border_type);
 
 /**
  * @brief      User-callable function to gaussian with kernel.
@@ -35,4 +37,4 @@ simple_mat hypercv_gaussian_blur(simple_mat src_mat, int ksize_width, int ksize_
  * @param[in]  border_type            pixel extrapolation method.
  * retva       simple_mat.
  **/
-simple_mat hypercv_gaussian_blur_with_kernel(simple_mat src_mat, simple_mat kernel_mat_x, simple_mat kernel_mat_y, int border_type);
+void hypercv_gaussian_blur_with_kernel(simple_mat src_mat, simple_mat dst_mat, simple_mat kernel_mat_x, simple_mat kernel_mat_y, int border_type);
