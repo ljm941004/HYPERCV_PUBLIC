@@ -108,7 +108,7 @@ static inline int HYPERCV_ROUND( double value )
  * BORDER_DEFAULT     = BORDER_REFLECT_101, //!< same as BORDER_REFLECT_101
  * BORDER_ISOLATED    = 16 //!< do not look outside of ROI
  **/
-static int hypercv_border_Interpolate(int p, int len, unsigned int border_type )
+static inline int hypercv_border_Interpolate(int p, int len, unsigned int border_type )
 {
 	_assert(len>=0,"length of src must >= 0");
 	_assert(border_type == BORDER_REFLECT
@@ -119,7 +119,7 @@ static int hypercv_border_Interpolate(int p, int len, unsigned int border_type )
 
 	int index = p;
 
-	if( (unsigned)index < (unsigned)len )
+	if((unsigned)index < (unsigned)len )
 		return index;
 
 	switch(border_type)
@@ -151,7 +151,8 @@ static int hypercv_border_Interpolate(int p, int len, unsigned int border_type )
 				break;
 			}
 		case BORDER_CONSTANT:
-			{	index = -1;
+			{
+				index = 1;
 				break;
 			}
 	}

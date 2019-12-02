@@ -38,3 +38,8 @@ void hypercv_gaussian_blur(simple_mat src_mat, simple_mat dst_mat, int ksize_wid
  * retva       simple_mat.
  **/
 void hypercv_gaussian_blur_with_kernel(simple_mat src_mat, simple_mat dst_mat, simple_mat kernel_mat_x, simple_mat kernel_mat_y, int border_type);
+
+void hypercv_integral(simple_mat src, simple_mat dst);
+
+
+simple_mat hypercv_copy_make_border(simple_mat src, int left, int right, int up, int down, int border_type);

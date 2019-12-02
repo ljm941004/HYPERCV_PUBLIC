@@ -7,3 +7,4 @@
 #include "datatypechange.h"
 #include "colortransform.h"
 #include "filter.h"
+#include "pyramid.h"

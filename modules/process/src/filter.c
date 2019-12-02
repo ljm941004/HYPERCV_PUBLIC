@@ -240,7 +240,6 @@ void hypercv_gaussian_blur_with_kernel(simple_mat src_mat,simple_mat dst_mat, si
     float* kx_data = (float*)kernel_mat_x->data;
     float* ky_data = (float*)kernel_mat_y->data;
 
-	int elemsize = get_elemsize(src_mat->data_type);
 
     for( i =0 ; i < src_rows ;i++)
     {
@@ -251,7 +250,7 @@ void hypercv_gaussian_blur_with_kernel(simple_mat src_mat,simple_mat dst_mat, si
             for (k = 0; k <ksize_width; k++)
             {
                 if ((j+k-border_x<0)||(j+k-border_x>=src_cols))
-                { 
+				{ 
                     index = hypercv_border_Interpolate(j+k-border_x, src_cols, border_type);
                 }
                 else
@@ -261,13 +260,13 @@ void hypercv_gaussian_blur_with_kernel(simple_mat src_mat,simple_mat dst_mat, si
 
                 if (cn == 1)
                 {
-                    sum[0] += (kx_data[k]*src_data[i*src_cols*elemsize+index*elemsize]);
+                    sum[0] += (kx_data[k]*src_data[i*src_cols+index]);
                 }
                 else if (cn == 3)
                 {
-                    sum[0] += (kx_data[k]*src_data[i*src_cols*elemsize*cn+(index)*elemsize*cn]);
-                    sum[1] += (kx_data[k]*src_data[i*src_cols*elemsize*cn+(index)*elemsize*cn+1]);
-                    sum[2] += (kx_data[k]*src_data[i*src_cols*elemsize*cn+(index)*elemsize*cn+2]);
+                    sum[0] += (kx_data[k]*src_data[i*src_cols*cn+(index)*cn]);
+                    sum[1] += (kx_data[k]*src_data[i*src_cols*cn+(index)*cn+1]);
+                    sum[2] += (kx_data[k]*src_data[i*src_cols*cn+(index)*cn+2]);
                 }
             }
             for ( k = 0 ; k < cn ; k++)
@@ -288,7 +287,6 @@ void hypercv_gaussian_blur_with_kernel(simple_mat src_mat,simple_mat dst_mat, si
         }
     }
 
-
     for( i = 0 ; i < src_cols;i++)
     {
         for ( j = 0; j < src_rows ;j++)
@@ -297,24 +295,27 @@ void hypercv_gaussian_blur_with_kernel(simple_mat src_mat,simple_mat dst_mat, si
 
             for ( k =0 ; k< ksize_height ; k++)
             {
+
                 if ((j+k-border_y<0)||(j+k-border_y>=src_rows))
-                { 
+                {
                     index = hypercv_border_Interpolate(j+k-border_y, src_rows, border_type);
                 }
                 else
                 {
                     index =j+k-border_y;
                 }
+
                 if (cn == 1)
                     sum[0] += (ky_data[k]*temp_data[(index)*temp_mat->cols+i]);
                 else if (cn == 3)
                 {
-                    sum[0] += (ky_data[k]*temp_data[(index)*temp_mat->cols*cn+i*cn]);
+					sum[0] += (ky_data[k]*temp_data[(index)*temp_mat->cols*cn+i*cn]);
                     sum[1] += (ky_data[k]*temp_data[(index)*temp_mat->cols*cn+i*cn+1]);
                     sum[2] += (ky_data[k]*temp_data[(index)*temp_mat->cols*cn+i*cn+2]);
                 }
             }
-            for (k =0 ;k<cn;k++)
+
+			for (k =0;k<cn;k++)
             {
                 if(sum[k]<0)
                     sum[k]=0;
@@ -323,14 +324,14 @@ void hypercv_gaussian_blur_with_kernel(simple_mat src_mat,simple_mat dst_mat, si
             }
             if (cn == 1)
             {
-                dst_data[(j)*dst_mat->cols*elemsize+i*elemsize] = saturate_cast_float2uchar (sum[0]);
+                dst_data[(j)*dst_mat->cols+i] = saturate_cast_float2uchar (sum[0]);
             }
 
             else if (cn==3)
             { 
-                dst_data[(j)*dst_mat->cols*elemsize*cn+i*elemsize*cn]=saturate_cast_float2uchar(sum[0]);
-                dst_data[(j)*dst_mat->cols*elemsize*cn+i*elemsize*cn+1]=saturate_cast_float2uchar(sum[1]);
-                dst_data[(j)*dst_mat->cols*elemsize*cn+i*elemsize*cn+2]=saturate_cast_float2uchar(sum[2]);
+                dst_data[(j)*dst_mat->cols*cn+i*cn]=saturate_cast_float2uchar(sum[0]);
+                dst_data[(j)*dst_mat->cols*cn+i*cn+1]=saturate_cast_float2uchar(sum[1]);
+                dst_data[(j)*dst_mat->cols*cn+i*cn+2]=saturate_cast_float2uchar(sum[2]);
             }
         }
     }
@@ -368,4 +369,73 @@ void hypercv_integral(simple_mat src, simple_mat dst)
 		}
 	}
 }
+
+
+simple_mat hypercv_copy_make_border(simple_mat src, int left, int right, int up, int down, int border_type)
+{
+	_assert(src!=NULL,"INPUT MAT CANNOT BE NULL");
+	_assert(left>=0&&right>=0&&up>=0&&down>=0,"new border >=0");
+    _assert(border_type == BORDER_REFLECT
+            ||border_type == BORDER_REFLECT_101
+            ||border_type == BORDER_REPLICATE
+            ||border_type == BORDER_WRAP
+            ||border_type == BORDER_CONSTANT ,"Unknown/unsupported border type" );
+
+	simple_mat dst = create_simple_mat(src->rows+up+down, src->cols+left+right, src->data_type, src->channels);
+
+	int dst_rows = dst->rows;
+	int dst_cols = dst->cols;
+	int channels = dst->channels;
+	int elemsize = get_elemsize(dst->data_type);
+	int src_rows = src->rows;
+	int src_cols = src->cols;
+
+	unsigned char* dst_data = (unsigned char*)dst->data;
+	unsigned char* src_data = (unsigned char*)src->data;
+//todo fix
+
+	for(int i=0;i<dst_rows;i++)
+	{
+		for(int j=0;j<dst_cols;j++)
+		{
+			if(i<up&&j<left)
+			{
+				for(int m=0;m<channels;m++)
+					dst_data[i*dst_cols*channels+j*channels+m] = src_data[0+m];
+			}
+			else if(i<up&&j>=left+src_cols)
+			{
+				for(int m=0;m<channels;m++)
+					dst_data[i*dst_cols*channels+j*channels+m] = src_data[(src_cols-1)*channels+m];
+			}
+			else if(i>=up+src_rows&&j<left)
+			{
+				for(int m=0;m<channels;m++)
+					dst_data[i*dst_cols*channels+j*channels+m] = src_data[(src_rows-1)*src_cols*channels+m];
+			}
+			else if(i>=up+src_rows&&j>=left+src_cols)
+			{
+				for(int m=0;m<channels;m++)
+					dst_data[i*dst_cols*channels+j*channels+m] = src_data[(src_rows-1)*src_cols*channels+(src_cols-1)*channels+m];
+			}
+			else
+			{
+				int index_i,index_j;
+				if(i<up||i>=up+src_rows)
+					index_i = hypercv_border_Interpolate(i-up,dst_rows,border_type);
+				else
+                    index_i = i-up;
+				if(j<left||j>=left+src_cols)
+					index_j = hypercv_border_Interpolate(j-left,dst_cols,border_type);
+				else
+					index_j = j-left;
+
+				for(int m=0;m<channels;m++)
+					dst_data[i*dst_cols*channels+j*channels+m] = src_data[(index_i)*src_cols*channels+(index_j)*channels+m];
+			}
+		}
+	}
+	return dst;
+}
+
 
