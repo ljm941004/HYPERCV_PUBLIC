@@ -130,7 +130,8 @@ static inline int hypercv_border_Interpolate(int p, int len, unsigned int border
 			}
 		case BORDER_REFLECT:
 		case BORDER_REFLECT_101:
-			{	if( len == 1 )
+			{	
+				if( len == 1 )
 				return 0;
 				int delta = border_type == BORDER_REFLECT_101;
 				do
@@ -144,7 +145,8 @@ static inline int hypercv_border_Interpolate(int p, int len, unsigned int border
 				break;
 			}
 		case BORDER_WRAP:
-			{	if( index < 0 )
+			{
+				if( index < 0 )
 				index -= ((index-len+1)/len)*len;
 				if( index >= len )
 					index %= len;

@@ -182,7 +182,7 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 	}
 	
 	int lineByte = (width * biBitCount / 8 + 3) / 4 * 4;
-	
+//   int lineByte = (width * biBitCount + 31) /32 *4;	
 	BmpFileHeader fileHead;
 	fileHead.bfType=0x4D42;
  
@@ -205,8 +205,8 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 	infoHead.biSize = 40;
 	infoHead.biSizeImage = lineByte * height;
 	infoHead.biWidth = width;
-	infoHead.biXPelsPerMeter = 0;
-	infoHead.biYPelsPerMeter = 0;
+	infoHead.biXPelsPerMeter = 100;
+	infoHead.biYPelsPerMeter = 100;
  
 	fwrite(&infoHead, sizeof(BmpInfoHeader), 1, fp);
  
@@ -214,9 +214,23 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 	{
 		fwrite(pColorTable,sizeof(RGBQUAD),256,fp);
 	}
-*/	
-	fwrite(imgBuf, height * lineByte, 1, fp);
- 
+*/
+	if(lineByte>width*biBitCount/8)
+	{
+		unsigned char* tmp = (unsigned char*)malloc(height*lineByte);
+		unsigned char* data = tmp ;
+		for(int i=0;i<height;i++)
+		{
+			memcpy(data,imgBuf,width*3);
+			imgBuf+=width*3;
+			data+=lineByte;
+		}
+		fwrite(tmp,height*lineByte,1,fp);
+		free(tmp);
+	}
+	else 
+		fwrite(imgBuf,height*lineByte, 1, fp);
+	
 	fclose(fp);
 
 	if(mat != src_mat)

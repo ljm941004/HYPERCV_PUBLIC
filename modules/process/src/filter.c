@@ -392,48 +392,19 @@ simple_mat hypercv_copy_make_border(simple_mat src, int left, int right, int up,
 
 	unsigned char* dst_data = (unsigned char*)dst->data;
 	unsigned char* src_data = (unsigned char*)src->data;
-//todo fix
 
 	for(int i=0;i<dst_rows;i++)
 	{
 		for(int j=0;j<dst_cols;j++)
 		{
-			if(i<up&&j<left)
-			{
-				for(int m=0;m<channels;m++)
-					dst_data[i*dst_cols*channels+j*channels+m] = src_data[0+m];
-			}
-			else if(i<up&&j>=left+src_cols)
-			{
-				for(int m=0;m<channels;m++)
-					dst_data[i*dst_cols*channels+j*channels+m] = src_data[(src_cols-1)*channels+m];
-			}
-			else if(i>=up+src_rows&&j<left)
-			{
-				for(int m=0;m<channels;m++)
-					dst_data[i*dst_cols*channels+j*channels+m] = src_data[(src_rows-1)*src_cols*channels+m];
-			}
-			else if(i>=up+src_rows&&j>=left+src_cols)
-			{
-				for(int m=0;m<channels;m++)
-					dst_data[i*dst_cols*channels+j*channels+m] = src_data[(src_rows-1)*src_cols*channels+(src_cols-1)*channels+m];
-			}
-			else
-			{
-				int index_i,index_j;
-				if(i<up||i>=up+src_rows)
-					index_i = hypercv_border_Interpolate(i-up,dst_rows,border_type);
-				else
-                    index_i = i-up;
-				if(j<left||j>=left+src_cols)
-					index_j = hypercv_border_Interpolate(j-left,dst_cols,border_type);
-				else
-					index_j = j-left;
-
-				for(int m=0;m<channels;m++)
-					dst_data[i*dst_cols*channels+j*channels+m] = src_data[(index_i)*src_cols*channels+(index_j)*channels+m];
-			}
+			int index_i;
+			int index_j;
+			index_j = hypercv_border_Interpolate(j-left,src_cols,border_type);
+			index_i = hypercv_border_Interpolate(i-up,src_rows,border_type);	
+			for(int m=0;m<channels;m++)
+				dst_data[i*dst_cols*channels+j*channels+m] = src_data[(index_i)*src_cols*channels+(index_j)*channels+m];
 		}
+
 	}
 	return dst;
 }
