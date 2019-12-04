@@ -174,3 +174,18 @@ static unsigned char saturate_cast_float2uchar(float value)
 	int ivalue =  HYPERCV_ROUND(value);
 	return (unsigned char)ivalue;
 }
+
+
+
+////////////////////////////////////////////////////
+//
+#ifndef SURF_CONSTANTS_H
+#define SURF_CONSTANTS_H
+#pragma once 
+#include <stdint.h>
+
+#define FIX_POINT_COEFF      4294967296.0f
+#define DESCRIPTOR_DIMENSION 64
+#define RESPONSE_LENGTH      109
+
+#endif /* SURF_CONSTANTS_H */
