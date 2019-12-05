@@ -18,9 +18,6 @@ A WARM WELCOME FOR EVERYONE WHO PULL REQUEST
 
 PROGRAMMER mail 1) jimin@iscas.ac.cn 李济民
 
-PROGRAMMER mail 2) liangjs@pku.edu.cn 梁家硕
-
-
 # INSTALL
 
 $ git clone https://github.com/ljm941004/HYPERCV_PUBLIC.git

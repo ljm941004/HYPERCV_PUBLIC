@@ -17,32 +17,6 @@ process中是数据处理模块,包括高光谱、多光谱和二维数据图像
 
 mail 1) jimin@iscas.ac.cn  李济民
 
-mail 2) liangjs@pku.edu.cn  梁家硕
-
-mail 3) 13126646699@163.com 曹金荣
-
-mail 4) mafu19940927@buaa.edu.cn 马福
-
-mail 5) buaawangcui@163.com 王萃
-
- 
- 
-___________________________________
-
-下载及安装
-
-$ git clone https://github.com/ljm941004/HYPERCV_PUBLIC.git
-
-$ cd HYPERCV_PUBLIC
-
-$ mkdir build
-
-$ cd build
-
-$ cmake ..
-
-$ make install
-
 
 
 
