@@ -10,6 +10,4 @@
 #include "HisEqualization.h"
 #include "cem.h"
 #include "shapematch.h"
-#include "featurepoint.h"
-#include "hessian.h"
-#include "surf.h"
+
