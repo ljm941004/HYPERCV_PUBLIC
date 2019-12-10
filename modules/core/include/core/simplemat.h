@@ -107,6 +107,11 @@ simple_mat smread_bmp(char *bmpName);
 **/
 void smwrite_bmp(char *bmpName, simple_mat src_mat);
 
+float simple_mat_mean(simple_mat mat);
+
+float simple_mat_variance(simple_mat mat);
+
+
 /**
 * @brief      function to delete the simple mat.
 * @param[in]  mat         simple mat.

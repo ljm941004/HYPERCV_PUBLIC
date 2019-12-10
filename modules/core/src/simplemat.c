@@ -239,6 +239,95 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 	}
 }
 
+
+float simple_mat_mean(simple_mat mat)
+{
+	_assert(mat!=NULL,"input_mat cannot be NULL");
+	_assert(mat->channels == 1,"only use in gray image");
+	int rows = mat -> rows;
+	int cols = mat -> cols;
+
+	float res = 0.0;
+
+	switch (mat->data_type)
+	{
+		case 1:
+			{
+				unsigned char* data = (unsigned char*) mat->data;
+				for(int i=0;i<rows*cols;i++)
+					res+=data[i];
+				break;
+			}
+		case 2:
+		case 12:
+			{
+				unsigned short* data = (unsigned short*) mat->data;
+				for(int i=0;i<rows*cols;i++)
+					res+=data[i];
+				break;
+			}
+		case 3:
+			{
+				unsigned int* data = (unsigned int*) mat->data;
+				for(int i=0;i<rows*cols;i++)
+					res+=data[i];
+				break;
+			}
+		case 4:
+			{
+				float* data = (float*) mat->data;
+				for(int i=0;i<rows*cols;i++)
+					res+=data[i];
+				break;
+			}
+	}
+	return res/rows/cols;
+}
+
+
+float simple_mat_variance(simple_mat mat)
+{
+	_assert(mat != NULL,"input mat cannot be NULL");
+	_assert(mat->channels == 1,"only use in gray image");
+	int rows = mat->rows;
+	int cols = mat->cols;
+	float res =0.0;
+	float mean = simple_mat_mean(mat);
+	switch (mat->data_type)
+	{
+		case 1:
+			{
+				unsigned char* data = (unsigned char*) mat->data;
+				for(int i=0;i<rows*cols;i++)
+					res += pow(mean-data[i],2);
+				break;
+			}
+		case 2:
+		case 12:
+			{
+				unsigned short* data = (unsigned short*) mat->data;
+				for(int i=0;i<rows*cols;i++)
+					res += pow(mean-data[i],2);
+				break;
+			}
+		case 3:
+			{
+				unsigned int* data = (unsigned int*) mat->data;
+				for(int i=0;i<rows*cols;i++)
+					res += pow(mean-data[i],2);
+				break;
+			}
+		case 4:
+			{
+				float* data = (float*) mat->data;
+				for(int i=0;i<rows*cols;i++)
+					res += pow(mean-data[i],2);
+				break;
+			}
+	}
+	return res/rows/cols;
+}
+
 /**
  * @brief      function to delete the simple mat.
  * @param[in]  mat         simple mat.
