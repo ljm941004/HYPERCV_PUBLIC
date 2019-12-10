@@ -111,6 +111,9 @@ float simple_mat_mean(simple_mat mat);
 
 float simple_mat_variance(simple_mat mat);
 
+void simple_mat_grayscale_statistics(simple_mat mat , int* gray_statist);
+
+float simple_mat_entropy(simple_mat mat);
 
 /**
 * @brief      function to delete the simple mat.

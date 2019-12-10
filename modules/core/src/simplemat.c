@@ -328,6 +328,111 @@ float simple_mat_variance(simple_mat mat)
 	return res/rows/cols;
 }
 
+
+void simple_mat_grayscale_statistics(simple_mat mat , int* gray_statist)
+{
+	_assert(mat != NULL,"input mat cannot be NULL");
+	_assert(mat-> data_type == 1,"only use in unsigned char image");
+	_assert(sizeof(gray_statist)==256,"gray array error");
+
+	int rows = mat->rows;
+	int cols = mat->cols;
+	int channels = mat->channels;
+
+	simple_mat tmp ;
+
+	if(channels != 1)
+		tmp = sm_rgb2gray(mat,0);
+	else 
+		tmp = mat;
+
+	unsigned char* data = (unsigned char*)tmp->data;
+
+	for(int i=0;i<256;i++)
+		gray_statist[i] = 0;
+
+	for(int i=0; i<rows*cols; i++)
+		gray_statist[data[i]]++;
+}
+
+
+float simple_mat_contrast_ratio(simple_mat mat)
+{
+	_assert(mat != NULL,"input mat cannot be NULL");
+	_assert(mat-> data_type == 1,"only use in unsigned char image");
+
+	int rows = mat->rows;
+	int cols = mat->cols;
+	int channels = mat->channels;
+
+	simple_mat tmp ;
+
+	if(channels != 1)
+		tmp = sm_rgb2gray(mat,0);
+	else 
+		tmp = mat;
+
+	unsigned char* data = (unsigned char*)tmp->data;
+
+	float res =0.0;
+	for(int i=0;i<rows;i++)
+	{
+		for(int j=0;j<cols;j++)
+		{
+			if(j!=0)
+				res+=pow(data[i*cols+j]-data[i*cols+j-1],2);
+			if(j!=cols-1)
+				res+=pow(data[i*cols+j]-data[i*cols+j+1],2);
+			if(i!=0)
+				res+=pow(data[i*cols+j]-data[(i-1)*cols+j],2);
+			if(i!=rows-1)
+				res+=pow(data[i*cols+j]-data[(i+1)*cols+j],2);
+
+		}
+	}
+	
+	res = res/(4*(cols-2)*(rows-2)+3*2*(rows-2)+3*2*(cols-2)+2*4);
+	return res;
+}
+
+
+float simple_mat_entropy(simple_mat mat)
+{
+	_assert(mat != NULL,"input mat cannot be NULL");
+	_assert(mat-> data_type == 1,"only use in unsigned char image");
+
+	int rows = mat->rows;
+	int cols = mat->cols;
+	int channels = mat->channels;
+
+	simple_mat tmp ;
+
+	if(channels != 1)
+		tmp = sm_rgb2gray(mat,0);
+	else 
+		tmp = mat;
+
+	unsigned char* data = (unsigned char*)tmp->data;
+
+	float res =0.0;
+
+	int gray_statist[256]={0};
+	int * gray_s = gray_statist;
+
+	simple_mat_grayscale_statistics(mat,gray_s);
+
+	for(int i=0;i<256;i++)
+	{
+		if(gray_statist[i]!=0)
+		{
+			float temp = (float)gray_statist[i]/rows/cols;
+			res = res - temp*(log(temp)/log(2.0));
+		}
+	}
+
+	return res;
+}
+
 /**
  * @brief      function to delete the simple mat.
  * @param[in]  mat         simple mat.
