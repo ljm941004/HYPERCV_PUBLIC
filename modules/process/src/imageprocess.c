@@ -469,3 +469,73 @@ void simple_mat_transport(simple_mat res,simple_mat src)
 
 }
 
+simple_mat simple_mat_addition_uchar(simple_mat mat1, simple_mat mat2)
+{
+	_assert(mat1->data!=NULL&&mat2->data!=NULL,"input mat cannot be empty");
+	_assert(mat1->channels == mat2->channels,"input mat channels error");
+
+	int rows,cols;
+	int channels = mat1->channels;
+	
+	if(mat1->rows>=mat2->rows)
+		rows = mat2->rows;
+	else
+		rows = mat1->rows;
+
+	if(mat1->cols>=mat2->cols)
+		cols = mat2->cols;
+	else
+		cols = mat1->cols;
+
+	simple_mat dst = simple_mat_copy(mat1);
+
+	//todo fix only uchar
+	unsigned char* data1 = (unsigned char*)mat1->data;
+	unsigned char* data2 = (unsigned char*)mat2->data;
+	unsigned char* dst_data = (unsigned char*)dst->data;
+
+	for(int i=0;i<rows;i++)
+	{
+		for(int j=0;j<cols;j++)
+		{			
+			dst_data[i*cols+j] = data1[i*cols+j]+data2[i*cols+j];
+		}
+	}
+
+	return dst;
+}
+
+simple_mat simple_mat_addition_float(simple_mat mat1, simple_mat mat2)
+{
+	_assert(mat1->data!=NULL&&mat2->data!=NULL,"input mat cannot be empty");
+	_assert(mat1->channels == mat2->channels,"input mat channels error");
+
+	int rows,cols;
+	int channels = mat1->channels;
+	
+	if(mat1->rows>=mat2->rows)
+		rows = mat2->rows;
+	else
+		rows = mat1->rows;
+
+	if(mat1->cols>=mat2->cols)
+		cols = mat2->cols;
+	else
+		cols = mat1->cols;
+
+	simple_mat dst = simple_mat_copy(mat1);
+
+	float* data1 = (float*)mat1->data;
+	float* data2 = (float*)mat2->data;
+	float* dst_data = (float*)dst->data;
+
+	for(int i=0;i<rows;i++)
+	{
+		for(int j=0;j<cols;j++)
+		{			
+			dst_data[i*cols+j] = data1[i*cols+j]+data2[i*cols+j];
+		}
+	}
+
+	return dst;
+}

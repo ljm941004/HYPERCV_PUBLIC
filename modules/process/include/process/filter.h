@@ -4,7 +4,7 @@
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
 
-void hypercv_filter2D(simple_mat src, simple_mat dst, unsigned char* kernel, int k_rows, int k_cols, int border_type);
+void hypercv_filter2D(simple_mat src, simple_mat dst, float* kernel, int k_rows, int k_cols, int border_type);
 
 void hypercv_medianblur(simple_mat dst_mat, simple_mat src_mat, int size);
 
