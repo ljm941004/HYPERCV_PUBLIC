@@ -10,4 +10,5 @@
 #include "HisEqualization.h"
 #include "cem.h"
 #include "shapematch.h"
+#include "dft.h"
 

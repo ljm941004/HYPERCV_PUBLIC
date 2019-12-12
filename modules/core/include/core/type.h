@@ -189,3 +189,9 @@ static unsigned char saturate_cast_float2uchar(float value)
 #define RESPONSE_LENGTH      109
 
 #endif /* SURF_CONSTANTS_H */
+
+
+/////////////////////////////
+#ifndef PI 
+#define PI 3.1415926
+#endif
