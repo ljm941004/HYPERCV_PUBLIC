@@ -27,6 +27,47 @@ static unsigned char median_member(unsigned char* array,int size)
 	return array[size/2]; 
 }
 
+/**            
+ * @brief      function used when border_type == PERFCV_BORDER_CONSTANT
+ * @param[in]  src_mat    input mat.
+ * @param[in]  dst_mat    border mat
+ * @param[in]  top        top border.
+ * @param[in]  bottom     bottom border. 
+ * @param[in]  left       left border.
+ * @param[in]  right      right border.
+ * @param[in]  value      const value of border.
+**/
+static void hypercv_make_const_border(simple_mat src, simple_mat dst, int top, int bottom, int left, int right, int border_type, unsigned char value)
+{
+	_assert(src !=NULL,"INPUT MAT CANNOT BE NULL");
+	int src_rows = src->rows;
+	int src_cols = src->cols;
+	int dst_rows = dst->rows;
+	int dst_cols = dst->cols;
+	int channels = src->channels;
+
+	unsigned char* src_data = (unsigned char*)src->data;
+	unsigned char* dst_data = (unsigned char*)dst->data;
+
+	for(int i=0;i<dst_rows;i++)
+	{
+		for(int j=0;j<dst_cols;j++)
+		{
+			if(i-top<0||i-top>=src_rows||j-left<0||j-left>=src_cols)
+			{
+				for(int m=0;m<channels;m++)
+					dst_data[i*dst_cols*channels+j*channels+m] = value;
+			}
+			else{
+			
+				for(int m=0; m<channels; m++)
+					dst_data[i*dst_cols*channels+j*channels+m] = src_data[(i-top)*src_cols*channels+(j-left)*channels+m];
+			}
+		}
+	}
+
+}
+
 //////////////////////////////////////////////////////////////////////
 //                                                                  //
 //                     public function                              //
@@ -81,15 +122,14 @@ void hypercv_filter2D(simple_mat src, simple_mat dst, float* kernel, int k_rows,
 	}
 }
 
-void hypercv_medianblur(simple_mat dst_mat, simple_mat src_mat, int size)
+void hypercv_medianblur(simple_mat src_mat, simple_mat dst_mat, int size)
 {
 	_assert(!src_mat,"input mat can not be NULL");
+	_assert(size%2==1,"size should be odd number");
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
 	int data_type = src_mat->data_type;
 	int channels = src_mat->channels;
-	if(dst_mat == NULL)
-		dst_mat = create_simple_mat(rows,cols,data_type,channels);
 
 	unsigned char* src_data = (unsigned char*) src_mat->data;
 	unsigned char* dst_data = (unsigned char*) dst_mat->data;
@@ -101,12 +141,47 @@ void hypercv_medianblur(simple_mat dst_mat, simple_mat src_mat, int size)
 		{
 			if((i-size/2)>=0&&(i+size/2)<rows&&(j-size/2)>=0&&(j+size/2)<cols)
 			{
-				for(int m = -size/2;m<size/2;m++)
-					for(int n = -size/2; n<size/2;n++)
+				for(int m = -size/2;m<=size/2;m++)
+					for(int n = -size/2; n<=size/2;n++)
 						arr[(m+size/2)*size+n+size/2] = src_data[(i+m)*cols+j+n];
-
 				dst_data[i*cols+j] = median_member(arr,size); 
 			}
+			else 
+				dst_data[i*cols+j] = src_data[i*cols+j];
+		}
+	}
+}
+
+void hypercv_meanblur(simple_mat src_mat, simple_mat dst_mat, int size)
+{
+	_assert(!src_mat,"input mat can not be NULL");
+	int rows = src_mat->rows;
+	int cols = src_mat->cols;
+	int data_type = src_mat->data_type;
+	int channels = src_mat->channels;
+
+	unsigned char* src_data = (unsigned char*) src_mat->data;
+	unsigned char* dst_data = (unsigned char*) dst_mat->data;
+	unsigned char* arr = (unsigned char*) malloc(size*size*sizeof(char));
+
+	for(int i=0;i<rows;i++)
+	{
+		for(int j=0;j<cols;j++)
+		{
+		    int sum=0,num=0;
+			for(int m = -size/2;m<size/2;m++)
+			{
+				for(int n = -size/2; n<size/2;n++)
+				{
+					if((i+m)>=0&&(i+m)<rows&&(j+m)>=0&&(j+m)<cols)
+					{
+						sum+= src_data[(i+m)*cols+j+m];
+						num++;	 
+					}
+
+				}
+			}
+			dst_data[i*cols+j] = sum/num;
 		}
 	}
 }
@@ -392,17 +467,30 @@ void hypercv_integral(simple_mat src, simple_mat dst)
 }
 
 
-simple_mat hypercv_copy_make_border(simple_mat src, int left, int right, int up, int down, int border_type)
+simple_mat hypercv_copy_make_border(simple_mat src, int top, int bottom, int left, int right, int border_type, unsigned char value)
 {
 	_assert(src!=NULL,"INPUT MAT CANNOT BE NULL");
-	_assert(left>=0&&right>=0&&up>=0&&down>=0,"new border >=0");
+	_assert(left>=0&&right>=0&&top>=0&&bottom>=0,"new border >=0");
 	_assert(border_type == BORDER_REFLECT
 			||border_type == BORDER_REFLECT_101
 			||border_type == BORDER_REPLICATE
 			||border_type == BORDER_WRAP
 			||border_type == BORDER_CONSTANT ,"Unknown/unsupported border type" );
 
-	simple_mat dst = create_simple_mat(src->rows+up+down, src->cols+left+right, src->data_type, src->channels);
+	simple_mat dst;
+	if(top == 0 && left == 0 && bottom == 0 && right == 0)
+    {
+          dst = simple_mat_copy(src);
+		  return dst;
+    }
+    
+	dst = create_simple_mat(src->rows+top+bottom, src->cols+left+right, src->data_type, src->channels);
+
+	if(border_type == BORDER_CONSTANT)
+	{
+		hypercv_make_const_border(src, dst, top, bottom, left, right, border_type, value);
+		return dst;
+	}
 
 	int dst_rows = dst->rows;
 	int dst_cols = dst->cols;
@@ -421,7 +509,7 @@ simple_mat hypercv_copy_make_border(simple_mat src, int left, int right, int up,
 			int index_i;
 			int index_j;
 			index_j = hypercv_border_Interpolate(j-left,src_cols,border_type);
-			index_i = hypercv_border_Interpolate(i-up,src_rows,border_type);	
+			index_i = hypercv_border_Interpolate(i-top,src_rows,border_type);	
 			for(int m=0;m<channels;m++)
 				dst_data[i*dst_cols*channels+j*channels+m] = src_data[(index_i)*src_cols*channels+(index_j)*channels+m];
 		}

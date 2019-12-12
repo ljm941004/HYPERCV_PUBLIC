@@ -6,7 +6,7 @@
 
 void hypercv_filter2D(simple_mat src, simple_mat dst, float* kernel, int k_rows, int k_cols, int border_type);
 
-void hypercv_medianblur(simple_mat dst_mat, simple_mat src_mat, int size);
+void hypercv_medianblur(simple_mat src_mat, simple_mat dst_mat, int size);
 
 /**
  * @brief   User-callable function to create an unidimensional gaussian kernel.
@@ -42,4 +42,4 @@ void hypercv_gaussian_blur_with_kernel(simple_mat src_mat, simple_mat dst_mat, s
 void hypercv_integral(simple_mat src, simple_mat dst);
 
 
-simple_mat hypercv_copy_make_border(simple_mat src, int left, int right, int up, int down, int border_type);
+simple_mat hypercv_copy_make_border(simple_mat src, int top, int bottom, int left, int right, int border_type, unsigned char value);
