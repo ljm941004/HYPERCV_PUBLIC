@@ -318,6 +318,34 @@ hyper_mat hyper_mat_ushort2float(hyper_mat us_mat)
 	return dst;
 }
 
+simple_mat simple_mat_float2uchar(simple_mat src)
+{
+	_assert(src!=NULL,"input mat cannot be NULL");
+	_assert(src->data_type == 4,"input mat must be float");
+
+	simple_mat dst = create_simple_mat(src->rows,src->cols,1,src->channels);
+
+	int rows = src->rows;
+	int cols = src->cols;
+	int cn = src->channels;
+
+	float* src_data = (float*)src->data;
+	unsigned char* dst_data = (unsigned char*)dst->data;
+
+	float maxpix = 0.0;
+	for(int i=0;i<rows;i++)
+		for(int j=0;j<cols;j++)
+			maxpix = maxpix>src_data[i*cols+j]?maxpix:src_data[i*cols+j];
+
+	for(int i=0;i<rows;i++)
+		for(int j=0;j<cols;j++)
+			dst_data[i*cols+j] = (int)(src_data[i*cols+j]/maxpix*255);
+
+	return dst;
+}
+
+
+
 float hypercv_atof(const char *str)
 {
 	const char *p = str;
@@ -328,7 +356,7 @@ float hypercv_atof(const char *str)
 		sign = -1;
 		++p;
 	}
-	
+
 	else if (*p == '+')
 		++p;
 	int hasDot = 0,hasE = 0;

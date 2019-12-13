@@ -139,3 +139,20 @@ void sort_array_down_float(float* a, int n)
 			break;//若序列有序,则跳出排序即可
 	}
 }
+
+
+long int hypercv_factorial( int n )
+{
+	if( n < 0 )
+		return -1;
+
+	if(n<=10)
+		return hypercv_factorial_tab[n];
+
+	long int m = 1;
+	for(int i = 2 ; i <= n ; i++)
+	{
+		m *= i;
+	}
+	return m;
+}

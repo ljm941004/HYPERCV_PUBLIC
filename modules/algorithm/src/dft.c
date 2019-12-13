@@ -52,19 +52,12 @@ void hypercv_dft(simple_mat src, simple_mat re_mat, simple_mat im_mat)
 					temp = (float)i*x/(float)rows + (float)j*y/(float)cols;
 					re += src_data[x*cols+y]*cos(-2*PI*temp);
 					im += src_data[x*cols+y]*sin(-2*PI*temp);
-
-
 				}
-
 			}
 
 			re_data[i*cols+j] = re;
 			im_data[i*cols+j] = im;
-
 		}
-
-
-
 	}
 
 }

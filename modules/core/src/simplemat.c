@@ -157,6 +157,7 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 {
 	_assert(bmpName != NULL, "write bmp image path can not be NULL");
 	_assert(src_mat != NULL,"save mat can not be null");
+	_assert(src_mat->data_type == 1,"save mat only 0-255");
 
 	FILE *fp = fopen(bmpName, "wb");
 	_assert(fp != NULL,"save file can not open");

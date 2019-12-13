@@ -75,3 +75,5 @@ hyper_mat hyper_mat_ushort2float(hyper_mat us_mat);
  * @retval     dst        unsigned char image.
  **/
 hyper_mat hyper_mat_float2uchar(hyper_mat f_mat);
+
+simple_mat simple_mat_float2uchar(simple_mat src);
