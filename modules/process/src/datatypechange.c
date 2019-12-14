@@ -331,15 +331,14 @@ simple_mat simple_mat_float2uchar(simple_mat src)
 
 	float* src_data = (float*)src->data;
 	unsigned char* dst_data = (unsigned char*)dst->data;
-
+/*
 	float maxpix = 0.0;
 	for(int i=0;i<rows;i++)
 		for(int j=0;j<cols;j++)
 			maxpix = maxpix>src_data[i*cols+j]?maxpix:src_data[i*cols+j];
-
-	for(int i=0;i<rows;i++)
-		for(int j=0;j<cols;j++)
-			dst_data[i*cols+j] = (int)(src_data[i*cols+j]/maxpix*255);
+*/
+	for(int i=0;i<rows*cols*cn;i++)
+			dst_data[i] = HYPERCV_ROUND(src_data[i]);
 
 	return dst;
 }
