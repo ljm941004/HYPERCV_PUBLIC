@@ -56,7 +56,7 @@ void test_simple_mat_float2uchar()
 
 	simple_mat d = simple_mat_float2uchar(src_mat);
 
-	test_show_mat<unsigned char>((unsigned char*)src_mat->data,10,10,1);
+	test_show_mat<unsigned char>((unsigned char*)d->data,10,10,1);
 
 	test_delete_hyper_mat();
 

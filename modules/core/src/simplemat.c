@@ -163,7 +163,7 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 	_assert(fp != NULL,"save file can not open");
 	
 	simple_mat mat;
-	if(src_mat -> channels != 3)
+	if(src_mat -> channels == 1)
 		mat = sm_gray2rgb(src_mat);
 	else 
 		mat = src_mat;

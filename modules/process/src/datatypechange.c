@@ -338,8 +338,10 @@ simple_mat simple_mat_float2uchar(simple_mat src)
 			maxpix = maxpix>src_data[i*cols+j]?maxpix:src_data[i*cols+j];
 */
 	for(int i=0;i<rows*cols*cn;i++)
-			dst_data[i] = HYPERCV_ROUND(src_data[i]);
-
+	{
+		dst_data[i] = HYPERCV_ROUND(src_data[i])<=255?HYPERCV_ROUND(src_data[i]):255;
+		dst_data[i] = dst_data[i]>=0?dst_data[i]:0;
+	}
 	return dst;
 }
 
