@@ -324,11 +324,11 @@ simple_mat simple_mat_float2uchar(simple_mat src)
 	_assert(src->data_type == 4,"input mat must be float");
 
 	simple_mat dst = create_simple_mat(src->rows,src->cols,1,src->channels);
-
+printf("debug1\n");
 	int rows = src->rows;
 	int cols = src->cols;
 	int cn = src->channels;
-
+printf("debug2\n");
 	float* src_data = (float*)src->data;
 	unsigned char* dst_data = (unsigned char*)dst->data;
 /*
@@ -342,6 +342,7 @@ simple_mat simple_mat_float2uchar(simple_mat src)
 		dst_data[i] = HYPERCV_ROUND(src_data[i])<=255?HYPERCV_ROUND(src_data[i]):255;
 		dst_data[i] = dst_data[i]>=0?dst_data[i]:0;
 	}
+printf("debug3\n");
 	return dst;
 }
 

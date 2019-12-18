@@ -31,9 +31,11 @@ static simple_mat t =NULL;
 	template<typename type>
 static void test_setup(int rows, int cols, int channels, int data_type)
 {
-	src_mat = create_simple_mat(rows, cols, channels, data_type);
-	hypercv_dataInit<type>((unsigned char*)src_mat->data,cols,rows,channels);
-	dst_mat = create_simple_mat(rows, cols, channels, data_type);
+printf("debug2\n");
+	src_mat = create_simple_mat(rows, cols, data_type,channels);
+printf("debug2\n");
+	hypercv_dataInit<type>((type*)src_mat->data,cols,rows,channels);
+	dst_mat = create_simple_mat(rows, cols, data_type, channels);
 }
 
 static void test_delete_simple_mat()
@@ -64,17 +66,20 @@ static void test_simple_mat_copy()
 
 void test_sm_save_2_bmp()
 {
-	test_setup<unsigned char>(1080,1080,3,1);
+	
+	test_setup<float>(100,100,3,4);
+	t = simple_mat_float2uchar(src_mat);
+	smwrite_bmp("test.bmp",t); 
+
 //	simple_mat t = smread_bmp("q.bmp");
 
 //	sm_save_2_bmp("test.bmp",t);
 //	sm2bmp("test.bmp",src_mat,NULL);
 //	test_show_mat<unsigned char>((unsigned char*)src_mat->data,1080,1080,1);
-/*
-	printf("%d",m->rgbBlue);
-	printf("%d",m->rgbGreen);
-	printf("%d",m->rgbRed);
-*/	test_delete_simple_mat;
+/*;
+*/
+
+	test_delete_simple_mat;
 }
 
 

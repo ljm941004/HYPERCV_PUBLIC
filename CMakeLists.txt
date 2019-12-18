@@ -34,6 +34,7 @@ add_custom_target(
     @echo "[make] testing core..."
     &
     #bin/testcore --gtest_filter=CORE.WRITEHDR
+	#bin/testcore --gtest_filter=CORE.SMSAVE
 	#bin/testcore --gtest_filter=CORE.HMREAD_WITH_HDR
 	#bin/testprocess --gtest_filter=PROCESS.PYRAMIDUP
 	#bin/testprocess --gtest_filter=PROCESS.MAKEBORDER

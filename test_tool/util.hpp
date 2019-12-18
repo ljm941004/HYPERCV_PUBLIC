@@ -8,36 +8,28 @@
  *                 data init 
  *------------------------------------------*/
 
-template<typename type>
+	template<typename type>
 void hypercv_dataInit(type* mat, int samples, int lines, int bands)
 {
-	int i,j,k;
-	for(k=0; k<bands; k++)
+	int datasize = samples*lines*bands;
+	for(int i=0;i<datasize;i++)
 	{
-		for(i=0; i<lines; i++)
-		{
-			for(j=0; j<samples; j++)
-			{
-				double data = drand48();
-				data = data * 13.27680f - 1.63840f;
+		double data = drand48();
+		data = data * 13.27680f - 1.63840f;
 
-				data = fabs(data);
-				
-				data = (type)(data);
+		data = fabs(data);
 
-				mat[lines*samples*k+ i*samples + j]=data;
-			}
+		data = (type)(data);
 
-		}
+		mat[i]=data;
 	}
-
 }
 
 /*--------------------------------
  *         result confirm
  * ------------------------------*/
 
-template<typename type>
+	template<typename type>
 int hypercv_mat_compare(type * mat1,type* mat2, int samples, int lines,int bands)
 {
 	int flag = 0;
