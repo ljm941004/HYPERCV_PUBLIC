@@ -170,6 +170,8 @@ static unsigned char saturate_cast_float2uchar(float value)
 
 	if(value>255)
 		return 255;
+	else if(value<0)
+		return 0;
 
 	int ivalue =  HYPERCV_ROUND(value);
 	return (unsigned char)ivalue;

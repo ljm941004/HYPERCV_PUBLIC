@@ -37,7 +37,6 @@ void hyper_mat_pca(hyper_mat bip_mat,hyper_mat res_bip_mat,int iteration)
 {
 
 	_assert(bip_mat->data_type = 4,"only use in float");
-printf("debug1\n");
 	int samples = bip_mat->samples;
 	int lines = bip_mat->lines;
 	int bands = bip_mat->bands;
@@ -45,38 +44,31 @@ printf("debug1\n");
 	simple_mat mean_mat = create_simple_mat(lines,samples,4,1);
 	hyper_mat_mean(bip_mat,mean_mat);
 //计算自相关矩阵
-printf("debug2\n");
 	simple_mat reshape_mat = reshape_hypermat_2_simplemat(bip_mat,samples*lines,bands);
 	simple_mat cov_mat = create_simple_mat(bands,bands,4,1);
 	cal_covariance_matrix(reshape_mat,mean_mat,cov_mat);
 
-printf("debug3\n");
 	simple_mat temp = simple_mat_copy(cov_mat);
 	simple_mat q_mat = create_simple_mat(cov_mat->rows,cov_mat->cols,4,1);
 	simple_mat r_mat = create_simple_mat(cov_mat->rows,cov_mat->cols,4,1); 
 
-printf("debug4\n");
 	for(int i=0;i<iteration;i++)//迭代qr分解
 	{
 		matrix_QR_float((float*)temp->data,(float*)q_mat->data,(float*)r_mat->data,bands);
-printf("debug5\n");
 		MulMatrix_float((float*)q_mat->data,(float*)r_mat->data,(float*)temp->data,bands,bands,bands);
 	}
 	//计算特征值，特征向量
 	float* evalue = (float*)malloc(bands*sizeof(float));
 
-printf("debug6\n");
 	for(int k=0;k<bands;k++)
 		evalue[k] = ((float*)temp->data)[k*bands+k];
 	//特征值排序
 	sort_array_down_float(evalue,bands);
 
-printf("debug7\n");
 	simple_mat eigen_vector = simple_mat_copy(q_mat);
 
 	cal_eigen_vector_float((float*)cov_mat->data,(float*)eigen_vector->data,evalue,bands,bands);
 
-printf("debug8\n");
 	MulMatrix_float((float*)reshape_mat->data,(float*)eigen_vector->data,(float*)res_bip_mat->data,samples*lines,bands,bands);
 
 	/*

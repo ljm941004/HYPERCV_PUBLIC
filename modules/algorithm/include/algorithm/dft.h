@@ -190,3 +190,7 @@ static const int optimalDFTSizeTab[] = {
 int getOptimalDFTSize( int size0 );
 
 void hypercv_dft(simple_mat src, simple_mat re_mat, simple_mat im_mat);
+
+void hypercv_dft_frespectrum(simple_mat src, simple_mat dst);
+
+void hypercv_idft(simple_mat re_mat ,simple_mat im_mat, simple_mat dst_mat);

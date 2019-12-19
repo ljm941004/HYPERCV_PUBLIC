@@ -31,9 +31,7 @@ static simple_mat t =NULL;
 	template<typename type>
 static void test_setup(int rows, int cols, int channels, int data_type)
 {
-printf("debug2\n");
 	src_mat = create_simple_mat(rows, cols, data_type,channels);
-printf("debug2\n");
 	hypercv_dataInit<type>((type*)src_mat->data,cols,rows,channels);
 	dst_mat = create_simple_mat(rows, cols, data_type, channels);
 }

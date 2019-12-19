@@ -234,10 +234,11 @@ void smwrite_bmp(char *bmpName, simple_mat src_mat)
 	
 	fclose(fp);
 
-	if(mat != src_mat)
+/*	if(mat != src_mat)
 	{
 		delete_simple_mat(mat);
 	}
+	*/
 }
 
 
