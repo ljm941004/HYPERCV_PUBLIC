@@ -8,3 +8,4 @@
 #include "colortransform.h"
 #include "filter.h"
 #include "pyramid.h"
+#include "dwt.h"
