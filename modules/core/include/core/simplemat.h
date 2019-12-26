@@ -98,14 +98,14 @@ void sm_save_2_bmp(const char* path, simple_mat mat);
 * @param[in]  bmpName     bmp image path.
 * @retval     simple_mat. 
 **/
-simple_mat smread_bmp(char *bmpName);
+simple_mat smread_bmp(const char *bmpName);
 
 /**
 * @brief      function to save the simple mat into bmp image.
 * @param[in]  bmpName     save path.
 * @param[in]  mat         simple mat.
 **/
-void smwrite_bmp(char *bmpName, simple_mat src_mat);
+void smwrite_bmp(const char *bmpName, simple_mat src_mat);
 
 float simple_mat_mean(simple_mat mat);
 

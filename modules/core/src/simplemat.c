@@ -116,7 +116,7 @@ simple_mat simple_mat_copy(simple_mat mat)
 * @param[in]  bmpName     bmp image path.
 * @retval     simple_mat. 
 **/
-simple_mat smread_bmp(char *bmpName)
+simple_mat smread_bmp(const char *bmpName)
 {
 	_assert(bmpName!=NULL,"read bmp file name can not be NULL");
 	
@@ -153,7 +153,7 @@ simple_mat smread_bmp(char *bmpName)
 * @param[in]  bmpName     save path.
 * @param[in]  mat         simple mat.
 **/
-void smwrite_bmp(char *bmpName, simple_mat src_mat)
+void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 {
 	_assert(bmpName != NULL, "write bmp image path can not be NULL");
 	_assert(src_mat != NULL,"save mat can not be null");

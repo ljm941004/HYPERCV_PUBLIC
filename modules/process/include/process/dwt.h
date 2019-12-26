@@ -10,7 +10,7 @@
 /* 小波变换信息描述结构体 */
 typedef struct wtInfo {
 	int wave_type;	// 小波类型
-	int ext_type;		// 延拓方式
+	int border_type;		// 延拓方式
 	int wt_level;		// 变换级数
 	double * c;		// 变换结果，小波系数，[An, Hn, Vn, Dn, H(n-1), V(n-1), D(n-1)..., H1, V1, D1]
 	int * s;			// 变换结果描述，一个2*n数组，其中n = WTLevel+2；

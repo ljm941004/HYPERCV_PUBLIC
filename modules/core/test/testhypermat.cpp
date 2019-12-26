@@ -86,20 +86,20 @@ static void test_hyper_mat_copy()
 
 static void test_write_hdr()
 {
-	char* image_path = "image";
+    const char* image_path = "image";
 	int samples = 10;
 	int lines = 10;
 	int bands = 10;
 	int data_type = 1;
-	char* interleave = "bsq";
+	const char* interleave = "bsq";
 
 	writehdr(image_path, samples, lines, bands, data_type, interleave,NULL );
 }
 
 static void test_hmread_with_hdr()
 {
-	char* image_path = "/home/ljm/image1.raw";
-	char* hdr_path = "/home/ljm/image1.hdr";
+	const char* image_path = "/home/ljm/image1.raw";
+	const char* hdr_path = "/home/ljm/image1.hdr";
 	hyper_mat t = hmread_with_hdr(image_path,hdr_path);	
 	hmwrite("test",t);
 }
