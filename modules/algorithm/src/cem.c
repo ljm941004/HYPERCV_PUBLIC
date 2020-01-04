@@ -8,7 +8,8 @@
 
 simple_mat hyper_mat_cem(hyper_mat bsq_mat, float* spectral)
 {
-	//todo fix float
+	_assert(bsq_mat->data_type == 4,"input mat data_type is float");
+	_assert(cmpstr(bsq_mat->interleave,"bsq"),"input mat interleave is bsq");
 	int samples = bsq_mat -> samples;
 	int lines = bsq_mat -> lines;
 	int bands = bsq_mat -> bands;
@@ -18,8 +19,6 @@ simple_mat hyper_mat_cem(hyper_mat bsq_mat, float* spectral)
 	simple_mat t = create_simple_mat(src->cols,src->rows,data_type,1);
     simple_mat_transport(t,src);
 	simple_mat corrmat = create_simple_mat(bands,bands,data_type,1);
-
-	//todo fix only float
 	
 	float* src_data = (float*)src->data;
 	float* t_data = (float*)t->data;
@@ -37,9 +36,7 @@ simple_mat hyper_mat_cem(hyper_mat bsq_mat, float* spectral)
 	float* fir3 = (float*)malloc(sizeof(float));
 
 	MulMatrix_float(fir1,invdata,spectral,bands,bands,1);
-
 	MulMatrix_float(fir2,spectral,invdata,1,bands,bands);
-
 	MulMatrix_float(fir3,fir2,spectral,1,bands,1);
 
 	for(int i=0;i<bands;i++)
@@ -59,9 +56,4 @@ simple_mat hyper_mat_cem(hyper_mat bsq_mat, float* spectral)
 	free(fir3);fir3 = NULL;
 	return res;
 }
-
-
- 
-
-
 

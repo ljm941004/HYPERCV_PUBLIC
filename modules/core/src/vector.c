@@ -241,7 +241,7 @@ int hypercv_vector_rm_at(const hypercv_vector cv, size_t index)
 	return hypercv_vector_rm(cv, iter);  
 }  
  
-void cv_info(const hypercv_vector cv)  
+void hypercv_vector_info(const hypercv_vector cv)  
 {  
 	printf("\n\ntot :%s : %d\n", __func__, (int)(cv->cv_tot_len));  
 	printf("len :%s : %d\n",     __func__, (int)cv->cv_len);  
@@ -249,7 +249,7 @@ void cv_info(const hypercv_vector cv)
 	return;  
 }  
  
-void cv_print(const hypercv_vector cv)  
+void hypercv_vector_print(const hypercv_vector cv)  
 {  
 	int num;  
 	hypercv_iterator iter;  

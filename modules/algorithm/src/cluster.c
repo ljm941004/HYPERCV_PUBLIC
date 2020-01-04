@@ -30,6 +30,7 @@ void hypercv_k_means(simple_mat src, int kind)
 	int cols = src->cols;
 	
 
+//	k_means_point_init();
 
 
 }
