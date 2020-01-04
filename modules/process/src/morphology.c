@@ -135,7 +135,15 @@ void hypercv_expend(simple_mat mat, simple_mat dst_mat, S_2D s)
 	}
 }
 
-//todo fix 
+
+/**
+ * @brief      simple_mat open with 2D struct.
+ * @param[in]  src           2d image mat.
+ * @param[in]  dst           2d image mat.
+ * @param[in]  S_2D          2D struct.
+ * @param[in]  iterations    iteration times.
+ * @retval     simple_mat    2d image mat.
+ **/ 
 void hypercv_open(simple_mat src, simple_mat dst, S_2D kernel, int iterations)
 {
 	_assert(src!= NULL,"input mat cannot be NULL");
@@ -156,6 +164,14 @@ void hypercv_open(simple_mat src, simple_mat dst, S_2D kernel, int iterations)
 	}
 }
 
+/**
+ * @brief      simple_mat close with 2D struct.
+ * @param[in]  src           2d image mat.
+ * @param[in]  dst           2d image mat.
+ * @param[in]  S_2D          2D struct.
+ * @param[in]  iterations    iteration times.
+ * @retval     simple_mat    2d image mat.
+ **/ 
 void hypercv_close(simple_mat src, simple_mat dst, S_2D kernel, int iterations)
 {
 	_assert(src!= NULL,"input mat cannot be NULL");
