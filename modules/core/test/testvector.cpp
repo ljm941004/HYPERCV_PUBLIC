@@ -9,17 +9,13 @@
 
 void test_hypercv_vector()
 {
-	hypercv_vector cv = hypercv_vector_create(5);
+	hypercv_vector cv = hypercv_vector_create(sizeof(int));
 
-	POINT T1,T2,T3,T4,T5;
-	hypercv_vector_pushback(cv,&T1);
-	hypercv_vector_pushback(cv,&T2);
-	hypercv_vector_pushback(cv,&T3);
-	hypercv_vector_pushback(cv,&T4);
-	hypercv_vector_pushback(cv,&T5);
+	int temp = 4;
 
-	hypercv_vector_info(cv);
-	hypercv_vector_destroy(cv);
+	hypercv_vector_pushback(cv,&temp);
+
+	hypercv_vector_print(cv);
 
 }
 
