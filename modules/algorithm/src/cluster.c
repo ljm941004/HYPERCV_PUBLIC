@@ -6,7 +6,7 @@
 #include "precomp.h"
 
 
-static void k_means_point_init(simple_mat mat, int k, hypercv_vector point_vector)
+static void k_means_point_init(simple_mat mat, int k) //hypercv_vector point_vector)
 {
 //todo;
 

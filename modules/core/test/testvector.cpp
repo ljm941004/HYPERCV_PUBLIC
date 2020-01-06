@@ -1,26 +1,14 @@
 /*************************************************************************
-	> File Name: modules/core/test/testvector.cpp
+	> File Name: testvector.cpp
 	> Author: ljm
 	> Mail: jimin@iscas.ac.cn 
-	> Created Time: 2020年01月04日 星期六 22时55分28秒
+	> Created Time: 2020年01月06日 星期一 20时57分35秒
  ************************************************************************/
 #include "precomp.h"
 
-
-void test_hypercv_vector()
+void testvector()
 {
-	hypercv_vector cv = hypercv_vector_create(sizeof(int));
+	int* v = NULL;
 
-	int temp = 4;
-
-	hypercv_vector_pushback(cv,&temp);
-
-	hypercv_vector_print(cv);
-
+	vector_push_back(v,3);
 }
-
-TEST(CORE,VECTOR)
-{
-	test_hypercv_vector();
-}
-

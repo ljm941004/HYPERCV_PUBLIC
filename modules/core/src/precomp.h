@@ -5,6 +5,7 @@
 #include <math.h>
 #include <string.h>
 #include <stdint.h>
+#include <stddef.h> /* for size_t */
 
 #ifndef gdal_switch 
 #define gdal_switch 0
