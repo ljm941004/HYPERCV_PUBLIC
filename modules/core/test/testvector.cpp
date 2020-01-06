@@ -9,12 +9,12 @@
 
 void test_hypercv_vector()
 {
-	hypercv_vector cv = hypercv_vector_create(sizeof(int));
+	hypercv_vector cv = hypercv_vector_create(sizeof(float));
 
-	int temp = 4;
-
+	float temp = 10.0;
+	float te = 1.0;
 	hypercv_vector_pushback(cv,&temp);
-
+	hypercv_vector_pushback(cv,&te);
 	hypercv_vector_print(cv);
 
 }

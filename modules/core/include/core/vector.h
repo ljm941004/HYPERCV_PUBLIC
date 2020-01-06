@@ -14,10 +14,20 @@
 # define EXPANED_VAL 1
 # define REDUSED_VAL 2
 
+# define VECTOR_MEMBER_CHAR    1
+# define VECTOR_MEMBER_SHORT   2
+# define VECTOR_MEMBER_INT     3
+# define VECTOR_MEMBER_FLOAT   4
+# define VECTOR_MEMBER_DOUBLE  5
+# define VECTOR_MEMBER_POINT   7
+# define VECTOR_MEMBER_DEFAULT 0
+
+
+
 typedef void *hypercv_iterator;
 typedef struct _hypercv_vector *hypercv_vector;
 
-hypercv_vector hypercv_vector_create(const size_t size                           );
+hypercv_vector hypercv_vector_create(const size_t vector_member_type                  );
 void      hypercv_vector_destroy  (const hypercv_vector cv                            );
 size_t    hypercv_vector_length   (const hypercv_vector cv                            );
 int       hypercv_vector_pushback (const hypercv_vector cv, void *memb                );

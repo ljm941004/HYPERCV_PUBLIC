@@ -25,13 +25,38 @@ struct _hypercv_vector
 	size_t cv_len, cv_tot_len, cv_size;
 };
  
-hypercv_vector hypercv_vector_create(const size_t size)
+hypercv_vector hypercv_vector_create(const size_t vector_member_type)
 {
 	hypercv_vector cv = (hypercv_vector)malloc(sizeof (struct _hypercv_vector));
  
 	if (!cv) return NULL;
- 
-	cv->cv_pdata = malloc(MIN_LEN * size);
+
+	int member_size;
+	switch(vector_member_type)
+	{	
+		case VECTOR_MEMBER_DEFAULT:
+			member_size = sizeof(int);
+			break;
+	    case VECTOR_MEMBER_CHAR:
+		    member_size = sizeof(char);
+			break;
+		case VECTOR_MEMBER_SHORT:
+			member_size = sizeof(short);
+			break;
+		case VECTOR_MEMBER_INT:
+			member_size = sizeof(int);
+			break;
+		case VECTOR_MEMBER_FLOAT:
+			member_size = sizeof(float);
+			break;
+		case VECTOR_MEMBER_DOUBLE:
+			member_size = sizeof(double);
+			break;
+		case VECTOR_MEMBER_POINT:
+			member_size = sizeof(POINT);
+			break;
+	}
+	cv->cv_pdata = malloc(MIN_LEN * member_size);
  
 	if (!cv->cv_pdata)
 	{
@@ -39,7 +64,7 @@ hypercv_vector hypercv_vector_create(const size_t size)
 		return NULL;
 	}
  
-	cv->cv_size = size;
+	cv->cv_size = member_size;
 	cv->cv_tot_len = MIN_LEN;
 	cv->cv_len = 0;
  
@@ -251,7 +276,7 @@ void hypercv_vector_info(const hypercv_vector cv)
  
 void hypercv_vector_print(const hypercv_vector cv)  
 {  
-	int num;  
+	float num;  
 	hypercv_iterator iter;  
  
 	if (hypercv_vector_length(cv) == 0)  
@@ -262,7 +287,7 @@ void hypercv_vector_print(const hypercv_vector cv)
 		iter = hypercv_vector_next(cv, iter))   
 	{  
 		hypercv_vector_iter_val(cv, iter, &num);  
-		printf("var:%d at:%d\n", num,(int)hypercv_vector_iter_at(cv, iter));  
+		printf("var:%f at:%d\n", num,(int)hypercv_vector_iter_at(cv, iter));  
 	}  
  
 	return;  
