@@ -7,6 +7,8 @@ typedef struct point
 	int y;
 }POINT;
 
+typedef POINT* pPOINT;
+
 typedef struct polar_point
 {
 	float rho;

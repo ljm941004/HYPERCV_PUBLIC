@@ -4,6 +4,7 @@
 #include <math.h>
 #include <string.h>
 #include <stdint.h>
+#include <time.h>
 #include "core/core.h"
 #include "process/process.h"
 #include "algorithm/Algorithm.h"

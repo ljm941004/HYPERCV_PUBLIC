@@ -1,11 +1,5 @@
-
-#ifndef VECTOR_H_
-#define VECTOR_H_
-
-#include <stddef.h> /* for size_t */
-#include <stdlib.h> /* for malloc/realloc/free */
-#include <assert.h> /* for assert */
-
+#pragma once
+#include <assert.h>
 /**
  * @brief vector_set_capacity - For internal use, sets the capacity variable of the vector
  * @param vec - the vector
@@ -145,7 +139,6 @@ do { \
  * @param value - the value to add 
  * @return void
  */
-#ifdef LOGARITHMIC_GROWTH
 
 #define vector_push_back(vec, value) \
 do {                                                        \
@@ -156,9 +149,7 @@ do {                                                        \
 	vec[vector_size(vec)] = (value);                        \
 	vector_set_size((vec), vector_size(vec) + 1);           \
 } while(0)
-
-#else
-
+/*
 #define vector_push_back(vec, value) \
 do {                                              \
 	size_t __cap = vector_capacity(vec);          \
@@ -168,7 +159,7 @@ do {                                              \
 	vec[vector_size(vec)] = (value);              \
 	vector_set_size((vec), vector_size(vec) + 1); \
 } while(0)
+*/
 
-#endif
+//#define vector_copy(vec, res) \
 
-#endif
