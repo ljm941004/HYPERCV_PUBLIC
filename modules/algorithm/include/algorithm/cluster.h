@@ -1,11 +1,7 @@
 /*************************************************************************
-	> File Name: highgui/include/highgui/color.h
+	> File Name: modules/algorithm/include/algorithm/cluster.h
 	> Author: ljm
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
 
-
-
-void draw_POINT(simple_mat mat, POINT* v, int point_num, RGB_data color, int size);
-
-
+void hypercv_k_means(simple_mat src, POINT* v1, int kind, int iter_threshold);

@@ -40,5 +40,6 @@ add_custom_target(
 	#bin/testprocess --gtest_filter=PROCESS.MAKEBORDER
 	#bin/testprocess --gtest_filter=PROCESS.SIMPLE_MAT_F2UC
 	#bin/testalgorithm --gtest_filter=ALGORITHM.DFT
-	bin/testhighgui --gtest_filter=HIGHGUI.DRAWPOINT
+	bin/testalgorithm --gtest_filter=ALGORITHM.KMEANS
+	#bin/testhighgui --gtest_filter=HIGHGUI.DRAWPOINT
 )

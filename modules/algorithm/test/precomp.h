@@ -20,4 +20,5 @@ extern"C"
 #include "core/core.h"
 #include "process/process.h"
 #include "algorithm/Algorithm.h"
+#include "highgui/hypercv_gui.h"
 }

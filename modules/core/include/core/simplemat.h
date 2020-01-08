@@ -46,9 +46,9 @@ typedef struct tagRGBQUAD
 	
 typedef struct
 {
-	unsigned char b;
-	unsigned char g;
 	unsigned char r;
+	unsigned char g;
+	unsigned char b;
 }RGB_data;
 
 /**

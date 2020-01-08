@@ -29,17 +29,20 @@ void hypercv_k_means(simple_mat src, POINT* v1, int kind, int iter_threshold)
 	int rows = src->rows;
 	int cols = src->cols;
 
-	POINT*v2; 
-	int* num;
+	POINT* v2 = (POINT*)malloc(kind*sizeof(POINT)); 
 
+	int* num = (int*)malloc(kind*sizeof(int));	
 	srand((unsigned)time(NULL));
 	for(int i=0;i<kind;i++)
 	{
 		int x = rand()%cols;
 		int y = rand()%rows;
-		POINT tmp2 = {0,0};
-		vector_push_back(v2,tmp2);
-		vector_push_back(num,0);
+		v1[i].x = x;
+		v1[i].y = y;
+		v2[i].x = 0;
+		v2[i].y = 0;
+		num[i]=0;
+        printf("%d,%d\n",v1[i].x,v1[i].y);
 	}
 
 	unsigned char* data = (unsigned char*)mat->data;
@@ -56,12 +59,13 @@ void hypercv_k_means(simple_mat src, POINT* v1, int kind, int iter_threshold)
 				if(data[i*cols+j]!=0)
 				{
 					int min_index=0;
-					int min_distance= rows*rows+cols*cols;
+					int min_distance = rows*rows+cols*cols;
 					for(int k=0;k<kind;k++)
 					{
 						POINT tmp = v1[i]; 
 						if(distance(tmp,i,j)<min_distance)
 						{
+					printf("%d\n",min_index);
 							min_distance = distance(tmp,i,j);
 							min_index = k;
 						}
@@ -81,14 +85,16 @@ void hypercv_k_means(simple_mat src, POINT* v1, int kind, int iter_threshold)
 			}
 			if(v2[k].x - v1[k].x>iter_threshold||v2[k].y-v1[k].y>iter_threshold)
 				flag = 1;
-			v1[k] = v2[k];
+			v1[k].x = v2[k].x;
+			v1[k].y = v2[k].y;
 			v2[k].x = 0;
 			v2[k].y = 0;
+			num[k]=0;
+            printf("%d,%d\n",v1[k].x,v1[k].y);
 		}
-
 		if(flag == 0)
 			break;
 	}
-	vector_free(v2);
-	vector_free(num);
+	free(v2);
+	free(num);
 }

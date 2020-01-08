@@ -7,7 +7,7 @@
 
 
 
-void draw_POINT(simple_mat mat , POINT* v,RGB_data color, int size)
+void draw_POINT(simple_mat mat , POINT* v, int point_num, RGB_data color, int size)
 {
 	_assert( mat!=NULL, "input mat cannot be NULL");
 	_assert(mat->data_type == 1, "input mat data type == 1");
@@ -23,13 +23,11 @@ void draw_POINT(simple_mat mat , POINT* v,RGB_data color, int size)
 
 	unsigned char* data = (unsigned char*)rgb_mat->data;
 
-	POINT* iter = v;
-
-    for(int k=0;k<vector_size(v);k++)
+    for(int k=0;k<point_num;k++)
 	{
 		
-		int x = iter->x;
-		int y = iter->y;
+		int x = v[k].x;
+		int y = v[k].y;
 		for(int i=-size/2;i<=size/2;i++)
 		{
 			for(int j=-size/2;j<=size/2;j++)
@@ -43,7 +41,6 @@ void draw_POINT(simple_mat mat , POINT* v,RGB_data color, int size)
 			}
 
 		}
-		iter++;
 	}
 
 }

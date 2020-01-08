@@ -1,32 +1,28 @@
 /*************************************************************************
-	> File Name: highgui/test/testdraw.cpp
+	> File Name: modules/algorithm/test/testcluster.cpp
 	> Author: ljm
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
 
 #include "precomp.h"
 
-void testdrawpoint()
+void testkmeans()
 {
 	simple_mat mat = smread_bmp("/home/ljm/test.bmp");
-	
-	POINT A = {10,10};
-	POINT B = {70,70};
-	POINT C = {50,50};
 
 	POINT* v;
-	v = &A;
-
-//	vector_push_back(v,A);
-//	vector_push_back(v,B);
-//	vector_push_back(v,C);
-	
+	POINT t;
+	vector_push_back(v,t);
+	vector_push_back(v,t);
+	vector_push_back(v,t);
+	vector_push_back(v,t);
+	hypercv_k_means(mat,v,4,1);
 	RGB_data color = {255,0,0};
-	draw_POINT(mat,v,1,color,4);
+	draw_POINT(mat,v,4,color,10);
 	smwrite_bmp("res.bmp",mat);
 }
 
-TEST(HIGHGUI,DRAWPOINT)
+TEST(ALGORITHM,KMEANS)
 {
-	testdrawpoint();
+   testkmeans();
 }
