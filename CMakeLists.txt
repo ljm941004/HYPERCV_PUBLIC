@@ -33,12 +33,12 @@ add_custom_target(
     run
     @echo "[make] testing core..."
     &
-	bin/testcore --gtest_filter=CORE.VECTOR
+	#bin/testcore --gtest_filter=CORE.VECTOR
 	#bin/testcore --gtest_filter=CORE.SMSAVE
 	#bin/testcore --gtest_filter=CORE.HMREAD_WITH_HDR
 	#bin/testprocess --gtest_filter=PROCESS.PYRAMIDUP
 	#bin/testprocess --gtest_filter=PROCESS.MAKEBORDER
 	#bin/testprocess --gtest_filter=PROCESS.SIMPLE_MAT_F2UC
 	#bin/testalgorithm --gtest_filter=ALGORITHM.DFT
-	#bin/testhighgui --gtest_filter=HIGHGUI.SMSHOW
+	bin/testhighgui --gtest_filter=HIGHGUI.DRAWPOINT
 )

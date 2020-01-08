@@ -143,6 +143,17 @@ simple_mat smread_bmp(const char *bmpName)
 	fread(pBmpBuf, 1, lineByte * bmpHeight, fp);
 	fclose(fp);
 
+	for(int i=0;i<bmpHeight/2;i++)
+	{
+		for(int j=0;j<lineByte;j++)
+		{
+			int tmp = pBmpBuf[i*lineByte+j];
+			pBmpBuf[i*lineByte+j] = pBmpBuf[(bmpHeight-i-1)*lineByte+j];
+			pBmpBuf[(bmpHeight-i-1)*lineByte+j]=tmp;
+
+		}
+	}
+
 	simple_mat res = create_simple_mat_with_data(bmpHeight,bmpWidth,1,3,pBmpBuf);
 
 	return res;
@@ -171,7 +182,6 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 	unsigned char* imgBuf = (unsigned char*) mat->data;
 	int width = mat -> cols;
 	int height = mat -> rows;
-	int data_type = mat -> data_type;
 
 	// default 24 ,also can use in byte
 	int biBitCount = 24;
@@ -216,6 +226,18 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 		fwrite(pColorTable,sizeof(RGBQUAD),256,fp);
 	}
 */
+
+
+	for(int i=0;i<height/2;i++)
+	{
+		for(int j=0;j<lineByte;j++)
+		{
+			int tempbuf = imgBuf[i*lineByte+j];
+			imgBuf[i*lineByte+j] = imgBuf[(height-i-1)*lineByte+j];
+			imgBuf[(height-i-1)*lineByte+j] = tempbuf;
+		}
+	}
+
 	if(lineByte>width*biBitCount/8)
 	{
 		unsigned char* tmp = (unsigned char*)malloc(height*lineByte);
