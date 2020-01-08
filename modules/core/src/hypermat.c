@@ -1,5 +1,10 @@
+/*************************************************************************
+	> File Name: hypermat.c
+	> Author: ljm
+	> Mail: jimin@iscas.ac.cn 
+	> Created Time: 2020年01月08日 星期三 22时35分36秒
+ ************************************************************************/
 #include "precomp.h"
-#include <errno.h>
 
 #ifndef MAXLINE
 #define MAXLINE 10000 //each line no more than 10000 words

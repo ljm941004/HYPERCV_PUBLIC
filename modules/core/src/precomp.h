@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stddef.h> /* for size_t */
+#include <errno.h>
 
 #ifndef gdal_switch 
 #define gdal_switch 0
