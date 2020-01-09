@@ -9,3 +9,4 @@
 #include "filter.h"
 #include "pyramid.h"
 #include "dwt.h"
+#include "threshold.h" 
