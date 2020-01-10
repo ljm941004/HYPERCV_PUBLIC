@@ -122,3 +122,31 @@ simple_mat sm_rgb2gray(simple_mat rgb_image, int method)
 	return gray_image;
 }
 
+
+void sm_bgr2rgb(simple_mat src_mat, simple_mat dst_mat)
+{
+	_assert(src_mat!=NULL&&dst_mat !=NULL, "input mat cannot be NULL");
+	_assert(src_mat->data_type == 1, "input mat data type == 1");
+	_assert(src_mat->rows == dst_mat->rows&&src_mat->cols == dst_mat->cols&&src_mat->channels==dst_mat->channels,"src,dst size should be equal");
+	_assert(src_mat->channels == 3,"input mat channels == 3");
+
+	int rows,cols;
+	rows = src_mat->rows;
+	cols = src_mat->cols;
+	int channels = src_mat->channels;
+	unsigned char* src_data = (unsigned char*)src_mat->data;
+	unsigned char* dst_data = (unsigned char*)dst_mat->data;
+
+	for(int i=0;i<rows;i++)
+	{
+		for(int j=0;j<cols;j++)
+		{
+			for(int t=0;t<channels;t++)
+			{
+				dst_data[i*cols*channels+j*channels] = src_data[i*cols*channels+j*channels+2];
+				dst_data[i*cols*channels+j*channels+1] = src_data[i*cols*channels+j*channels+1];
+				dst_data[i*cols*channels+j*channels+2] = src_data[i*cols*channels+j*channels];
+			}
+		}
+	}
+}

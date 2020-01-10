@@ -105,7 +105,7 @@ simple_mat simple_mat_copy(simple_mat mat)
 	char * src_data = (char*)mat->data;
 	char * dst_data = (char*)dst->data;
 	
-	memcpy(dst_data,src_data,rows*cols*elemsize);
+	memcpy(dst_data,src_data,rows*cols*elemsize*channels);
 	
 	return dst;
 }
@@ -128,6 +128,7 @@ simple_mat smread_bmp(const char *bmpName)
 	BmpInfoHeader head;
 	fread(&head, sizeof(BmpInfoHeader), 1, fp);
  
+	int channels = 3;
 	int bmpWidth = head.biWidth;
 	int bmpHeight = head.biHeight;
 	int biBitCount = head.biBitCount;
@@ -145,12 +146,15 @@ simple_mat smread_bmp(const char *bmpName)
 
 	for(int i=0;i<bmpHeight/2;i++)
 	{
-		for(int j=0;j<lineByte;j++)
+		for(int j=0;j<bmpWidth;j++)
 		{
-			int tmp = pBmpBuf[i*lineByte+j];
-			pBmpBuf[i*lineByte+j] = pBmpBuf[(bmpHeight-i-1)*lineByte+j];
-			pBmpBuf[(bmpHeight-i-1)*lineByte+j]=tmp;
-
+			for(int k=0;k<channels;k++)
+			{
+				int tmp = pBmpBuf[i*lineByte+j*channels+k];
+			pBmpBuf[i*lineByte+j*channels+k] = pBmpBuf[(bmpHeight-i-1)*lineByte+j*channels+2-k];
+			pBmpBuf[(bmpHeight-i-1)*lineByte+j*channels+2-k]=tmp;
+			}
+	
 		}
 	}
 
@@ -182,8 +186,8 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 	unsigned char* imgBuf = (unsigned char*) mat->data;
 	int width = mat -> cols;
 	int height = mat -> rows;
-
-	// default 24 ,also can use in byte
+    int channels = 3;
+ 	// default 24 ,also can use in byte
 	int biBitCount = 24;
  
 	int colorTablesize = 0;
@@ -230,11 +234,15 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 
 	for(int i=0;i<height/2;i++)
 	{
-		for(int j=0;j<lineByte;j++)
+		for(int j=0;j<width;j++)
 		{
-			int tempbuf = imgBuf[i*lineByte+j];
-			imgBuf[i*lineByte+j] = imgBuf[(height-i-1)*lineByte+j];
-			imgBuf[(height-i-1)*lineByte+j] = tempbuf;
+			for(int k=0;k<channels;k++)
+			{
+			int tempbuf = imgBuf[i*lineByte+j*channels+k];
+			imgBuf[i*lineByte+j*channels+k] = imgBuf[(height-i-1)*lineByte+j*channels+2-k];
+			imgBuf[(height-i-1)*lineByte+j*channels+2-k] = tempbuf;
+		}
+
 		}
 	}
 
