@@ -166,6 +166,7 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 {
 	_assert(image_path != NULL, "image path or hdr path can not be NULL");
+	_assert(hdr_path != NULL, "image path or hdr path can not be NULL");
 
 	FILE* image_fp = NULL;
 	FILE* hdr_fp = NULL;
@@ -233,7 +234,7 @@ hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int b
 	fread(data, elem_size, data_size, image_fp);
 	fclose(image_fp);
 
-	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data,NULL);
+	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data, NULL);
 
 	return mat;
 }

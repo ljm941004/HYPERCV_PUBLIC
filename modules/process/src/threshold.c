@@ -120,17 +120,17 @@ void hypercv_threshold_tozero_inv(simple_mat src_mat, simple_mat dst_mat, int th
 			dst_data[i] = 0;
 	}	
 }
+
 void hypercv_threshold_mask(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value){}
 
 void hypercv_threshold_otsu(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value){}
-void hypercv_threshold_triangle(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value){}
 
+void hypercv_threshold_triangle(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value){}
 
 void hypercv_threshold(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value, int type)
 {
 	_assert(src_mat!=NULL,"input mat cannot be NULL");
 	_assert(dst_mat!=NULL,"output mat cannot be NULL");
-
 	_assert(type == THRESH_BINARY ||
 			type == THRESH_BINARY_INV||
 			type == THRESH_TRUNC||
