@@ -29,10 +29,14 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/test_tool)
 
 add_subdirectory(modules)
 
+SET(CMAKE_BUILD_TYPE "Debug")
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
 add_custom_target(
-    run
-    @echo "[make] testing core..."
-    &
+	run
+	@echo "[make] testing core..."
+	&
 	#bin/testcore --gtest_filter=CORE.VECTOR
 	#bin/testcore --gtest_filter=CORE.SMSAVE
 	#bin/testcore --gtest_filter=CORE.HMREAD_WITH_HDR
@@ -42,5 +46,5 @@ add_custom_target(
 	#bin/testalgorithm --gtest_filter=ALGORITHM.DFT
 	#bin/testalgorithm --gtest_filter=ALGORITHM.OTSU
 	#bin/testhighgui --gtest_filter=HIGHGUI.DRAWPOINT
-    bin/testhighgui --gtest_filter=HIGHGUI.DRAWLINE
-)
+	bin/testhighgui --gtest_filter=HIGHGUI.DRAWLINE
+	)

@@ -28,8 +28,8 @@ void testvector()
 		 printf("%d,%d\n",x,y);
 		 vector_push_back(v,tmp);
 	}
-	printf("%d\n",vector_capacity(ss));
-	printf("%d\n",vector_size(ss));
+	printf("%zu\n",vector_capacity(ss));
+	printf("%zu\n",vector_size(ss));
 	t(v);
 
 

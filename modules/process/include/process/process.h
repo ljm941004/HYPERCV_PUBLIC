@@ -10,3 +10,4 @@
 #include "pyramid.h"
 #include "dwt.h"
 #include "threshold.h" 
+#include "gradient.h"
