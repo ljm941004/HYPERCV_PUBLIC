@@ -452,6 +452,20 @@ void hyper_mat_showinfo(hyper_mat mat)
 }
 
 /**
+* @brief      function to return if mat is empty.
+* @param[in]  mat         hyper mat.
+* @retval     if empty. 
+**/
+int hyper_mat_empty(hyper_mat mat)
+{
+	if(mat == NULL)
+		return 1;
+	if(mat->data == NULL)
+		return 1;
+	return 0;
+}
+
+/**
  * @brief      function to delete the hyper mat.
  * @param[in]  mat         hyper mat.
  **/
@@ -474,7 +488,4 @@ void delete_hyper_mat(hyper_mat mat)
 		mat = NULL;
 	}
 }
-
-
-
 

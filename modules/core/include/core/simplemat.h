@@ -107,12 +107,39 @@ simple_mat smread_bmp(const char *bmpName);
 **/
 void smwrite_bmp(const char *bmpName, simple_mat src_mat);
 
+/**
+* @brief      function calculate mean value of simple mat.
+* @param[in]  mat         simple mat.
+* @retval     mean value. 
+**/
 float simple_mat_mean(simple_mat mat);
 
+/**
+* @brief      function calculate variance of simple mat.
+* @param[in]  mat         simple mat.
+* @retval     variance. 
+**/
 float simple_mat_variance(simple_mat mat);
 
+/**
+* @brief      function calculate contrast ratio of simple mat.
+* @param[in]  mat         simple mat.
+* @retval     variance. 
+**/
+float simple_mat_contrast_ratio(simple_mat mat);
+
+/**
+* @brief      function to statist grayscale.
+* @param[in]  mat              simple mat.
+* @param[in]  gray_statist     grayscale.
+**/
 void simple_mat_grayscale_statistics(simple_mat mat , int* gray_statist);
 
+/**
+* @brief      function calculate entropy of simple mat.
+* @param[in]  mat         simple mat.
+* @retval     entropy. 
+**/
 float simple_mat_entropy(simple_mat mat);
 
 /**

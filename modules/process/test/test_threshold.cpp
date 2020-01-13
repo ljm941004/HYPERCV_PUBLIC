@@ -9,10 +9,15 @@
 void test_otsu_threshold()
 {
 	simple_mat mat = smread_bmp("/home/ljm/test.bmp");
-	printf("%d", hypercv_otsu_threshold(mat));
+	simple_mat d = sm_rgb2gray(mat,0);
+	simple_mat c = simple_mat_copy(d);
+	hypercv_threshold(d,c,0,255,8);
+	simple_mat dst = sm_gray2rgb(c);
+	smwrite_bmp("res.bmp",dst);
 	
 }
-TEST(ALGORITHM,OTSU)
+
+TEST(PROCESS,OTSU)
 {
 	test_otsu_threshold();
 }

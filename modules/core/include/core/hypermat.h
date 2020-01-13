@@ -103,6 +103,13 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 hyper_mat hyper_mat_copy(hyper_mat mat);
 
 /**
+* @brief      function to return if mat is empty.
+* @param[in]  mat         hyper mat.
+* @retval     if empty. 
+**/
+int hyper_mat_empty(hyper_mat mat);
+
+/**
  * @brief      function to show information the hyper mat.
  * @param[in]  mat         hyper mat.
  **/
