@@ -8,15 +8,12 @@
 
 void hypercv_laplacian(simple_mat src, simple_mat dst, int k_size, int border_type)
 {
-	_assert(src!=NULL, "input mat can not be NULL");
-
+	_assert(src!=NULL&&dst!=NULL, "input mat can not be NULL");
+	_assert(k_size>0,"kernel size > 0");
 	int cols = src->cols;
 	int rows = src->rows;
 	int channels = src->channels;
 	int data_type = src->data_type;
-
-	if(dst == NULL)
-		dst = create_simple_mat(rows,cols,data_type,channels);
 
 	float kernel[3][3] = {0.f,1.f,0.f,1.f,-4.f,1.f,0.f,1.f,0.f};
 

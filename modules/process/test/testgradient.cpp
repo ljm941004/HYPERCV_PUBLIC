@@ -49,7 +49,21 @@ void test_sobel()
 	simple_mat dst_mat  = sm_gray2rgb(dsm);
 	smwrite_bmp("t.bmp",dst_mat);
 }
-TEST(ALGORITHM,SOBEL)
+
+void test_laplacian()
+{
+ 	src_mat = smread_bmp("/home/ljm/test.bmp");
+	simple_mat sm = sm_rgb2gray(src_mat,0);
+	simple_mat dsm = create_simple_mat(sm->rows,sm->cols,sm->data_type,sm->channels);
+	hypercv_laplacian(sm, dsm, 1, 1);
+	simple_mat dst_mat  = sm_gray2rgb(dsm);
+	smwrite_bmp("t.bmp",dst_mat);
+}
+TEST(PROCESS,LAPLACIAN)
+{
+	test_laplacian();
+}
+TEST(PROCESS,SOBEL)
 {
 	test_sobel();
 }

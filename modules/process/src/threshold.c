@@ -6,6 +6,73 @@
  ************************************************************************/
 #include "precomp.h"
 
+
+static int otsuThreshold(simple_mat img)
+{
+	
+	int T = 0;//阈值
+	int height = img->rows;
+	int width  = img->cols;
+	int channels  = img->channels;
+	int step      = width*channels;
+	unsigned char* data  = (unsigned char*)img->data;
+	double gSum0;//第一类灰度总值
+	double gSum1;//第二类灰度总值
+	double N0 = 0;//前景像素数
+	double N1 = 0;//背景像素数
+	double u0 = 0;//前景像素平均灰度
+	double u1 = 0;//背景像素平均灰度
+	double w0 = 0;//前景像素点数占整幅图像的比例为ω0
+	double w1 = 0;//背景像素点数占整幅图像的比例为ω1
+	double u = 0;//总平均灰度
+	double tempg = -1;//临时类间方差
+	double g = -1;//类间方差
+	double Histogram[256]={0};// = new double[256];//灰度直方图
+	double N = width*height;//总像素数
+	for(int i=0;i<height;i++)
+	{//计算直方图
+		for(int j=0;j<width;j++)
+		{
+			double temp =data[i*step + j * 3] * 0.114 + data[i*step + j * 3+1] * 0.587 + data[i*step + j * 3+2] * 0.299;
+			temp = temp<0? 0:temp;
+			temp = temp>255? 255:temp;
+			Histogram[(int)temp]++;
+		} 
+	}
+	//计算阈值
+	for (int i = 0;i<256;i++)
+	{
+		gSum0 = 0;
+		gSum1 = 0;
+		N0 += Histogram[i];			
+		N1 = N-N0;
+		if(0==N1)break;//当出现前景无像素点时，跳出循环
+		w0 = N0/N;
+		w1 = 1-w0;
+		for (int j = 0;j<=i;j++)
+		{
+			gSum0 += j*Histogram[j];
+		}
+		u0 = gSum0/N0;
+		for(int k = i+1;k<256;k++)
+		{
+			gSum1 += k*Histogram[k];
+		}
+		u1 = gSum1/N1;
+		//u = w0*u0 + w1*u1;
+		g = w0*w1*(u0-u1)*(u0-u1);
+		if (tempg<g)
+		{
+			tempg = g;
+			T = i;
+		}
+	}
+	return T; 
+}
+
+
+
+
 void hypercv_threshold_binary(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value)
 {
 	_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
