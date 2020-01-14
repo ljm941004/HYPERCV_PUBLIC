@@ -6,6 +6,13 @@
  ************************************************************************/
 #include "precomp.h"
 
+/**            
+ * @brief      laplacian kernel to blur image.
+ * @param[in]  src                 simple mat.        
+ * @param[in]  dst                 dst mat.
+ * @param[in]  k_size              laplacian kernel size.
+ * @param[in]  border_type         type of border.
+ **/
 void hypercv_laplacian(simple_mat src, simple_mat dst, int k_size, int border_type)
 {
 	_assert(src!=NULL&&dst!=NULL, "input mat can not be NULL");

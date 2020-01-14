@@ -63,7 +63,7 @@ void test_simple_mat_float2uchar()
 }
 
 
-TEST(PROCESS,SIMPLE_MAT_F2UC)
+TEST(PROCESS,FLOAT2UCHAR)
 {
 	test_simple_mat_float2uchar();
 }

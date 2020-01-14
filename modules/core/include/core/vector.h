@@ -161,5 +161,5 @@ do {                                              \
 } while(0)
 */
 
-//#define vector_copy(vec, res) \
+ 
 

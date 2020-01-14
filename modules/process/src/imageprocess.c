@@ -471,7 +471,7 @@ void simple_mat_transport(simple_mat res,simple_mat src)
 
 simple_mat simple_mat_addition_uchar(simple_mat mat1, simple_mat mat2)
 {
-	_assert(mat1->data!=NULL&&mat2->data!=NULL,"input mat cannot be empty");
+	_assert(mat1!=NULL&&mat2!=NULL,"input mat cannot be empty");
 	_assert(mat1->channels == mat2->channels,"input mat channels error");
 
 	int rows,cols;
@@ -487,27 +487,23 @@ simple_mat simple_mat_addition_uchar(simple_mat mat1, simple_mat mat2)
 	else
 		cols = mat1->cols;
 
-	simple_mat dst = simple_mat_copy(mat1);
+	simple_mat dst = create_simple_mat(mat1->rows,mat1->cols,3,channels);
 
-	//todo fix only uchar
 	unsigned char* data1 = (unsigned char*)mat1->data;
 	unsigned char* data2 = (unsigned char*)mat2->data;
-	unsigned char* dst_data = (unsigned char*)dst->data;
+	int* dst_data = (int*)dst->data;
 
 	for(int i=0;i<rows;i++)
-	{
-		for(int j=0;j<cols;j++)
-		{			
-			dst_data[i*cols+j] = data1[i*cols+j]+data2[i*cols+j];
-		}
-	}
+		for(int j=0;j<cols;j++)	
+			for(int k=0;k<channels;k++)
+				dst_data[i*cols*channels+j*channels+k] = data1[i*cols*channels+j*channels+k]+data2[i*cols*channels+j*channels+k];
 
 	return dst;
 }
 
 simple_mat simple_mat_addition_float(simple_mat mat1, simple_mat mat2)
 {
-	_assert(mat1->data!=NULL&&mat2->data!=NULL,"input mat cannot be empty");
+	_assert(mat1!=NULL&&mat2!=NULL,"input mat cannot be empty");
 	_assert(mat1->channels == mat2->channels,"input mat channels error");
 
 	int rows,cols;
@@ -530,12 +526,9 @@ simple_mat simple_mat_addition_float(simple_mat mat1, simple_mat mat2)
 	float* dst_data = (float*)dst->data;
 
 	for(int i=0;i<rows;i++)
-	{
 		for(int j=0;j<cols;j++)
-		{			
-			dst_data[i*cols+j] = data1[i*cols+j]+data2[i*cols+j];
-		}
-	}
+			for(int k=0;k<channels;k++)
+				dst_data[i*cols*channels+j*channels+k] = data1[i*cols*channels+j*channels+k]+data2[i*cols*channels+j*channels+k];
 
 	return dst;
 }

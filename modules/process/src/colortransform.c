@@ -18,8 +18,27 @@
 #endif
 
 
+simple_mat hypercv_colortransform(simple_mat src_mat, int method)
+{
+	_assert(src_mat != NULL,"input mat cannot be NULL");
+	_assert(method == COLOR_BGR2RGB||
+			method == COLOR_RGB2BGR||
+			method == COLOR_BGR2GRAY||
+			method == COLOR_RGB2GRAY||
+			method == COLOR_GRAY2BGR||
+			method == COLOR_GRAY2RGB,"cvtcolor method error");
+	switch(method)
+	{
+//todo 是否保留。。。
 
-/**
+
+	}
+
+
+
+}
+
+/*
 * @brief      change binary image 2 rgb image.
 * @param[in]  binary_image       binary image.
 * @retval     rgb image.
@@ -123,6 +142,11 @@ simple_mat sm_rgb2gray(simple_mat rgb_image, int method)
 }
 
 
+/**
+* @brief      change bgr image 2 rgb image .
+* @param[in]  bgr image.
+* @param[in]  rgb image.
+**/
 void sm_bgr2rgb(simple_mat src_mat, simple_mat dst_mat)
 {
 	_assert(src_mat!=NULL&&dst_mat !=NULL, "input mat cannot be NULL");

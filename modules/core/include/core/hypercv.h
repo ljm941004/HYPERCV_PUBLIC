@@ -6,3 +6,4 @@
 #include "core.h"
 #include "process.h"
 #include "Algorithm.h"
+#include "hypercv_gui.h"

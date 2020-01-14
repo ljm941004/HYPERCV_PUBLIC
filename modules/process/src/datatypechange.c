@@ -318,6 +318,11 @@ hyper_mat hyper_mat_ushort2float(hyper_mat us_mat)
 	return dst;
 }
 
+/**
+ * @brief      data type change .
+ * @param[in]  f_mat      float image.
+ * @retval     dst        unsigned char image.
+ **/
 simple_mat simple_mat_float2uchar(simple_mat src)
 {
 	_assert(src!=NULL,"input mat cannot be NULL");
@@ -343,8 +348,11 @@ simple_mat simple_mat_float2uchar(simple_mat src)
 	return dst;
 }
 
-
-
+/**
+ * @brief      str change 2 float.
+ * @param[in]  str        string.
+ * @retval     float      string 2 float.
+ **/
 float hypercv_atof(const char *str)
 {
 	const char *p = str;
@@ -408,17 +416,4 @@ float hypercv_atof(const char *str)
 	return sign * (integerPart * pow(10, exponential) + decimalPart);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 

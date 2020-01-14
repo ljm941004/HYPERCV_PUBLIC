@@ -42,9 +42,9 @@ add_custom_target(
 	#bin/testcore --gtest_filter=CORE.HMREAD_WITH_HDR
 	#bin/testprocess --gtest_filter=PROCESS.PYRAMIDUP
 	#bin/testprocess --gtest_filter=PROCESS.LAPLACIAN
-	bin/testprocess --gtest_filter=PROCESS.OTSU
+	#bin/testprocess --gtest_filter=PROCESS.OTSU
 	#bin/testprocess --gtest_filter=PROCESS.MAKEBORDER
-	#bin/testprocess --gtest_filter=PROCESS.SIMPLE_MAT_F2UC
+	bin/testprocess --gtest_filter=PROCESS.FLOAT2UCHAR
 	#bin/testalgorithm --gtest_filter=ALGORITHM.DFT
 	#bin/testalgorithm --gtest_filter=ALGORITHM.OTSU
 	#bin/testhighgui --gtest_filter=HIGHGUI.DRAWPOINT

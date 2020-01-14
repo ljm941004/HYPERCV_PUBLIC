@@ -214,3 +214,18 @@ enum{
     THRESH_OTSU       = 8,
     THRESH_TRIANGLE   = 16
 };
+
+
+
+/////////////////////////////////////////////////////////
+//               colortransform  type                  //
+/////////////////////////////////////////////////////////
+
+enum{   
+	COLOR_BGR2RGB =4,
+    COLOR_RGB2BGR =COLOR_BGR2RGB,
+	COLOR_BGR2GRAY =6,
+    COLOR_RGB2GRAY =7,
+    COLOR_GRAY2BGR =8,
+    COLOR_GRAY2RGB =COLOR_GRAY2BGR
+};
