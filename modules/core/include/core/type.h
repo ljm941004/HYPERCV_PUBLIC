@@ -12,6 +12,11 @@
 #  endif
 #endif
 
+#if defined(WIN32) && !defined(_cplusplus)
+#define inline _inline
+#endif
+
+
 #define ALLOC_BYTE_ALIGNMENT 64
 
 #define BYTE_ALIGNMENT(address, alignment) \

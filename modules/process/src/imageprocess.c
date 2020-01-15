@@ -417,9 +417,9 @@ void hyper_mat_2_simple_mat(hyper_mat src_mat, simple_mat dst_mat, int band)
 	dst_mat -> data_type = src_mat -> data_type;
     
 	int elemsize = get_elemsize(src_mat->data_type);
-	char* data = src_mat->data+(samples*lines*(band-1)*elemsize);
+	char* data = (char*)src_mat->data+(samples*lines*(band-1)*elemsize);
 
-	memcpy(dst_mat->data,(void*)data,samples*lines*elemsize);
+	memcpy((char*)dst_mat->data,(char*)data,samples*lines*elemsize);
 }
 
 
