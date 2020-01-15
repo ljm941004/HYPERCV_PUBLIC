@@ -1,11 +1,16 @@
-AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/core/src/" HYPERMAT_src)
-AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/process/src/" HYPERMAT_src)
-AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/highgui/src/" HYPERMAT_src)
-AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/algorithm/src/" HYPERMAT_src)
+AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/core/src/" HYPERCV_src)
+AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/process/src/" HYPERCV_src)
+AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/highgui/src/" HYPERCV_src)
+AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/algorithm/src/" HYPERCV_src)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/core/include" "${CMAKE_CURRENT_SOURCE_DIR}/process/include"  "${CMAKE_CURRENT_SOURCE_DIR}/algorithm/include" "${CMAKE_CURRENT_SOURCE_DIR}/highgui/include")
 
-ADD_LIBRARY(hypercv SHARED ${HYPERMAT_src})
+ADD_LIBRARY(hypercv SHARED ${HYPERCV_src})
+ADD_LIBRARY(hypercv_static STATIC ${HYPERCV_src})
 
+set_target_properties(hypercv_static PROPERTIES OUTPUT_NAME "hypercv")
+
+set_target_properties(hypercv PROPERTIES CLEAN_DIRECT_OUTPUT 1)
+set_target_properties(hypercv_static PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 
 find_package(GTest)
 
@@ -48,6 +53,6 @@ if(X11_FOUND)
 	target_link_libraries(hypercv X11)
 endif()
 
-install(TARGETS hypercv DESTINATION lib)
+install(TARGETS hypercv hypercv_static DESTINATION lib)
 file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h" "highgui/include/highgui/*.h")
 install(FILES ${hdrs} DESTINATION include)
