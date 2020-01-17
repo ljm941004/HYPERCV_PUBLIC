@@ -5,11 +5,40 @@
  ************************************************************************/
 #include "precomp.h"
 
-#if X11_switch
 void smshow(const char* display_name, simple_mat mat)
 {
 	_assert(mat!=NULL,"show mat != NULL");
 
+#if(use_SDL)
+
+	Uint32 flags;
+	SDL_Surface *screen, *image;
+	int depth,done,dirty;
+	SDL_Event event;
+	SDL_Rect src = {0, 0, 0, 0};
+	int xhop, yhop;
+	SDL_TimerID death = NULL;
+
+	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER)<0)
+	{
+		fprintf(stderr, "couldn't initialize SDL: %s\n", SDL_GetError());
+		return ;
+	}
+
+	death = SDL_AddTimer(99999, trigger_next, NULL);
+
+	flags = SDL_SWSURFACE;
+	image = SDL_CreateRGBSurfaceFrom((void*)mat->data, mat->cols, mat->rows, get_elemsize(mat->data_type)*mat->channels, get_elemsize(mat->data_type)*mat->channels*mat->cols,0xff0000,0x00ff00,0x0000ff,0);
+	if(image == NULL)
+	{
+		SDL_Log("Couldn't convert Mat to Surface.");
+		return;
+	}
+//todo fix
+
+
+
+#elif X11_switch
 	XEvent xev;
 	Visual *visual;
 	XImage *ximage;
@@ -67,11 +96,11 @@ void smshow(const char* display_name, simple_mat mat)
 	{
 		XPutImage (display, window, gc, ximage, 0, 0, 0, 0, WIDTH, HEIGHT);
 		XFlush(display);
-//todo fix bug		
+		//todo fix bug		
 	}
+#endif
 }
 
-#endif
 
 
 

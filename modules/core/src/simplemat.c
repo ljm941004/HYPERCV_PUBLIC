@@ -139,7 +139,6 @@ simple_mat smread_bmp(const char *bmpName)
 		RGBQUAD *pColorTable = (RGBQUAD *)malloc(sizeof(RGBQUAD) * 1024);
 		fread(pColorTable, sizeof(RGBQUAD), 256, fp);
 	}
-
 	unsigned char* pBmpBuf = (unsigned char *)malloc(sizeof(unsigned char) * lineByte * bmpHeight);
 	fread(pBmpBuf, 1, lineByte * bmpHeight, fp);
 	fclose(fp);

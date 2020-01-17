@@ -53,6 +53,13 @@ if(X11_FOUND)
 	target_link_libraries(hypercv X11)
 endif()
 
+find_package(SDL_image)
+if(SDL_image_FOUND)
+    ADD_DEFINITIONS(-use_SDL=1)
+ 	include_directories(${SDL_image_INCLUDE_DIRS})
+ 	target_link_libraries(hypercv SDL_image)
+endif()
+
 install(TARGETS hypercv hypercv_static DESTINATION lib)
 file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h" "highgui/include/highgui/*.h")
 install(FILES ${hdrs} DESTINATION include)

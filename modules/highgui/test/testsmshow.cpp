@@ -6,11 +6,12 @@
 #include "precomp.h"
 using namespace std;
 
-simple_mat src = NULL;
 
 void test_smshow()
 {
-	src = smread_bmp("/home/ljm/test.bmp");
+printf("debug\n");
+simple_mat	src = smread_bmp("/home/ljm/test.bmp");
+printf("debug\n");
 	smshow("test",src);
 }
 TEST(HIGHGUI,SMSHOW)

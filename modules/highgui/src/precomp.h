@@ -23,10 +23,22 @@
 #define X11_switch 0
 #endif
 
+
+#ifndef use_SDL
+#define use_SDL 0
+#endif
+
+#if use_SDL 
+#include <SDL.h>
+#include <SDL_image.h>
+#endif
+
 #if X11_switch
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #endif
+
+
 
 #include "core/core.h"
 #include "process/process.h"

@@ -17,7 +17,7 @@ typedef struct BmpFileHeader
 	unsigned short	bfReserved1;
 	unsigned short	bfReserved2;
 	unsigned int	bfOffBits;
-}BmpFileHeader;
+}__attribute__((packed)) BmpFileHeader;
  
 /*bmp info header*/
 typedef struct BmpInfoHeader
@@ -33,7 +33,7 @@ typedef struct BmpInfoHeader
 	int 			biYPelsPerMeter;
 	unsigned int	biClrUsed;
 	unsigned int	biClrImportant;
-}BmpInfoHeader;
+}__attribute__((packed)) BmpInfoHeader;
  
 //we won't use it while BitCount=24
 typedef struct tagRGBQUAD
