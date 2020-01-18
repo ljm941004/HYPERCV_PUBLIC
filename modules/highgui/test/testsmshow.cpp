@@ -9,10 +9,8 @@ using namespace std;
 
 void test_smshow()
 {
-printf("debug\n");
-simple_mat	src = smread_bmp("/home/ljm/test.bmp");
-printf("debug\n");
-	smshow("test",src);
+    simple_mat	src = smread_bmp("/home/ljm/test.bmp");
+	smshow("/home/ljm/test.bmp",src);
 }
 TEST(HIGHGUI,SMSHOW)
 {

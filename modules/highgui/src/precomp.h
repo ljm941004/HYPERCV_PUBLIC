@@ -23,12 +23,11 @@
 #define X11_switch 0
 #endif
 
-
-#ifndef use_SDL
-#define use_SDL 0
+#ifndef USE_SDL
+#define USE_SDL 0
 #endif
 
-#if use_SDL 
+#if USE_SDL 
 #include <SDL.h>
 #include <SDL_image.h>
 #endif

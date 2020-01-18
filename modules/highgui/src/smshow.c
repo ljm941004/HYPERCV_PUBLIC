@@ -5,19 +5,62 @@
  ************************************************************************/
 #include "precomp.h"
 
+
+void draw_background(SDL_Surface * screen)
+{
+  Uint8 *dst = screen->pixels;
+  int x, y;
+  int bpp = screen->format->BytesPerPixel;
+  Uint32 col[2];
+
+  /* This was all here when I got here. -- Matt */
+  col[0] = SDL_MapRGB(screen->format, 0x66, 0x66, 0x66);
+  col[1] = SDL_MapRGB(screen->format, 0x99, 0x99, 0x99);
+  for (y = 0; y < screen->h; y++)
+  {
+	  for (x = 0; x < screen->w; x++)
+	  {
+		  /* use an 8x8 checkerboard pattern */
+		  Uint32 c = col[((x ^ y) >> 3) & 1];
+		  switch (bpp)
+		  {
+			  case 1:
+				  dst[x] = c;
+				  break;
+			  case 2:
+				  ((Uint16 *) dst)[x] = c;
+				  break;
+			  case 3:
+				  if (SDL_BYTEORDER == SDL_LIL_ENDIAN) {
+					  dst[x * 3] = c;
+					  dst[x * 3 + 1] = c >> 8;
+					  dst[x * 3 + 2] = c >> 16;
+				  } else {
+					  dst[x * 3] = c >> 16;
+					  dst[x * 3 + 1] = c >> 8;
+					  dst[x * 3 + 2] = c;
+				  }
+				  break;
+			  case 4:
+				  ((Uint32 *) dst)[x] = c;
+				  break;
+		  }
+	  }
+	  dst += screen->pitch;
+  }
+}
+//todo fix color bug
 void smshow(const char* display_name, simple_mat mat)
 {
 	_assert(mat!=NULL,"show mat != NULL");
+#if USE_SDL
 
-#if(use_SDL)
-
-	Uint32 flags;
+	Uint32 flags = SDL_SWSURFACE;
+	//SDL_Init(flags);
 	SDL_Surface *screen, *image;
 	int depth,done,dirty;
 	SDL_Event event;
 	SDL_Rect src = {0, 0, 0, 0};
-	int xhop, yhop;
-	SDL_TimerID death = NULL;
 
 	if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER)<0)
 	{
@@ -25,18 +68,110 @@ void smshow(const char* display_name, simple_mat mat)
 		return ;
 	}
 
-	death = SDL_AddTimer(99999, trigger_next, NULL);
 
-	flags = SDL_SWSURFACE;
-	image = SDL_CreateRGBSurfaceFrom((void*)mat->data, mat->cols, mat->rows, get_elemsize(mat->data_type)*mat->channels, get_elemsize(mat->data_type)*mat->channels*mat->cols,0xff0000,0x00ff00,0x0000ff,0);
+	int image_depth = get_elemsize(mat->data_type)*mat->channels*8;
+	int pitch = mat->cols * mat->channels*get_elemsize(mat->data_type);
+
+	image = SDL_CreateRGBSurfaceFrom((void*)mat->data, mat->cols, mat->rows, image_depth, pitch , 0,0,0,0);
+//	image = IMG_Load(display_name);
+	
 	if(image == NULL)
 	{
-		SDL_Log("Couldn't convert Mat to Surface.");
+		printf("Couldn't convert Mat to Surface.");
 		return;
 	}
-//todo fix
+	
+	src.w = image->w;
+	src.h = image->h;
 
+	depth = SDL_VideoModeOK(src.w, src.h, 32, SDL_SWSURFACE);
+	/* Use the deepest native mode, except that we emulate 32bpp
+	   for viewing non-indexed images on 8bpp screens */
+	
+	if (depth == 0)
+	{
+		if (image->format->BytesPerPixel > 1)
+			depth = 32;
+		else
+			depth = 8;
+	} 
+	else if ((image->format->BytesPerPixel > 1) && (depth == 8))
+		depth = 32;
 
+	if (depth == 8)
+		flags |= SDL_HWPALETTE;
+
+	SDL_SetAlpha(image, 0, 255);
+
+	screen = SDL_SetVideoMode(src.w, src.h, depth, flags);
+
+	if (screen == NULL)
+	{
+		fprintf(stderr, "Couldn't set %dx%dx%d video mode: %s\n",
+				src.w, src.h, depth, SDL_GetError());
+		return;
+	}
+
+	/* Set the palette, if one exists */
+	if (image->format->palette) 
+	{
+		SDL_SetColors(screen, image->format->palette->colors,
+				0, image->format->palette->ncolors);
+	}
+
+	/* Draw a background pattern if the surface has transparency */
+	if (image->flags & (SDL_SRCALPHA | SDL_SRCCOLORKEY))
+		draw_background(screen);
+
+	/* Display the image */
+
+	done = 0;
+
+	while (!done)
+	{
+		if(dirty)
+		{
+		SDL_BlitSurface(image, &src, screen, NULL);
+		SDL_UpdateRect(screen, 0, 0, 0, 0);
+		dirty =0;
+		}
+		if (SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
+				case SDL_VIDEORESIZE:
+					done = 1;
+					break;
+				case SDL_KEYUP:
+					switch (event.key.keysym.sym)
+					{
+
+						case SDLK_ESCAPE:
+							done = 1;
+							break;
+						default:
+							break;
+					}
+					break;
+				case SDL_MOUSEMOTION:
+					if (event.motion.state & SDL_BUTTON(1))	
+						dirty = 1;
+					break;
+				case SDL_QUIT:
+					done = 1;
+					break;
+				default:
+					break;
+			}
+		} 
+		else
+		{
+			SDL_Delay(10);
+		}
+	}
+	SDL_FreeSurface(image);
+	SDL_Quit();
+	return;
 
 #elif X11_switch
 	XEvent xev;
