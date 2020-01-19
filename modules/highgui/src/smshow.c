@@ -72,9 +72,9 @@ void smshow(const char* display_name, simple_mat mat)
 	int image_depth = get_elemsize(mat->data_type)*mat->channels*8;
 	int pitch = mat->cols * mat->channels*get_elemsize(mat->data_type);
 
-	image = SDL_CreateRGBSurfaceFrom((void*)mat->data, mat->cols, mat->rows, image_depth, pitch , 0,0,0,0);
-//	image = IMG_Load(display_name);
-	
+	image = SDL_CreateRGBSurfaceFrom((void*)mat->data, mat->cols, mat->rows, image_depth, pitch , 0x000000ff,0x0000ff00,0x00ff0000,0);
+	//image = IMG_Load(display_name);
+//	printf("%d\n");
 	if(image == NULL)
 	{
 		printf("Couldn't convert Mat to Surface.");
@@ -103,7 +103,8 @@ void smshow(const char* display_name, simple_mat mat)
 
 	SDL_SetAlpha(image, 0, 255);
 
-	screen = SDL_SetVideoMode(src.w, src.h, depth, flags);
+ 	screen = SDL_SetVideoMode(src.w, src.h, depth, flags);
+
 
 	if (screen == NULL)
 	{
@@ -114,10 +115,7 @@ void smshow(const char* display_name, simple_mat mat)
 
 	/* Set the palette, if one exists */
 	if (image->format->palette) 
-	{
-		SDL_SetColors(screen, image->format->palette->colors,
-				0, image->format->palette->ncolors);
-	}
+		SDL_SetColors(screen, image->format->palette->colors,0, image->format->palette->ncolors);
 
 	/* Draw a background pattern if the surface has transparency */
 	if (image->flags & (SDL_SRCALPHA | SDL_SRCCOLORKEY))
@@ -170,6 +168,7 @@ void smshow(const char* display_name, simple_mat mat)
 		}
 	}
 	SDL_FreeSurface(image);
+	SDL_FreeSurface(screen);
 	SDL_Quit();
 	return;
 
