@@ -5,50 +5,6 @@
  ************************************************************************/
 #include "precomp.h"
 
-
-void draw_background(SDL_Surface * screen)
-{
-  Uint8 *dst = screen->pixels;
-  int x, y;
-  int bpp = screen->format->BytesPerPixel;
-  Uint32 col[2];
-
-  /* This was all here when I got here. -- Matt */
-  col[0] = SDL_MapRGB(screen->format, 0x66, 0x66, 0x66);
-  col[1] = SDL_MapRGB(screen->format, 0x99, 0x99, 0x99);
-  for (y = 0; y < screen->h; y++)
-  {
-	  for (x = 0; x < screen->w; x++)
-	  {
-		  /* use an 8x8 checkerboard pattern */
-		  Uint32 c = col[((x ^ y) >> 3) & 1];
-		  switch (bpp)
-		  {
-			  case 1:
-				  dst[x] = c;
-				  break;
-			  case 2:
-				  ((Uint16 *) dst)[x] = c;
-				  break;
-			  case 3:
-				  if (SDL_BYTEORDER == SDL_LIL_ENDIAN) {
-					  dst[x * 3] = c;
-					  dst[x * 3 + 1] = c >> 8;
-					  dst[x * 3 + 2] = c >> 16;
-				  } else {
-					  dst[x * 3] = c >> 16;
-					  dst[x * 3 + 1] = c >> 8;
-					  dst[x * 3 + 2] = c;
-				  }
-				  break;
-			  case 4:
-				  ((Uint32 *) dst)[x] = c;
-				  break;
-		  }
-	  }
-	  dst += screen->pitch;
-  }
-}
 //todo fix color bug
 void smshow(const char* display_name, simple_mat mat)
 {
@@ -115,10 +71,6 @@ void smshow(const char* display_name, simple_mat mat)
 	/* Set the palette, if one exists */
 	if (image->format->palette) 
 		SDL_SetColors(screen, image->format->palette->colors,0, image->format->palette->ncolors);
-
-	/* Draw a background pattern if the surface has transparency */
-	if (image->flags & (SDL_SRCALPHA | SDL_SRCCOLORKEY))
-		draw_background(screen);
 
 	/* Display the image */
 
