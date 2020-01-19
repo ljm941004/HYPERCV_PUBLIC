@@ -27,15 +27,13 @@ HYPERCV model 模块中有5个文件夹。
 (8) pyramid.c                图像金字塔
 (9) radiometriccalibration   遥感影像辐射矫正
 (10)spectralprocess.c        光谱处理，光谱匹配等
+(11)dwt.c                    小波运算
 
-3. gradient中是存放梯度算子
-(1) canny                    canny算子
-(2) laplacian                laplacian算子
-(3) sobelprocess             sobel算子求边界
+3. highgui中是图像显示模块
+(1)draw.c                    画图，点，线
+(2)smshow.c                  2维图像显示
 
-4. highgui中是图像显示模块
-
-5. algorithm中是算法模块
+4. algorithm中是算法模块
 (1) cem.c                    约束能量最小化目标检测
 (2) cluster.c                聚类，光谱聚类，空间聚类
 (3) dft.c                    离散傅里叶变换
@@ -43,12 +41,11 @@ HYPERCV model 模块中有5个文件夹。
 (5) hisequalization.c        直方图
 (6) houghlines.c             霍夫变换
 (7) normalize.c              正则化
-(8) otsuthreshold.c          大津阈值
-(9) pca.c                    主成分分析
-(10)shapematch.c             不变矩匹配
+(8) pca.c                    主成分分析
+(9)shapematch.c             不变矩匹配
 
 
-很多功能还在完善和测试中，欢迎各位从事遥感图像的同行提交 pull request。
+很多功能还在完善和测试中，欢迎各位从事遥感图像处理的给出建议。
 
 
 

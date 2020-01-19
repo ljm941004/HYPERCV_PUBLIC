@@ -68,7 +68,6 @@ void smshow(const char* display_name, simple_mat mat)
 		return ;
 	}
 
-
 	int image_depth = get_elemsize(mat->data_type)*mat->channels*8;
 	int pitch = mat->cols * mat->channels*get_elemsize(mat->data_type);
 
