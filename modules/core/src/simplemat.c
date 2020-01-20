@@ -119,9 +119,7 @@ simple_mat simple_mat_copy(simple_mat mat)
 simple_mat smread_bmp(const char *bmpName)
 {
 	_assert(bmpName!=NULL,"read bmp file name can not be NULL");
-	
 	FILE *fp = fopen(bmpName, "rb");
-
 	_assert(fp!=NULL,"BMP IMAGE NOT EXIST");
 
 	fseek(fp, sizeof(BmpFileHeader), SEEK_SET);
@@ -139,6 +137,7 @@ simple_mat smread_bmp(const char *bmpName)
 		RGBQUAD *pColorTable = (RGBQUAD *)malloc(sizeof(RGBQUAD) * 1024);
 		fread(pColorTable, sizeof(RGBQUAD), 256, fp);
 	}
+	
 	unsigned char* pBmpBuf = (unsigned char *)malloc(sizeof(unsigned char) * lineByte * bmpHeight);
 	fread(pBmpBuf, 1, lineByte * bmpHeight, fp);
 	fclose(fp);
@@ -150,23 +149,36 @@ simple_mat smread_bmp(const char *bmpName)
 			for(int k=0;k<channels;k++)
 			{
 				int tmp = pBmpBuf[i*lineByte+j*channels+k];
-			pBmpBuf[i*lineByte+j*channels+k] = pBmpBuf[(bmpHeight-i-1)*lineByte+j*channels+2-k];
-			pBmpBuf[(bmpHeight-i-1)*lineByte+j*channels+2-k]=tmp;
+				pBmpBuf[i*lineByte+j*channels+k] = pBmpBuf[(bmpHeight-i-1)*lineByte+j*channels+2-k];
+				pBmpBuf[(bmpHeight-i-1)*lineByte+j*channels+2-k]=tmp;
 			}
+		}
+	}
 	
+	simple_mat res = create_simple_mat(bmpHeight,bmpWidth,1,3);
+	unsigned char* res_data = (unsigned char*)res->data;
+
+	if(lineByte == bmpWidth*biBitCount/8)
+		memcpy(res_data,pBmpBuf,lineByte*bmpHeight);
+	else
+	{
+		for(int i=0;i<bmpHeight;i++)
+		{
+			unsigned char* pres = res_data + i*bmpWidth*channels;
+			unsigned char* pbmp = pBmpBuf + i*lineByte;
+			memcpy(pres,pbmp,bmpWidth*channels);
 		}
 	}
 
-	simple_mat res = create_simple_mat_with_data(bmpHeight,bmpWidth,1,3,pBmpBuf);
-
+	free(pBmpBuf);
 	return res;
 }
 
 /**
-* @brief      function to save the simple mat into bmp image.
-* @param[in]  bmpName     save path.
-* @param[in]  mat         simple mat.
-**/
+ * @brief      function to save the simple mat into bmp image.
+ * @param[in]  bmpName     save path.
+ * @param[in]  mat         simple mat.
+ **/
 void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 {
 	_assert(bmpName != NULL, "write bmp image path can not be NULL");
@@ -175,7 +187,7 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 
 	FILE *fp = fopen(bmpName, "wb");
 	_assert(fp != NULL,"save file can not open");
-	
+
 	simple_mat mat;
 	if(src_mat -> channels == 1)
 		mat = sm_gray2rgb(src_mat);
@@ -185,30 +197,28 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 	unsigned char* imgBuf = (unsigned char*) mat->data;
 	int width = mat -> cols;
 	int height = mat -> rows;
-    int channels = 3;
- 	// default 24 ,also can use in byte
+	int channels = 3;
 	int biBitCount = 24;
- 
+
 	int colorTablesize = 0;
 	if (biBitCount == 8)
 	{
 		colorTablesize=1024;
 	}
-	
+
 	int lineByte = (width * biBitCount / 8 + 3) / 4 * 4;
-//   int lineByte = (width * biBitCount + 31) /32 *4;	
 	BmpFileHeader fileHead;
 	fileHead.bfType=0x4D42;
- 
+
 	fileHead.bfSize = sizeof(BmpFileHeader) + sizeof(BmpInfoHeader) + colorTablesize + lineByte * height;
-	
+
 	fileHead.bfReserved1 = 0;
 	fileHead.bfReserved2 = 0;
- 
+
 	fileHead.bfOffBits = 54 + colorTablesize;
- 
+
 	fwrite(&fileHead, sizeof(BmpFileHeader), 1, fp);
- 
+
 	BmpInfoHeader infoHead;
 	infoHead.biBitCount = biBitCount;
 	infoHead.biClrImportant = 0;
@@ -221,15 +231,8 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 	infoHead.biWidth = width;
 	infoHead.biXPelsPerMeter = 100;
 	infoHead.biYPelsPerMeter = 100;
- 
-	fwrite(&infoHead, sizeof(BmpInfoHeader), 1, fp);
- 
-/*	if (biBitCount == 8)
-	{
-		fwrite(pColorTable,sizeof(RGBQUAD),256,fp);
-	}
-*/
 
+	fwrite(&infoHead, sizeof(BmpInfoHeader), 1, fp);
 
 	for(int i=0;i<height/2;i++)
 	{
@@ -237,10 +240,10 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 		{
 			for(int k=0;k<channels;k++)
 			{
-			int tempbuf = imgBuf[i*lineByte+j*channels+k];
-			imgBuf[i*lineByte+j*channels+k] = imgBuf[(height-i-1)*lineByte+j*channels+2-k];
-			imgBuf[(height-i-1)*lineByte+j*channels+2-k] = tempbuf;
-		}
+				int tempbuf = imgBuf[i*width*channels+j*channels+k];
+				imgBuf[i*width*channels+j*channels+k] = imgBuf[(height-i-1)*width*channels+j*channels+2-k];
+				imgBuf[(height-i-1)*width*channels+j*channels+2-k] = tempbuf;
+			}
 
 		}
 	}
@@ -260,21 +263,16 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 	}
 	else 
 		fwrite(imgBuf,height*lineByte, 1, fp);
-	
+
 	fclose(fp);
 
-/*	if(mat != src_mat)
-	{
-		delete_simple_mat(mat);
-	}
-	*/
 }
 
 /**
-* @brief      function calculate mean value of simple mat.
-* @param[in]  mat         simple mat.
-* @retval     mean value. 
-**/
+ * @brief      function calculate mean value of simple mat.
+ * @param[in]  mat         simple mat.
+ * @retval     mean value. 
+ **/
 float simple_mat_mean(simple_mat mat)
 {
 	_assert(mat!=NULL,"input_mat cannot be NULL");
@@ -320,10 +318,10 @@ float simple_mat_mean(simple_mat mat)
 }
 
 /**
-* @brief      function calculate variance of simple mat.
-* @param[in]  mat         simple mat.
-* @retval     variance. 
-**/
+ * @brief      function calculate variance of simple mat.
+ * @param[in]  mat         simple mat.
+ * @retval     variance. 
+ **/
 float simple_mat_variance(simple_mat mat)
 {
 	_assert(mat != NULL,"input mat cannot be NULL");
@@ -368,10 +366,10 @@ float simple_mat_variance(simple_mat mat)
 }
 
 /**
-* @brief      function to statist grayscale.
-* @param[in]  mat              simple mat.
-* @param[in]  gray_statist     grayscale.
-**/
+ * @brief      function to statist grayscale.
+ * @param[in]  mat              simple mat.
+ * @param[in]  gray_statist     grayscale.
+ **/
 void simple_mat_grayscale_statistics(simple_mat mat , int* gray_statist)
 {
 	_assert(mat != NULL,"input mat cannot be NULL");
@@ -400,10 +398,10 @@ void simple_mat_grayscale_statistics(simple_mat mat , int* gray_statist)
 
 
 /**
-* @brief      function calculate contrast ratio of simple mat.
-* @param[in]  mat         simple mat.
-* @retval     variance. 
-**/
+ * @brief      function calculate contrast ratio of simple mat.
+ * @param[in]  mat         simple mat.
+ * @retval     variance. 
+ **/
 float simple_mat_contrast_ratio(simple_mat mat)
 {
 	_assert(mat != NULL,"input mat cannot be NULL");
@@ -438,17 +436,17 @@ float simple_mat_contrast_ratio(simple_mat mat)
 
 		}
 	}
-	
+
 	res = res/(4*(cols-2)*(rows-2)+3*2*(rows-2)+3*2*(cols-2)+2*4);
 	return res;
 }
 
 
 /**
-* @brief      function calculate entropy of simple mat.
-* @param[in]  mat         simple mat.
-* @retval     entropy. 
-**/
+ * @brief      function calculate entropy of simple mat.
+ * @param[in]  mat         simple mat.
+ * @retval     entropy. 
+ **/
 float simple_mat_entropy(simple_mat mat)
 {
 	_assert(mat != NULL,"input mat cannot be NULL");

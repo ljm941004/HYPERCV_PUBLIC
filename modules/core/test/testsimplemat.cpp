@@ -64,20 +64,9 @@ static void test_simple_mat_copy()
 
 void test_sm_save_2_bmp()
 {
-	
-	test_setup<float>(100,100,3,4);
-	t = simple_mat_float2uchar(src_mat);
-	smwrite_bmp("test.bmp",t); 
-
-//	simple_mat t = smread_bmp("q.bmp");
-
-//	sm_save_2_bmp("test.bmp",t);
-//	sm2bmp("test.bmp",src_mat,NULL);
-//	test_show_mat<unsigned char>((unsigned char*)src_mat->data,1080,1080,1);
-/*;
-*/
-
-	test_delete_simple_mat;
+ 
+	simple_mat m = smread_bmp("/home/ljm/test.bmp");
+	smwrite_bmp("s.bmp",m);
 }
 
 
