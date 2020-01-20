@@ -59,7 +59,6 @@ void draw_line(simple_mat src_mat, simple_mat dst_mat, POINT pt1, POINT pt2, RGB
 
 	memcpy(dst_data,src_data,rows*cols*channels);	
 
-	//todo fix
 	float k = (float)(pt2.x-pt1.x)/(pt2.y-pt1.y);
 	float b = (float)pt1.y-k*pt1.x;
 

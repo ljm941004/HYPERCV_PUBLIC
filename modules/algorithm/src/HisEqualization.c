@@ -10,7 +10,7 @@
  * @param[in]  src_mat             input mat.        
  * @param[in]  dst_mat             result mat.
 **/
-void HisEqualization(simple_mat dst_mat, simple_mat src_mat)
+void HisEqualization( simple_mat src_mat,simple_mat dst_mat)
 {
 	_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat could not be NULL");
 	
@@ -36,7 +36,7 @@ void HisEqualization(simple_mat dst_mat, simple_mat src_mat)
 		dst_data[i] = hist[data[i]];
 }
 
-void hyper_mat_linear_tension(hyper_mat dst_mat, hyper_mat bsq_mat)
+void hyper_mat_linear_tension (hyper_mat bsq_mat,hyper_mat dst_mat)
 {
 	_assert(cmpstr(bsq_mat->interleave,"bsq")==1,"input src mat must be bsq");
 	int samples = bsq_mat -> samples;

@@ -5,7 +5,6 @@
  ************************************************************************/
 #include "precomp.h"
 
-//todo fix color bug
 void smshow(const char* display_name, simple_mat mat)
 {
 	_assert(mat!=NULL,"show mat != NULL");
@@ -29,7 +28,6 @@ void smshow(const char* display_name, simple_mat mat)
 
 	image = SDL_CreateRGBSurfaceFrom((void*)mat->data, mat->cols, mat->rows, image_depth, pitch , 0x000000ff,0x0000ff00,0x00ff0000,0);
 	//image = IMG_Load(display_name);
-//	printf("%d\n");
 	if(image == NULL)
 	{
 		printf("Couldn't convert Mat to Surface.");
