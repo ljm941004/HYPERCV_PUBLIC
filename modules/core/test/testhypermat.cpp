@@ -98,8 +98,8 @@ static void test_write_hdr()
 
 static void test_hmread_with_hdr()
 {
-	const char* image_path = "/home/ljm/image1.raw";
-	const char* hdr_path = "/home/ljm/image1.hdr";
+	const char* image_path = "/home/ljm/indain_pines.img";
+	const char* hdr_path = "/home/ljm/indain_pines.hdr";
 	hyper_mat t = hmread_with_hdr(image_path,hdr_path);	
 	hmwrite("test",t);
 }
@@ -120,6 +120,6 @@ TEST(CORE,WRITEHDR)
 }
 TEST(CORE,HMREAD_WITH_HDR)
 {
-//	test_hmread_with_hdr();
+	test_hmread_with_hdr();
 }
 

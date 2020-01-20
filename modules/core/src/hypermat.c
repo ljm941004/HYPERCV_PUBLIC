@@ -92,6 +92,72 @@ static int date_type_2_gdal_data_type(const int data_type)
 //*************************************************************
 
 /**
+ * @brief      read the HDR to get size and data type.
+ * @param[in]  hdr_fp      hdr file.
+ * @param[in]  samples     image samples.
+ * @param[in]  lines       image lines.
+ * @param[in]  bands       image bands.
+ * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
+ * @param[in]  interleave  bil bsq bip.
+ **/
+void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char* interleave, float** wavelength)
+{
+	_assert(hdr_fp != NULL, "can not open hdr file");
+
+	char line[MAXLINE];
+	char item[MAXLINE];
+
+	char it[4];
+
+	int sampletemp = 0, linetemp = 0, bandtemp = 0, datatypetemp = 0;
+
+	while (fgets(line, MAXLINE, hdr_fp) != 0)
+	{   
+		sscanf(line, "%[^=]", item);
+
+		if (cmpstr(item, "samples") == 1)
+		{
+			sscanf(line, "%*[^=]=%d",&sampletemp);
+			*samples = sampletemp ;
+		}
+		else if (cmpstr(item, "lines") == 1)
+		{
+			sscanf(line, "%*[^=]=%d",&linetemp);
+			*lines = linetemp;
+		}
+		else if (cmpstr(item, "bands") == 1)
+		{
+			sscanf(line, "%*[^=]=%d", &bandtemp);
+			*bands = bandtemp;
+		}
+		else if (cmpstr(item, "data") == 1)
+		{
+			sscanf(line, "%*[^=]=%d", &datatypetemp);
+			*data_type = datatypetemp;
+		}
+		else if (cmpstr(item, "interleave") == 1)
+		{
+			sscanf(line, "%*[^=]=%c%c%c%c", &it[0],&it[1],&it[2],&it[3]);
+			for(int i=0;i<4;i++)
+			{
+				if(it[i]!=' ')
+				*interleave++ = it[i];
+			}
+		}
+		else if (cmpstr(item,"wavelength = {")==1)
+		{	
+			char* w;
+			w = (char*)malloc(strlen(line)-16);
+			char* wavestart = &line[14];
+			memcpy(w,wavestart,strlen(line)-16);
+			float* wave = (float*)malloc((bandtemp)*sizeof(float));
+			read_wavelength(w,wave);	
+			*wavelength = wave;
+		}
+	}
+}
+
+/**
  * @brief      create a hyper mat.
  * @param[in]  samples     image samples.
  * @param[in]  lines       image lines.
@@ -99,7 +165,7 @@ static int date_type_2_gdal_data_type(const int data_type)
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, const int data_type, const char interleave[])
+hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, const int data_type, const char* interleave)
 {
 	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, NULL,NULL);
 	return mat;
@@ -116,7 +182,7 @@ hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, 
  * @param[in]  wavelength  wavelength of each bands.
  * @retvall    hyper_mat   hyper mat.
  **/
-hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const int bands, const int data_type, const char interleave[], void* data, float* wavelength)
+hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const int bands, const int data_type, const char* interleave, void* data, float* wavelength)
 {
 	_assert(samples > 0, "the samples of hyper mat must be greater than zero.");
 	_assert(lines > 0, "the lines of hyper mat must be greater than zero.");
@@ -153,7 +219,6 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 	mat->interleave[0] = interleave[0];
 	mat->interleave[1] = interleave[1];
 	mat->interleave[2] = interleave[2];
-	mat->interleave[3] = '\0';
 	mat->wavelength = wavelength;
 	return mat;
 }
@@ -168,16 +233,16 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	_assert(image_path != NULL, "image path or hdr path can not be NULL");
 	_assert(hdr_path != NULL, "image path or hdr path can not be NULL");
 
+	int samples, lines, bands, data_type;
+	char* interleave = (char*)malloc(3*sizeof(char));
+	float* wavelength = NULL;
+
 	FILE* image_fp = NULL;
 	FILE* hdr_fp = NULL;
 
 	image_fp = fopen( image_path, "r");
 	hdr_fp = fopen(hdr_path, "r");
 
-	int samples, lines, bands, data_type;
-	char interleave[3];
-
-	float* wavelength = NULL;
 	if (image_fp == NULL || hdr_fp == NULL)
 	{
 		printf("can not open file\n");
@@ -196,6 +261,7 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	fclose(hdr_fp);
 	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data, wavelength);
 
+	free(interleave);
 	return mat;
 }
 
@@ -208,7 +274,7 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
  * @param[in]  data_type   hyper spectral image data_type.
  * @param[in]  interleave  bsq,bil,bip.
  **/
-hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int bands, int data_type, char* interleave)
+hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int bands, int data_type, const char* interleave)
 {
 	_assert(image_path != NULL, "image path or hdr path can not be NULL");
 	_assert(samples >0 && lines>0 && bands>0, "image size must >0 ");
@@ -249,7 +315,7 @@ void hmwrite(const char* image_path, hyper_mat mat)
 	int bands = mat->bands;
 
 #if gdal_switch
-	
+
 	GDALAllRegister();
 	GDALDatasetH  dst;
 	GDALDriverH hDriver = GDALGetDriverByName("ENVI");	
@@ -275,63 +341,6 @@ void hmwrite(const char* image_path, hyper_mat mat)
 #endif
 }
 
-/**
- * @brief      read the HDR to get size and data type.
- * @param[in]  hdr_fp      hdr file.
- * @param[in]  samples     image samples.
- * @param[in]  lines       image lines.
- * @param[in]  bands       image bands.
- * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
- * @param[in]  interleave  bil bsq bip.
- **/
-void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char interleave[], float** wavelength)
-{
-	_assert(hdr_fp != NULL, "can not open hdr file");
-
-	char line[MAXLINE];
-	char item[MAXLINE];
-
-	int sampletemp = 0, linetemp = 0, bandtemp = 0, datatypetemp = 0;
-
-	while (fgets(line, MAXLINE, hdr_fp) != 0)
-	{   
-		sscanf(line, "%[^=]", item);
-
-		if (cmpstr(item, "samples") == 1)
-		{
-			sscanf(line, "%*[^=]=%d",&sampletemp);
-			*samples = sampletemp ;
-		}
-		else if (cmpstr(item, "lines") == 1)
-		{
-			sscanf(line, "%*[^=]=%d",&linetemp);
-			*lines = linetemp;
-		}
-		else if (cmpstr(item, "bands") == 1)
-		{
-			sscanf(line, "%*[^=]=%d", &bandtemp);
-			*bands = bandtemp;
-		}
-		else if (cmpstr(item, "data") == 1)
-		{
-			sscanf(line, "%*[^=]=%d", &datatypetemp);
-			*data_type = datatypetemp;
-		}
-		else if (cmpstr(item, "interleave") == 1)
-			sscanf(line, "%*[^=]=%s", interleave);
-
-		else if (cmpstr(item,"wavelength = {")==1)
-		{	
-			char* w;
-			w = (char*)malloc(strlen(line)-16);
-			char* wavestart = &line[14];
-			memcpy(w,wavestart,strlen(line)-16);
-			float* wave = (float*)malloc((bandtemp)*sizeof(float));
-			read_wavelength(w,wave);	
-			*wavelength = wave;
-		}
-	}
-}
 
 /**
  * @brief      write the HDR file.
@@ -342,7 +351,7 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-void writehdr(const char* img_path, int samples, int lines, int bands, int data_type, const char interleave[],float* wavelength)
+void writehdr(const char* img_path, int samples, int lines, int bands, int data_type, const char* interleave,float* wavelength)
 {
 	const char* t = img_path;
 	int len = 0;
@@ -351,27 +360,33 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 	{
 		len++;
 	}
-	
+
 	char* hdr_path = (char*)malloc((len + 5)*sizeof(char));
-	
+
 	for (int i = 0; i < len; i++)
 		hdr_path[i] = img_path[i];
-	
+
 	hdr_path[len] = '.';
 	hdr_path[len + 1] = 'h';
 	hdr_path[len + 2] = 'd';
 	hdr_path[len + 3] = 'r';
 	hdr_path[len + 4] = '\0';
-	
+
 	FILE *fp;
 	fp = fopen(hdr_path, "w");
-	
+
 	fputs("ENVI\n", fp);
 	fputs("samples = ", fp); fprintf(fp, "%d\n", samples);
 	fputs("lines = ", fp); fprintf(fp, "%d\n", lines);
 	fputs("bands = ", fp); fprintf(fp, "%d\n", bands);
 	fputs("data type = ", fp); fprintf(fp, "%d\n", data_type);
-	fputs("interleave = ", fp); fprintf(fp, "%s\n", interleave);
+
+	char* it = (char*)malloc(4*sizeof(char));
+	for(int i=0;i<3;i++)
+		it[i] = interleave[i];
+	it[3] = '\0';
+
+	fputs("interleave = ", fp); fprintf(fp, "%s\n", it);
 
 	if(wavelength!=NULL)
 	{
@@ -380,7 +395,7 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 			fprintf(fp,"%.1f,",wavelength[i]);
 		fprintf(fp,"%.1f}",wavelength[bands-1]);
 	}
-	
+
 	fclose(fp);
 }
 
@@ -400,13 +415,7 @@ hyper_mat hyper_mat_copy(hyper_mat mat)
 	int data_type = mat->data_type;
 	int elemsize = get_elemsize(data_type);
 
-	char interleave[3];
-
-	interleave[0] = mat->interleave[0];
-	interleave[1] = mat->interleave[1];
-	interleave[2] = mat->interleave[2];
-
-	hyper_mat dst_mat = create_hyper_mat(samples,lines,bands,data_type,interleave);
+	hyper_mat dst_mat = create_hyper_mat(samples, lines, bands, data_type, mat->interleave);
 
 	char *dst_data = (char*)dst_mat->data;
 	char *src_data = (char*)mat->data;

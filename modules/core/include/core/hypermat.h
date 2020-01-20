@@ -15,7 +15,7 @@ typedef struct
 	int    lines;
 	int    bands;
 	int    data_type;
-	char   interleave[4];
+	char   interleave[3];
 	void*  data;
 	float* wavelength;
 }HyperMat;
@@ -32,7 +32,7 @@ int cmpstr(char temp1[],char temp2[]);
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, const int data_type,const char interleave[]);
+hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, const int data_type, const char* interleave);
 
 /**
  * @brief      create a hyper mat.
@@ -44,14 +44,14 @@ hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, 
  * @param[in]  data        pointer of image data.
  * @param[in]  wavelength  pointer of wavelength.
  **/
-hyper_mat create_hyper_mat_with_data(const int samples,const int lines,const int bands,const int data_type, const char interleave[], void* data, float* wavelength);
+hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const int bands, const int data_type, const char* interleave, void* data, float* wavelength);
 
 /**
  * @brief      read the hyper spectral image with hdr.
  * @param[in]  image_path  hyper spectral image path.
  * @param[in]  hdr_path    hdr file path.
  **/
-hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path);
+hyper_mat hmread_with_hdr(const char* image_path, const char* hdr_path);
 
 /**
  * @brief      read the hyper spectral image with size.
@@ -62,7 +62,7 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path);
  * @param[in]  data_type   hyper spectral image data_type.
  * @param[in]  interleave  bsq,bil,bip.
  **/
-hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int bands, int data_type, char* interleave);
+hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int bands, int data_type, const char* interleave);
 
 /**
  * @brief      write the hyper spectral image.
@@ -81,7 +81,7 @@ void hmwrite(const char* image_path, hyper_mat mat);
  * @param[in]  interleave  bil bsq bip.
  * @param[in]  wavelength  wavelength pointer.
  **/
-void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char interleave[], float** wavelength);
+void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char* interleave, float** wavelength);
 
 /**
  * @brief      write the HDR file.
@@ -93,7 +93,7 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
  * @param[in]  interleave  bil bsq bip.
  * @param[in]  wavelength  wavelength pointer.
  **/
-void writehdr(const char* img_path, int samples, int lines, int bands, int data_type, const char interleave[], float* wavelength);
+void writehdr(const char* img_path, int samples, int lines, int bands, int data_type, const char* interleave, float* wavelength);
 
 /**
  * @brief       copy hyper mat.
