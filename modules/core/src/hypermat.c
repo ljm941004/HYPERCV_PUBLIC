@@ -443,19 +443,22 @@ void hyper_mat_showinfo(hyper_mat mat)
 		printf("mat's bands is %d\n",mat->bands);
 		printf("mat's data type is %d\n",mat->data_type);
 		printf("mat's interleave is %c%c%c\n",mat->interleave[0],mat->interleave[1],mat->interleave[2]);	
-		printf("mat's wavelength is\n");
-		for(int i=0;i<mat->bands;i++)
+		if(mat->wavelength !=NULL)
 		{
-			printf("%f,",((float*)mat->wavelength)[i]);
+			printf("mat's wavelength is\n");
+			for(int i=0;i<mat->bands;i++)
+			{
+				printf("%f,",((float*)mat->wavelength)[i]);
+			}
 		}
 	}
 }
 
 /**
-* @brief      function to return if mat is empty.
-* @param[in]  mat         hyper mat.
-* @retval     if empty. 
-**/
+ * @brief      function to return if mat is empty.
+ * @param[in]  mat         hyper mat.
+ * @retval     if empty. 
+ **/
 int hyper_mat_empty(hyper_mat mat)
 {
 	if(mat == NULL)
