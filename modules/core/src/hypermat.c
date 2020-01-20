@@ -196,10 +196,6 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	fclose(hdr_fp);
 	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data, wavelength);
 
-#if _DEBUG 
-	hyper_mat_showinfo(mat);
-#endif
-
 	return mat;
 }
 
