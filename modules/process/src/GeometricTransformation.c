@@ -1,9 +1,75 @@
 /*************************************************************************
-	> File Name: process/src/pyramid.c
+	> File Name: process/src/GeometricTransformation.c
 	> Author: ljm
-	> Mail: jimin@iscas.ac.cn
+	> Mail: jimin@iscas.ac.cn 
+	> Created Time: 2020年02月02日 星期日 19时28分58秒
  ************************************************************************/
 #include "precomp.h"
+
+void simple_mat_flip_horizontal(simple_mat src_mat,simple_mat dst_mat)
+{
+	_assert(src_mat != NULL && dst_mat != NULL,"input mat cannot be null");
+	
+	int rows = src_mat->rows;
+	int cols = src_mat->cols;
+	int channels = src_mat->channels;
+	_assert(rows == dst_mat->rows && cols == dst_mat->cols && channels == dst_mat->channels,"src_mat size != dst_mat size");
+
+	unsigned char* src_data = (unsigned char*)src_mat->data;
+	unsigned char* dst_data = (unsigned char*)dst_mat->data;
+
+	for(int i=0;i<rows;i++)
+		for(int j=0;j<cols;j++)
+			for(int k=0;k<channels;k++)
+			dst_data[i*cols*channels+j*channels+k] = src_data[i*cols*channels+(cols-1-j)*channels+k];
+}
+
+
+void simple_mat_flip_vertical(simple_mat src_mat,simple_mat dst_mat)
+{
+	_assert(src_mat != NULL && dst_mat != NULL,"input mat cannot be null");
+	
+	int rows = src_mat->rows;
+	int cols = src_mat->cols;
+	int channels = src_mat->channels;
+	_assert(rows == dst_mat->rows && cols == dst_mat->cols && channels == dst_mat->channels,"src_mat size != dst_mat size");
+
+	unsigned char* src_data = (unsigned char*)src_mat->data;
+	unsigned char* dst_data = (unsigned char*)dst_mat->data;
+
+	for(int i=0;i<rows;i++)
+		for(int j=0;j<cols*channels;j++)
+				dst_data[i*cols*channels+j] = src_data[(rows-1-i)*cols*channels+j];
+	
+}
+
+void simple_mat_flip(simple_mat src_mat, simple_mat dst_mat, int FLIPCODE)
+{
+	_assert(src_mat != NULL && dst_mat != NULL,"input mat cannot be null");
+	
+	int rows = src_mat->rows;
+	int cols = src_mat->cols;
+	_assert(rows == dst_mat->rows && cols == dst_mat->cols,"src_mat size != dst_mat size");
+	
+	switch(FLIPCODE)
+	{
+		
+		case 1: 
+			simple_mat_flip_horizontal(src_mat,dst_mat);
+			break;
+		case 0:
+			simple_mat_flip_vertical(src_mat,dst_mat);
+			break;
+		case -1:
+			{simple_mat temp = simple_mat_copy(src_mat);
+			simple_mat_flip_horizontal(src_mat,temp);
+			simple_mat_flip_vertical(temp,dst_mat);
+			delete_simple_mat(temp);
+			break;}
+		default:	
+			simple_mat_flip_horizontal(src_mat,dst_mat);
+	}
+}
 
 void hypercv_pyramid_down(simple_mat src, simple_mat dst)
 {

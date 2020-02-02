@@ -8,13 +8,15 @@
 using namespace std;
 
 
-void test_make_border()
+void test_simple_mat_flip()
 {
+	simple_mat t = smread_bmp("/home/ljm/test.bmp");	
+    simple_mat d = create_simple_mat(t->rows, t->cols, t->data_type, t->channels);
 
-	simple_mat t = smread_bmp("/home/ljm/test.bmp");
-	smwrite_bmp("t.bmp",hypercv_copy_make_border(t,10,10,20,20,BORDER_CONSTANT,255));
+	simple_mat_flip(t,d,-1);
+	smshow("d",d);
+
 }
-
 
 void test_pyramid_up()
 {
@@ -29,8 +31,7 @@ TEST(PROCESS,PYRAMIDUP)
 	test_pyramid_up();
 }
 
-TEST(PROCESS,MAKEBORDER)
+TEST(PROCESS,FLIP)
 {
-    test_make_border();
+	test_simple_mat_flip();
 }
-

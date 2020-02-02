@@ -7,7 +7,7 @@
 #include "datatypechange.h"
 #include "colortransform.h"
 #include "filter.h"
-#include "pyramid.h"
+#include "GeometricTransformation.h"
 #include "dwt.h"
 #include "threshold.h" 
 #include "gradient.h"

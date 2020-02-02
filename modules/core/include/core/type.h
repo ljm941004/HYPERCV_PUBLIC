@@ -79,6 +79,10 @@ static inline int HYPERCV_ROUND( double value )
 {
 #if defined _MSC_VER && defined _M_IX86
 	int t;
+
+/////////////////////////////////////////////////////////
+//               colortransform  type                  //
+/////////////////////////////////////////////////////////
 	__asm
 	{
 		fld value;
@@ -233,4 +237,15 @@ enum{
     COLOR_RGB2GRAY =7,
     COLOR_GRAY2BGR =8,
     COLOR_GRAY2RGB =COLOR_GRAY2BGR
+};
+
+
+/////////////////////////////////////////////////////////
+//               flip code                             //
+/////////////////////////////////////////////////////////
+
+enum{
+	FLIP_VERTICAL = 0,
+	FLIP_HORIZONTAL = 1,
+	FLIP_ALL = -1
 };

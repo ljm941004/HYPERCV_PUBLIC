@@ -6,6 +6,7 @@
  ************************************************************************/
 #include "precomp.h"
 
+static long int hypercv_factorial_tab[11]={1 , 1 , 2 , 6 , 24 , 120 , 720 , 5040 , 40320 , 362880 , 39916800};
 /**
  * @brief      calculate the mean value . .
  * @param[in]  t          vector t
