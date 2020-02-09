@@ -5,38 +5,32 @@
  ************************************************************************/
 #include "precomp.h"
 
-void t(POINT* v)
+#define iter_start 0
+#define iter_end   100
+
+static int* v1;
+static float* v2;
+
+static void test_vector_init()
 {
-	for(int i=0;i<5;i++)
-		printf("%d,%d\n",v[i].x,v[i].y);
+
 }
+
+static void test_vector_size()
+{
+
+
+}
+
+
+
 
 void testvector()
 {
-    POINT* v;
-	int* ss;
-	vector_push_back(ss,10);
-	vector_push_back(ss,10);
-	vector_push_back(ss,10);
-	vector_push_back(ss,10);
-	srand((unsigned)time(NULL));
-	for(int i=0;i<5;i++)
-	{
-		 int x = rand()%50;
-		 int y = rand()%50;
-		 POINT tmp{x,y};
-		 printf("%d,%d\n",x,y);
-		 vector_push_back(v,tmp);
-	}
-	printf("%zu\n",vector_capacity(ss));
-	printf("%zu\n",vector_size(ss));
-	t(v);
-
-
+	
 }
 
 TEST(CORE,VECTOR)
 {
 	testvector();
-
 }
