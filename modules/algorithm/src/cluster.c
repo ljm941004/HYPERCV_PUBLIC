@@ -33,6 +33,7 @@ void hypercv_k_means(simple_mat src, POINT* v1, int kind, int iter_threshold)
 
 	int* num = (int*)malloc(kind*sizeof(int));	
 	srand((unsigned)time(NULL));
+
 	for(int i=0;i<kind;i++)
 	{
 		int x = rand()%cols;
@@ -45,10 +46,9 @@ void hypercv_k_means(simple_mat src, POINT* v1, int kind, int iter_threshold)
 	}
 
 	unsigned char* data = (unsigned char*)mat->data;
-	
+
 	while(1)
 	{
-
 		int flag = 0;
 
 		for(int i=0;i<rows;i++)
@@ -93,5 +93,4 @@ void hypercv_k_means(simple_mat src, POINT* v1, int kind, int iter_threshold)
 	}
 	free(v2);
 	free(num);
-
 }

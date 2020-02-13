@@ -7,11 +7,11 @@
  * @return void
  */
 #define vector_set_capacity(vec, size)   \
-do {                                     \
-	if(vec) {                            \
-		((size_t *)(vec))[-1] = (size);  \
-	}                                    \
-} while(0)
+	do {                                     \
+		if(vec) {                            \
+			((size_t *)(vec))[-1] = (size);  \
+		}                                    \
+	} while(0)
 
 /**
  * @brief vector_set_size - For internal use, sets the size variable of the vector
@@ -20,11 +20,11 @@ do {                                     \
  * @return void
  */
 #define vector_set_size(vec, size)      \
-do {                                    \
-	if(vec) {                           \
-		((size_t *)(vec))[-2] = (size); \
-	}                                   \
-} while(0)
+	do {                                    \
+		if(vec) {                           \
+			((size_t *)(vec))[-2] = (size); \
+		}                                   \
+	} while(0)
 
 /**
  * @brief vector_capacity - gets the current capacity of the vector
@@ -57,21 +57,21 @@ do {                                    \
  * @return void
  */
 #define vector_grow(vec, count) \
-do {                                                                                    \
-	if(!(vec)) {                                                                        \
-		size_t *__p = (size_t *)malloc((count) * sizeof(*(vec)) + (sizeof(size_t) * 2));          \
-		assert(__p);                                                                    \
-		(vec) = (typeof(vec))(&__p[2]);                                                      \
-		vector_set_capacity((vec), (count));                                            \
-		vector_set_size((vec), 0);                                                      \
-	} else {                                                                            \
-		size_t *__p1 = &((size_t *)(vec))[-2];                                          \
-		size_t *__p2 = (size_t*)realloc(__p1, ((count) * sizeof(*(vec))+ (sizeof(size_t) * 2))); \
-		assert(__p2);                                                                   \
-		(vec) = (typeof(vec))(&__p2[2]);                                                     \
-		vector_set_capacity((vec), (count));                                            \
-	}                                                                                   \
-} while(0)
+	do {                                                                                    \
+		if(!(vec)) {                                                                        \
+			size_t *__p = (size_t *)malloc((count) * sizeof(*(vec)) + (sizeof(size_t) * 2));          \
+			assert(__p);                                                                    \
+			(vec) = (typeof(vec))(&__p[2]);                                                      \
+			vector_set_capacity((vec), (count));                                            \
+			vector_set_size((vec), 0);                                                      \
+		} else {                                                                            \
+			size_t *__p1 = &((size_t *)(vec))[-2];                                          \
+			size_t *__p2 = (size_t*)realloc(__p1, ((count) * sizeof(*(vec))+ (sizeof(size_t) * 2))); \
+			assert(__p2);                                                                   \
+			(vec) = (typeof(vec))(&__p2[2]);                                                     \
+			vector_set_capacity((vec), (count));                                            \
+		}                                                                                   \
+	} while(0)
 
 /**
  * @brief vector_pop_back - removes the last element from the vector
@@ -79,9 +79,9 @@ do {                                                                            
  * @return void
  */
 #define vector_pop_back(vec) \
-do {                                              \
-	vector_set_size((vec), vector_size(vec) - 1); \
-} while(0)
+	do {                                              \
+		vector_set_size((vec), vector_size(vec) - 1); \
+	} while(0)
 
 /**
  * @brief vector_erase - removes the element at index i from the vector
@@ -90,18 +90,18 @@ do {                                              \
  * @return void
  */
 #define vector_erase(vec, i) \
-do {                                                   \
-	if (vec) {                                         \
-		const size_t __sz = vector_size(vec);          \
-		if ((i) < __sz) {                              \
-			vector_set_size((vec), __sz - 1);          \
-			size_t __x;                                \
-			for (__x = (i); __x < (__sz - 1); ++__x) { \
-				(vec)[__x] = (vec)[__x + 1];           \
-			}                                          \
-		}                                              \
-   }                                                   \
-} while(0)
+	do {                                                   \
+		if (vec) {                                         \
+			const size_t __sz = vector_size(vec);          \
+			if ((i) < __sz) {                              \
+				vector_set_size((vec), __sz - 1);          \
+				size_t __x;                                \
+				for (__x = (i); __x < (__sz - 1); ++__x) { \
+					(vec)[__x] = (vec)[__x + 1];           \
+				}                                          \
+			}                                              \
+		}                                                   \
+	} while(0)
 
 /**
  * @brief vector_free - frees all memory associated with the vector
@@ -109,12 +109,13 @@ do {                                                   \
  * @return void
  */
 #define vector_free(vec) \
-do { \
-	if(vec) {                                \
-		size_t *p1 = &((size_t *)(vec))[-2]; \
-		free(p1);                            \
-	}                                        \
-} while(0)
+	do { \
+		if(vec) {                                \
+			size_t *p1 = &((size_t *)(vec))[-2]; \
+			free(p1);                            \
+		} \
+		vec = NULL;\
+	} while(0)
 
 /**
  * @brief vector_begin - returns an iterator to first element of the vector
@@ -141,25 +142,40 @@ do { \
  */
 
 #define vector_push_back(vec, value) \
-do {                                                        \
-	size_t __cap = vector_capacity(vec);                    \
-	if(__cap <= vector_size(vec)) {                         \
-		vector_grow((vec), !__cap ? __cap + 1 : __cap * 2); \
-	}                                                       \
-	vec[vector_size(vec)] = (value);                        \
-	vector_set_size((vec), vector_size(vec) + 1);           \
-} while(0)
+	do {                                                        \
+		size_t __cap = vector_capacity(vec);                    \
+		if(__cap <= vector_size(vec)) {                         \
+			vector_grow((vec), !__cap ? __cap + 1 : __cap * 2); \
+		}                                                       \
+		vec[vector_size(vec)] = (value);                        \
+		vector_set_size((vec), vector_size(vec) + 1);           \
+	} while(0)
 /*
 #define vector_push_back(vec, value) \
 do {                                              \
-	size_t __cap = vector_capacity(vec);          \
-	if(__cap <= vector_size(vec)) {               \
-		vector_grow((vec), __cap + 1);            \
-	}                                             \
-	vec[vector_size(vec)] = (value);              \
-	vector_set_size((vec), vector_size(vec) + 1); \
+size_t __cap = vector_capacity(vec);          \
+if(__cap <= vector_size(vec)) {               \
+vector_grow((vec), __cap + 1);            \
+}                                             \
+vec[vector_size(vec)] = (value);              \
+vector_set_size((vec), vector_size(vec) + 1); \
 } while(0)
 */
 
- 
+#define vector_init(vec,value,size) \
+	do{\
+		if(!vec)                                      \
+		{                                             \
+			vector_free(vec)                          \
+		}                                             \
+		size_t __temp_iter = 0;                       \
+		if(size)                                      \
+		{                                             \
+			while(__temp_iter<size)                   \
+			{                                         \
+				vector_push_back(vec,value);          \
+				__temp_iter++;                        \
+			}                                         \
+		}                                             \
+	}while(0)
 
