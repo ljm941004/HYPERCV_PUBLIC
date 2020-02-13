@@ -98,11 +98,38 @@ static void test_write_hdr()
 
 static void test_hmread_with_hdr()
 {
-	const char* image_path = "/home/ljm/indain_pines.img";
-	const char* hdr_path = "/home/ljm/indain_pines.hdr";
-	hyper_mat t = hmread_with_hdr(image_path,hdr_path);	
-	hmwrite("test",t);
+	const char* image_path = "/home/ljm/Hymap_data.img";
+	const char* hdr_path = "/home/ljm/Hymap_data.hdr";
+	hyper_mat t = hmread_with_hdr(image_path,hdr_path);
+	for(int i=0;i<t->bands;i++)
+		printf("%f,",t->wavelength[i]);
 }
+
+
+static void test_read_wavelength()
+{
+
+	const char* hdr_path = "/home/ljm/Hymap_data.hdr";
+
+	FILE* hdr_fp = NULL;
+
+	hdr_fp = fopen(hdr_path, "r");
+
+	char line[100000];
+	char item[100000];
+
+	while(fgets(line,100000,hdr_fp)!=0)
+	{
+		sscanf(line,"%[^=]",item);
+		printf("%c\n",line[strlen(line)-3]);
+
+	}
+
+
+
+}
+
+
 
 TEST(CORE,HMCOPY)
 {
@@ -122,4 +149,7 @@ TEST(CORE,HMREAD_WITH_HDR)
 {
 	test_hmread_with_hdr();
 }
-
+TEST(CORE,READ_WAVELENGTH)
+{
+	test_read_wavelength();
+}

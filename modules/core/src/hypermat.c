@@ -29,11 +29,11 @@ int cmpstr(char temp1[],char temp2[])
 }
 
 // private function purpose to read wavelength from hdr file
-// default wavelength charlength < 8
+// default wavelength charlength < 12
 static void read_wavelength(char* w, float* wavelength)
 {
-	char* tmp = (char*)malloc(8*sizeof(char));
-	for(int i=0;i<8;i++)
+	char* tmp = (char*)malloc(12*sizeof(char));
+	for(int i=0;i<12;i++)
 		tmp[i]=' ';
 	int t = 0;
 	int n = 0;
@@ -45,7 +45,7 @@ static void read_wavelength(char* w, float* wavelength)
 		{
 			wavelength[n++] = atof(tmp);
 			t=0;
-			for(int j=0;j<8;j++)
+			for(int j=0;j<11;j++)
 				tmp[j]=' ';
 		}
 	}
@@ -141,15 +141,30 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 			for(int i=0;i<4;i++)
 			{
 				if(it[i]!=' ')
-				*interleave++ = it[i];
+					*interleave++ = it[i];
 			}
 		}
-		else if (cmpstr(item,"wavelength = {")==1)
+		else if (cmpstr(line,"wavelength = {")==1)
 		{	
 			char* w;
-			w = (char*)malloc(strlen(line)-16);
-			char* wavestart = &line[14];
-			memcpy(w,wavestart,strlen(line)-16);
+			if(strlen(line)<20&&strlen(line)>14)
+			{
+				w = (char*)malloc(bandtemp*11*sizeof(char));
+				char* temp = w;
+				while(line[strlen(line)-3]!='}'&& fgets(line, MAXLINE, hdr_fp)!=0)
+				{
+					memcpy(temp,line,strlen(line)-2);
+					temp+=(strlen(line)-2);
+				}
+			}
+			else
+			{
+				w = (char*)malloc(strlen(line)-16);
+				char* wavestart = &line[14];
+				memcpy(w,wavestart,strlen(line)-16);
+
+			}
+
 			float* wave = (float*)malloc((bandtemp)*sizeof(float));
 			read_wavelength(w,wave);	
 			*wavelength = wave;
