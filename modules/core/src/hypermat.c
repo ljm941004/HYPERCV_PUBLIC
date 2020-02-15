@@ -204,6 +204,12 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 	_assert(bands > 0, "the bands of hyper mat must be greater than zero.");
 
 	hyper_mat mat;
+	
+	if(data==NULL&&wavelength!=NULL)
+	{
+		printf("data==NULL but wavelength !=NULL");
+		return mat ;	
+	}
 
 	int memneeded = sizeof(HyperMat);
 	int elem_size = get_elemsize(data_type);
@@ -211,7 +217,8 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 	if (data == NULL)
 	{
 		int mat_data_size = samples * lines * bands * elem_size;
-		memneeded += mat_data_size + ALLOC_BYTE_ALIGNMENT;
+		int wave_data_size = bands * sizeof(float);
+		memneeded += mat_data_size + wave_data_size + ALLOC_BYTE_ALIGNMENT*2;
 	}
 
 	mat = (hyper_mat)malloc(sizeof(char) * memneeded);
@@ -223,9 +230,17 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 		BYTE_ALIGNMENT(address, ALLOC_BYTE_ALIGNMENT);
 		memset((void*)address, 0, samples * lines * bands * elem_size);
 		mat->data = (void*)address;
+		address += samples * lines * bands * elem_size;
+		BYTE_ALIGNMENT(address, ALLOC_BYTE_ALIGNMENT);
+		memset((void*)address, 0, bands*sizeof(float));
+		mat->wavelength = (void*)address;
 	}
 	else
+	{
 		mat->data = data;
+		mat->wavelength = wavelength;
+	}
+	
 
 	mat->samples = samples;
 	mat->lines = lines;
@@ -234,7 +249,6 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 	mat->interleave[0] = interleave[0];
 	mat->interleave[1] = interleave[1];
 	mat->interleave[2] = interleave[2];
-	mat->wavelength = wavelength;
 	return mat;
 }
 
@@ -439,10 +453,9 @@ hyper_mat hyper_mat_copy(hyper_mat mat)
 
 	if(mat->wavelength!=NULL)
 	{
-		float *src_wavelength = mat->wavelength;
-		float *dst_wavelength = (float*)malloc(bands*sizeof(float));
+		float *src_wavelength = (float*)mat->wavelength;
+		float *dst_wavelength = (float*)dst_mat->wavelength;
 		memcpy(dst_wavelength,src_wavelength,bands*sizeof(float));
-		dst_mat->wavelength = dst_wavelength;
 	}
 
 	return dst_mat;
@@ -503,10 +516,16 @@ void delete_hyper_mat(hyper_mat mat)
 	}
 	else
 	{
-		free(mat->data);
-		mat->data = NULL;
-		free(mat->wavelength);
-		mat->wavelength = NULL;
+		if(mat->data!=NULL)
+		{
+			free(mat->data);
+			mat->data = NULL;
+		}
+		if(mat->wavelength)
+		{
+			free(mat->wavelength);
+			mat->wavelength = NULL;
+		}
 		free(mat);
 		mat = NULL;
 	}
