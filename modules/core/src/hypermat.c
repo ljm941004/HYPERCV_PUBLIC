@@ -156,6 +156,7 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 					memcpy(temp,line,strlen(line)-2);
 					temp+=(strlen(line)-2);
 				}
+				*temp = '}';
 			}
 			else
 			{
@@ -241,7 +242,6 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 		mat->wavelength = wavelength;
 	}
 	
-
 	mat->samples = samples;
 	mat->lines = lines;
 	mat->bands = bands;
