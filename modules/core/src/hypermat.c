@@ -48,6 +48,8 @@ static void read_wavelength(char* w, float* wavelength)
 			for(int j=0;j<11;j++)
 				tmp[j]=' ';
 		}
+		if(w[i]=='}')
+			break;
 	}
 }
 
