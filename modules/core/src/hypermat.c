@@ -276,6 +276,9 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	else
 		readhdr(hdr_fp, &samples, &lines,&bands, &data_type, interleave, &wavelength);
 
+	if(wavelength == NULL)
+		wavelength = (float*)malloc(bands*sizeof(float));
+
 	int elem_size = get_elemsize(data_type);
 	int data_size = samples * lines * bands;
 
@@ -321,7 +324,9 @@ hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int b
 	fread(data, elem_size, data_size, image_fp);
 	fclose(image_fp);
 
-	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data, NULL);
+	float* wavelength = (float*)malloc(bands*sizeof(float));
+
+	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data, wavelength);
 
 	return mat;
 }
