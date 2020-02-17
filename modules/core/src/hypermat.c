@@ -150,34 +150,21 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 		}
 		else if (cmpstr(line,"wavelength = {")==1)
 		{	
-			char* w;
-			int wave_char_len = 0;
-			if(strlen(line)<20&&strlen(line)>14)
-			{
-				char* wtmp = (char*)malloc(bandtemp*12*sizeof(char));
-				char* temp = wtmp;
-				while(line[strlen(line)-3]!='}'&& fgets(line, MAXLINE, hdr_fp)!=0)
-				{
-					memcpy(temp,line,strlen(line)-2);
-					temp+=(strlen(line)-2);
-					wave_char_len+=(strlen(line)-2);
-				}
-				w = (char*)malloc(wave_char_len);
-				memcpy(w,wtmp,wave_char_len);	
-				free(wtmp);wtmp =NULL;	
-			}
-			else
-			{
-				w = (char*)malloc(strlen(line)-16);
-				char* wavestart = &line[14];
-				memcpy(w,wavestart,strlen(line)-16);
-			}
-			
-			float* wave = (float*)malloc((bandtemp)*sizeof(float));
-			read_wavelength(w,wave,bandtemp);	
-			*wavelength = wave;
+			char* w = (char*)malloc(12 * bandtemp*sizeof(char));
+			char* t_w = w;
 
-			free(w);
+			while (strchr(line, '}') == NULL&&fgets(line, MAXLINE, hdr_fp) != 0)
+			{
+				for (int i = 0; i < strlen(line); i++)
+				{
+					if (line[i] != '\n')
+						*t_w++ = line[i];
+				}
+			}
+			float* wave = (float*)malloc((bandtemp)*sizeof(float));
+			read_wavelength(w, wave, bandtemp);
+			*wavelength = wave;
+			free(w); w = NULL;
 		}
 	}
 }
@@ -214,7 +201,7 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 	_assert(bands > 0, "the bands of hyper mat must be greater than zero.");
 
 	hyper_mat mat;
-	
+
 	if(data==NULL&&wavelength!=NULL)
 	{
 		printf("data==NULL but wavelength !=NULL");
@@ -250,7 +237,7 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 		mat->data = data;
 		mat->wavelength = wavelength;
 	}
-	
+
 	mat->samples = samples;
 	mat->lines = lines;
 	mat->bands = bands;
