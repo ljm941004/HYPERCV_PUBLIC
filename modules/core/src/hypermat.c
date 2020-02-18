@@ -10,6 +10,10 @@
 #define MAXLINE 10000 //each line no more than 10000 words
 #endif
 
+#ifndef MAXWAVECHAR
+#define MAXWAVECHAR 20
+#endif
+
 //*************************************************************
 //                       private 
 //*************************************************************
@@ -32,8 +36,8 @@ int cmpstr(char temp1[],char temp2[])
 // default wavelength charlength < 12
 static void read_wavelength(char* w, float* wavelength, int bands)
 {
-	char* tmp = (char*)malloc(12*sizeof(char));
-	for(int i=0;i<12;i++)
+	char* tmp = (char*)malloc(MAXWAVECHAR*sizeof(char));
+	for(int i=0;i<MAXWAVECHAR;i++)
 		tmp[i]=' ';
 	int t = 0;
 	int n = 0;
@@ -45,7 +49,7 @@ static void read_wavelength(char* w, float* wavelength, int bands)
 		{
 			wavelength[n++] = atof(tmp);
 			t=0;
-			for(int j=0;j<11;j++)
+			for(int j=0;j<MAXWAVECHAR;j++)
 				tmp[j]=' ';
 		}
 		if(w[i]=='}'||n==bands)
@@ -150,7 +154,7 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
 		}
 		else if (cmpstr(line,"wavelength = {")==1)
 		{	
-			char* w = (char*)malloc(12 * bandtemp*sizeof(char));
+			char* w = (char*)malloc(MAXWAVECHAR * bandtemp*sizeof(char));
 			char* t_w = w;
 
 			while (strchr(line, '}') == NULL&&fgets(line, MAXLINE, hdr_fp) != 0)
@@ -275,21 +279,25 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	}
 	else
 		readhdr(hdr_fp, &samples, &lines,&bands, &data_type, interleave, &wavelength);
-
+	
 	if(wavelength == NULL)
 		wavelength = (float*)malloc(bands*sizeof(float));
-
+	
 	int elem_size = get_elemsize(data_type);
 	int data_size = samples * lines * bands;
 
 	void* data = (void *)malloc(data_size * elem_size);
-
+	_assert(data != NULL, "malloc fail");
+	
 	fread(data, elem_size, data_size, image_fp);
+	
 	fclose(image_fp);
 	fclose(hdr_fp);
+	
 	hyper_mat mat = create_hyper_mat_with_data(samples, lines, bands, data_type, interleave, data, wavelength);
 
 	free(interleave);
+	
 	return mat;
 }
 
