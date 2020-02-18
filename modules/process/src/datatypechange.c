@@ -7,10 +7,10 @@
 #include "precomp.h"
 
 /**
-* @brief      data type change .
-* @param[in]  uc_mat    unsigned char image.
-* @retval     dst       short image.
-**/
+ * @brief      data type change .
+ * @param[in]  uc_mat    unsigned char image.
+ * @retval     dst       short image.
+ **/
 hyper_mat hyper_mat_uchar2short(hyper_mat uc_mat)
 {
 	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
@@ -29,16 +29,17 @@ hyper_mat hyper_mat_uchar2short(hyper_mat uc_mat)
 	for(int i=0;i<datasize;i++)
 		data[i]=uc_data[i];
 
-	dst->wavelength = uc_mat->wavelength;
+	if(uc_mat->wavelength != NULL)
+		memcpy(dst->wavelength, uc_mat->wavelength,bands*sizeof(float));
 
 	return dst;
 }
 
 /**
-* @brief      data type change .
-* @param[in]  uc_mat    unsigned char image.
-* @retval     dst       int image.
-**/
+ * @brief      data type change .
+ * @param[in]  uc_mat    unsigned char image.
+ * @retval     dst       int image.
+ **/
 hyper_mat hyper_mat_uchar2int(hyper_mat uc_mat)
 {
 	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
@@ -56,15 +57,18 @@ hyper_mat hyper_mat_uchar2int(hyper_mat uc_mat)
 
 	for(int i=0;i<datasize;i++)
 		data[i]=uc_data[i];
-
+	
+	if(uc_mat->wavelength != NULL)
+		memcpy(dst->wavelength, uc_mat->wavelength,bands*sizeof(float));
+	
 	return dst;
 }
 
 /**
-* @brief      data type change .
-* @param[in]  uc_mat    unsigned char image.
-* @retval     dst       float image.
-**/
+ * @brief      data type change .
+ * @param[in]  uc_mat    unsigned char image.
+ * @retval     dst       float image.
+ **/
 hyper_mat hyper_mat_uchar2float(hyper_mat uc_mat)
 {
 	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
@@ -82,15 +86,18 @@ hyper_mat hyper_mat_uchar2float(hyper_mat uc_mat)
 
 	for(int i=0;i<datasize;i++)
 		data[i]=uc_data[i]*1.0;
-
+	
+	if(uc_mat->wavelength != NULL)
+		memcpy(dst->wavelength, uc_mat->wavelength,bands*sizeof(float));
+	
 	return dst;
 }
 
 /**
-* @brief      data type change .
-* @param[in]  uc_mat    unsigned char image.
-* @retval     dst       unsigned short image.
-**/
+ * @brief      data type change .
+ * @param[in]  uc_mat    unsigned char image.
+ * @retval     dst       unsigned short image.
+ **/
 hyper_mat hyper_mat_uchar2ushort(hyper_mat uc_mat)
 {
 	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
@@ -108,15 +115,18 @@ hyper_mat hyper_mat_uchar2ushort(hyper_mat uc_mat)
 
 	for(int i=0;i<datasize;i++)
 		data[i]=uc_data[i];
+	
+	if(uc_mat->wavelength != NULL)
+		memcpy(dst->wavelength, uc_mat->wavelength,bands*sizeof(float));
 
 	return dst;
 }
 
 /**
-* @brief      data type change .
-* @param[in]  f_mat      float image.
-* @retval     dst        int image.
-**/
+ * @brief      data type change .
+ * @param[in]  f_mat      float image.
+ * @retval     dst        int image.
+ **/
 //todo write all brief and fix order data type
 hyper_mat hyper_mat_float2int(hyper_mat f_mat)
 {
@@ -134,15 +144,18 @@ hyper_mat hyper_mat_float2int(hyper_mat f_mat)
 
 	for(int i=0;i<datasize;i++)
 		data[i]=HYPERCV_ROUND(fdata[i]);
+	
+	if(f_mat->wavelength != NULL)
+		memcpy(dst->wavelength, f_mat->wavelength,bands*sizeof(float));
 
 	return dst;
 }
 
 /**
-* @brief      data type change .
-* @param[in]  f_mat      float image.
-* @retval     dst        char image.
-**/
+ * @brief      data type change .
+ * @param[in]  f_mat      float image.
+ * @retval     dst        char image.
+ **/
 hyper_mat hyper_mat_float2char(hyper_mat f_mat)
 {
 	_assert(f_mat->data_type == 4,"intput mat datatype == float")
@@ -168,18 +181,22 @@ hyper_mat hyper_mat_float2char(hyper_mat f_mat)
 			data[i] = tmp;
 
 	}
+		
+	if(f_mat->wavelength != NULL)
+		memcpy(dst->wavelength, f_mat->wavelength,bands*sizeof(float));
+
 	return dst;
 }
 
 /**
-* @brief      data type change .
-* @param[in]  f_mat      float image.
-* @retval     dst        short image.
-**/
+ * @brief      data type change .
+ * @param[in]  f_mat      float image.
+ * @retval     dst        short image.
+ **/
 hyper_mat hyper_mat_float2short(hyper_mat f_mat)
 {
 	_assert(f_mat->data_type == 4,"intput mat datatype == float");
-    int samples = f_mat->samples;
+	int samples = f_mat->samples;
 	int lines = f_mat->lines;
 	int bands = f_mat->bands;
 
@@ -189,9 +206,14 @@ hyper_mat hyper_mat_float2short(hyper_mat f_mat)
 	float* fdata = f_mat->data;
 	int tmp = 0;
 	int datasize = samples*lines*bands;
+
 	for(int i=0;i<datasize;i++)
 		data[i] =(short)HYPERCV_ROUND(fdata[i]);
-	return dst;
+		
+	if(f_mat->wavelength != NULL)
+		memcpy(dst->wavelength, f_mat->wavelength,bands*sizeof(float));
+	
+    return dst;
 }
 
 /**
@@ -219,7 +241,11 @@ hyper_mat hyper_mat_float2ushort(hyper_mat f_mat)
 			data[i] =0;
 		else
 			data[i] = tmp;
-	}
+	}	
+
+	if(f_mat->wavelength != NULL)
+		memcpy(dst->wavelength, f_mat->wavelength,bands*sizeof(float));
+
 	return dst;
 }
 
@@ -252,7 +278,11 @@ hyper_mat hyper_mat_float2uchar(hyper_mat f_mat)
 		else
 			data[i] = tmp;
 
-	}
+	}	
+
+	if(f_mat->wavelength != NULL)
+		memcpy(dst->wavelength, f_mat->wavelength,bands*sizeof(float));
+
 	return dst;
 }
 
@@ -285,7 +315,11 @@ hyper_mat hyper_mat_float2uint(hyper_mat f_mat)
 		else
 			data[i] = tmp;
 
-	}
+	}	
+
+	if(f_mat->wavelength != NULL)
+		memcpy(dst->wavelength, f_mat->wavelength,bands*sizeof(float));
+
 	return dst;
 }
 
@@ -306,15 +340,18 @@ hyper_mat hyper_mat_ushort2float(hyper_mat us_mat)
 
 	unsigned short* usdata = us_mat->data;
 	float* fdata = dst->data;
-	
+
 	int tmp = 0;
 	int datasize = samples*lines*bands;
-	
+
 	for(int i=0;i<datasize;i++)
 	{
 		fdata[i] = usdata[i]*1.0;
 	}
 	
+	if(us_mat->wavelength != NULL)
+		memcpy(dst->wavelength, us_mat->wavelength,bands*sizeof(float));
+
 	return dst;
 }
 
@@ -334,12 +371,12 @@ simple_mat simple_mat_float2uchar(simple_mat src)
 	int cn = src->channels;
 	float* src_data = (float*)src->data;
 	unsigned char* dst_data = (unsigned char*)dst->data;
-/*
-	float maxpix = 0.0;
-	for(int i=0;i<rows;i++)
-		for(int j=0;j<cols;j++)
-			maxpix = maxpix>src_data[i*cols+j]?maxpix:src_data[i*cols+j];
-*/
+	/*
+	   float maxpix = 0.0;
+	   for(int i=0;i<rows;i++)
+	   for(int j=0;j<cols;j++)
+	   maxpix = maxpix>src_data[i*cols+j]?maxpix:src_data[i*cols+j];
+	   */
 	for(int i=0;i<rows*cols*cn;i++)
 	{
 		dst_data[i] = HYPERCV_ROUND(src_data[i])<=255?HYPERCV_ROUND(src_data[i]):255;

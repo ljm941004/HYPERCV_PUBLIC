@@ -56,9 +56,6 @@ hyper_mat convert2bip(hyper_mat mat)
 	return res;
 }
 
-
-
-
 /**
 * @brief      transform bil to bsq.
 * @param[in]  bil_mat    bil image.
@@ -66,10 +63,10 @@ hyper_mat convert2bip(hyper_mat mat)
 **/
 hyper_mat bil2bsq(hyper_mat bil_mat)
 {
-	_assert(bil_mat != NULL,                "hyper_mat can not be NULL");
+	_assert(bil_mat != NULL,"hyper_mat can not be NULL");
 
 	if(cmpstr(bil_mat -> interleave,"bsq") == 1)
-		return bil_mat;
+		return hyper_mat_copy(bil_mat);
 
 	_assert(cmpstr(bil_mat -> interleave,"bil") == 1, "input hyper mat's interleave must be bil");
 
@@ -88,7 +85,8 @@ hyper_mat bil2bsq(hyper_mat bil_mat)
 	char* bil_data = (char*)bil_mat -> data;
 	char* bsq_data = (char*)bsq_mat -> data;
 
-	int bil_index = 0, bsq_index = 0;
+	unsigned int bil_index = 0, bsq_index = 0;
+
 	for (int k=0; k<bands; k++)
 	{
 		for (int i=0; i<lines; i++)
@@ -103,6 +101,13 @@ hyper_mat bil2bsq(hyper_mat bil_mat)
 			}
 		}
 	}
+
+	float* bil_wave = (float*)bil_mat->wavelength;
+	float* bsq_wave = (float*)bsq_mat->wavelength;
+
+	if(bil_wave != NULL)
+		memcpy(bsq_wave, bil_wave, bands*sizeof(float));
+
 	return bsq_mat;
 }
 
@@ -116,7 +121,7 @@ hyper_mat bil2bip(hyper_mat bil_mat)
 	_assert(bil_mat != NULL,                "hyper_mat can not be NULL");
 
 	if(cmpstr(bil_mat -> interleave,"bip") == 1)
-		return bil_mat;
+		return hyper_mat_copy(bil_mat);
 
 	_assert(cmpstr(bil_mat -> interleave,"bil") == 1, "input hyper mat's interleave must be bil");
 
@@ -135,7 +140,7 @@ hyper_mat bil2bip(hyper_mat bil_mat)
 	char* bil_data = (char*)bil_mat -> data;
 	char* bip_data = (char*)bip_mat -> data;
 
-	int bil_index = 0, bip_index = 0;
+	unsigned int bil_index = 0, bip_index = 0;
 
 	for (int i=0;i<lines; i++)
 	{
@@ -151,6 +156,13 @@ hyper_mat bil2bip(hyper_mat bil_mat)
 			}
 		}
 	}
+
+	float* bil_wave = (float*)bil_mat->wavelength;
+	float* bip_wave = (float*)bip_mat->wavelength;
+
+	if(bil_wave != NULL)
+		memcpy(bip_wave, bil_wave, bands*sizeof(float));
+
 	return bip_mat;
 }
 
@@ -164,7 +176,7 @@ hyper_mat bsq2bil(hyper_mat bsq_mat)
 	_assert(bsq_mat != NULL,                "hyper_mat can not be NULL");
 
 	if(cmpstr(bsq_mat -> interleave,"bil") == 1)
-		return bsq_mat;
+		return hyper_mat_copy(bsq_mat);
 
 	_assert(cmpstr(bsq_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
 
@@ -183,7 +195,7 @@ hyper_mat bsq2bil(hyper_mat bsq_mat)
 	char* bsq_data = (char*)bsq_mat -> data;
 	char* bil_data = (char*)bil_mat -> data;
 
-	int bsq_index = 0, bil_index = 0;
+	unsigned int bsq_index = 0, bil_index = 0;
 
 	for (int i=0;i<lines; i++)
 	{
@@ -199,6 +211,13 @@ hyper_mat bsq2bil(hyper_mat bsq_mat)
 			}
 		}
 	}
+
+	float* bil_wave = (float*)bil_mat->wavelength;
+	float* bsq_wave = (float*)bsq_mat->wavelength;
+
+	if(bsq_wave != NULL)
+		memcpy(bil_wave, bsq_wave, bands*sizeof(float));
+
 	return bil_mat;
 }
 
@@ -209,10 +228,10 @@ hyper_mat bsq2bil(hyper_mat bsq_mat)
 **/
 hyper_mat bsq2bip(hyper_mat bsq_mat)
 {
-	_assert(bsq_mat != NULL,                "hyper_mat can not be NULL");
+	_assert(bsq_mat != NULL,"hyper_mat can not be NULL");
 
 	if(cmpstr(bsq_mat -> interleave,"bip") == 1)
-		return bsq_mat;
+		return hyper_mat_copy(bsq_mat);
 
 	_assert(cmpstr(bsq_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
 
@@ -231,7 +250,7 @@ hyper_mat bsq2bip(hyper_mat bsq_mat)
 	char* bsq_data = (char*)bsq_mat -> data;
 	char* bip_data = (char*)bip_mat -> data;
 
-	int bsq_index = 0, bip_index = 0;
+	unsigned int bsq_index = 0, bip_index = 0;
 
 	for (int i=0;i<lines; i++)
 	{
@@ -247,6 +266,13 @@ hyper_mat bsq2bip(hyper_mat bsq_mat)
 			}
 		}
 	}
+    
+	float* bip_wave = (float*)bip_mat->wavelength;
+	float* bsq_wave = (float*)bsq_mat->wavelength;
+
+	if(bsq_wave != NULL)
+		memcpy(bip_wave, bsq_wave, bands*sizeof(float));
+
 	return bip_mat;
 }
 
@@ -260,7 +286,7 @@ hyper_mat bip2bsq(hyper_mat bip_mat)
 	_assert(bip_mat != NULL,                "hyper_mat can not be NULL");
 
 	if(cmpstr(bip_mat -> interleave,"bsq") == 1)
-		return bip_mat;
+		return hyper_mat_copy(bip_mat);
 
 	_assert(cmpstr(bip_mat -> interleave,"bip") == 1, "input hyper mat's interleave must be bip");
 
@@ -279,7 +305,7 @@ hyper_mat bip2bsq(hyper_mat bip_mat)
 	char* bip_data = (char*)bip_mat -> data;
 	char* bsq_data = (char*)bsq_mat -> data;
 
-	int bsq_index = 0, bip_index = 0;
+	unsigned int bsq_index = 0, bip_index = 0;
 
 	for (int i=0;i<lines; i++)
 	{
@@ -295,6 +321,13 @@ hyper_mat bip2bsq(hyper_mat bip_mat)
 			}
 		}
 	}
+
+	float* bip_wave = (float*)bip_mat->wavelength;
+	float* bsq_wave = (float*)bsq_mat->wavelength;
+
+	if(bip_wave != NULL)
+		memcpy(bsq_wave, bip_wave, bands*sizeof(float));
+
 	return bsq_mat;
 }
 
@@ -307,7 +340,7 @@ hyper_mat bip2bil(hyper_mat bip_mat)
 {
 	_assert(bip_mat != NULL,                "hyper_mat can not be NULL");
 	if(cmpstr(bip_mat -> interleave,"bil") == 1)
-		return bip_mat;
+		return hyper_mat_copy(bip_mat);
 	_assert(cmpstr(bip_mat -> interleave,"bip") == 1, "input hyper mat's interleave must be bip");
 
 	int samples   = bip_mat -> samples;
@@ -325,7 +358,7 @@ hyper_mat bip2bil(hyper_mat bip_mat)
 	char* bip_data = (char*)bip_mat -> data;
 	char* bil_data = (char*)bil_mat -> data;
 
-	int bil_index = 0, bip_index = 0;
+	unsigned int bil_index = 0, bip_index = 0;
 
 	for (int i=0;i<lines; i++)
 	{
@@ -341,6 +374,13 @@ hyper_mat bip2bil(hyper_mat bip_mat)
 			}
 		}
 	}
+
+	float* bil_wave = (float*)bil_mat->wavelength;
+	float* bip_wave = (float*)bip_mat->wavelength;
+
+	if(bip_wave != NULL)
+		memcpy(bil_wave, bip_wave, bands*sizeof(float));
+
 	return bil_mat;
 }
 
@@ -429,7 +469,15 @@ hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, i
 	}
 	else 
 		printf("interleave fasle, get range ");
-	
+
+	if(src_mat->wavelength !=NULL)
+	{
+		float* start_wave = (float*)src_mat->wavelength + start_band;
+		float* dst_wave = (float*)dst_mat->wavelength;
+
+		memcpy(dst_wave, start_wave, (end_band-start_band)*sizeof(float));
+	}
+
 	return dst_mat;
 }
 
