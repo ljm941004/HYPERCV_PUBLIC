@@ -428,7 +428,7 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 
 	if(wavelength!=NULL)
 	{
-		fputs("wavelength = {", fp); 
+		fputs("wavelength = { \n", fp); 
 		for(int i=0;i<bands-1;i++)
 			fprintf(fp,"%.1f,",wavelength[i]);
 		fprintf(fp,"%.1f}",wavelength[bands-1]);
@@ -470,6 +470,29 @@ hyper_mat hyper_mat_copy(hyper_mat mat)
 	return dst_mat;
 }
 
+/**
+ * @brief       copy hyper mat wave.
+ * @param[in]   src         input hyper mat.
+ * @param[in]   dst         input hyper mat.
+ **/
+void hyper_mat_copy_wavelength(hyper_mat src, hyper_mat dst)
+{
+
+	_assert(src!=NULL&&dst!=NULL,"mat could not be NULL");
+	_assert(src->bands == dst->bands,"src mat bands == dst mat bands");
+
+	_assert(src->wavelength != NULL," src_wavelength cannot be null");
+
+	float* src_wavelength = (float*)src->wavelength;
+	float* dst_wavelength = (float*)dst->wavelength;
+
+	int bands = src->bands;
+
+	if(dst_wavelength == NULL)
+		dst_wavelength = (float*)malloc(bands*sizeof(bands));
+
+	memcpy(dst_wavelength,src_wavelength,bands*sizeof(bands));
+}
 /**
  * @brief      function to show information the hyper mat.
  * @param[in]  mat         hyper mat.

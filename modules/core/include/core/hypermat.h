@@ -110,6 +110,13 @@ hyper_mat hyper_mat_copy(hyper_mat mat);
 int hyper_mat_empty(hyper_mat mat);
 
 /**
+ * @brief       copy hyper mat wave.
+ * @param[in]   src         input hyper mat.
+ * @param[in]   dst         input hyper mat.
+ **/
+void hyper_mat_copy_wavelength(hyper_mat src, hyper_mat dst);
+
+/**
  * @brief      function to show information the hyper mat.
  * @param[in]  mat         hyper mat.
  **/

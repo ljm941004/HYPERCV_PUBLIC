@@ -69,9 +69,6 @@ int otsuThreshold(simple_mat img)
 	return Threshold; 
 }
 
-
-
-
 void hypercv_threshold_binary(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value)
 {
 	_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
