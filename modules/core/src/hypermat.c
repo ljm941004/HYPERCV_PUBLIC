@@ -477,13 +477,15 @@ void hyper_mat_copy_to(hyper_mat src_mat, hyper_mat dst_mat)
 	int samples = src_mat->samples;
 	int lines = src_mat -> lines;
 	int bands = src_mat -> bands;
-	
-	_assert(dst_mat->samples == samples && dst_mat->lines == lines && dst_mat->bands == bands,"src_mat size == dst_mat size");
+	int data_type = src_mat->data_type;
+	int elemsize = get_elemsize(data_type);
+
+	_assert(dst_mat->samples == samples && dst_mat->lines == lines && dst_mat->bands == bands && data_type == dst_mat->data_type,"src_mat size == dst_mat size");
 
     char* src_data = (char*)src_mat->data;
 	char* dst_data = (char*)dst_mat->data;
 
-	memcpy(dst_data,src_data,samples*lines*bands);
+	memcpy(dst_data,src_data,samples*lines*bands*elemsize);
 	hyper_mat_copy_wavelength(src_mat, dst_mat);
 
 	for(int i=0;i<3;i++)
