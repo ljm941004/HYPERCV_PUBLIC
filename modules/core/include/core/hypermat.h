@@ -69,7 +69,7 @@ hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int b
  * @param[in]  image_path  hyper spectral image path.
  * @param[in]  hyper_mat   hyper mat.
  **/
-void hmwrite(const char* image_path, hyper_mat mat);
+void hmsave(const char* image_path, hyper_mat mat);
 
 /**
  * @brief      read the HDR to get size and data type.
@@ -101,6 +101,8 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
  * @retval      hyper_mat   output hyper mat.
  **/
 hyper_mat hyper_mat_copy(hyper_mat mat);
+
+void hyper_mat_copy_to(hyper_mat src_mat, hyper_mat dst_mat);
 
 /**
 * @brief      function to return if mat is empty.

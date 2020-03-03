@@ -344,7 +344,7 @@ hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int b
  * @param[in]  image_path  hyper spectral image path.
  * @param[in]  hyper_mat   hyper mat.
  **/
-void hmwrite(const char* image_path, hyper_mat mat)
+void hmsave(const char* image_path, hyper_mat mat)
 {
 	_assert(image_path != NULL && mat != NULL, "image_path & mat could not be NULL");
 	int elemsize = get_elemsize(mat->data_type);
@@ -470,6 +470,26 @@ hyper_mat hyper_mat_copy(hyper_mat mat)
 	return dst_mat;
 }
 
+void hyper_mat_copy_to(hyper_mat src_mat, hyper_mat dst_mat)
+{
+	_assert(src_mat!=NULL && dst_mat!=NULL,"INPUT MAT CAN NOT BE NULL");
+
+	int samples = src_mat->samples;
+	int lines = src_mat -> lines;
+	int bands = src_mat -> bands;
+	
+	_assert(dst_mat->samples == samples && dst_mat->lines == lines && dst_mat->bands == bands,"src_mat size == dst_mat size");
+
+    char* src_data = (char*)src_mat->data;
+	char* dst_data = (char*)dst_mat->data;
+
+	memcpy(dst_data,src_data,samples*lines*bands);
+	hyper_mat_copy_wavelength(src_mat, dst_mat);
+
+	for(int i=0;i<3;i++)
+		dst_mat->interleave[i] = src_mat->interleave[i];
+}
+
 /**
  * @brief       copy hyper mat wave.
  * @param[in]   src         input hyper mat.
@@ -481,7 +501,8 @@ void hyper_mat_copy_wavelength(hyper_mat src, hyper_mat dst)
 	_assert(src!=NULL&&dst!=NULL,"mat could not be NULL");
 	_assert(src->bands == dst->bands,"src mat bands == dst mat bands");
 
-	_assert(src->wavelength != NULL," src_wavelength cannot be null");
+	if(src->wavelength == NULL)
+		return;
 
 	float* src_wavelength = (float*)src->wavelength;
 	float* dst_wavelength = (float*)dst->wavelength;

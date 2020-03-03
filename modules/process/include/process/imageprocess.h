@@ -1,9 +1,9 @@
 
-hyper_mat convert2bsq(hyper_mat mat);
+void convert2bsq(hyper_mat mat);
 
-hyper_mat convert2bil(hyper_mat mat);
+void convert2bil(hyper_mat mat);
 
-hyper_mat convert2bip(hyper_mat mat);
+void convert2bip(hyper_mat mat);
 
 /**
 * @brief      transform bil to bsq.

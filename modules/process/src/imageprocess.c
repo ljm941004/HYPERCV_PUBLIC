@@ -1,59 +1,85 @@
 #include "precomp.h"
 
 
-hyper_mat convert2bsq(hyper_mat mat)
+void convert2bsq(hyper_mat mat)
 {
 	_assert(mat!=NULL,"input mat cannot be NULL");
 
 	hyper_mat res;
 
 	if(cmpstr(mat -> interleave,"bsq") == 1)
-		res = hyper_mat_copy(mat);
+	    return; 
 	else if(cmpstr(mat -> interleave,"bil") == 1)
+	{
 		res = bil2bsq(mat);
+		hyper_mat_copy_to(res,mat);
+		delete_hyper_mat(res);
+		return;
+	}
 	else if(cmpstr(mat -> interleave,"bip") == 1)
+	{
 		res = bip2bsq(mat);
+		hyper_mat_copy_to(res,mat);
+		delete_hyper_mat(res);
+		return;
+	}
 	else 
 		_assert(1,"wrong interleave");
 
-	return res;
 }
 
-hyper_mat convert2bil(hyper_mat mat)
+void convert2bil(hyper_mat mat)
 {
 	_assert(mat!=NULL,"input mat cannot be NULL");
 
 	hyper_mat res;
 
 	if(cmpstr(mat -> interleave,"bil") == 1)
-		res = hyper_mat_copy(mat);
+		return;
 	else if(cmpstr(mat -> interleave,"bsq") == 1)
+	{
 		res = bsq2bil(mat);
+		hyper_mat_copy_to(res,mat);
+		delete_hyper_mat(res);
+		return;
+	}
 	else if(cmpstr(mat -> interleave,"bip") == 1)
+	{
 		res = bip2bil(mat);
+		hyper_mat_copy_to(res,mat);
+		delete_hyper_mat(res);
+		return;
+	}
 	else 
 		_assert(1,"wrong interleave");
 
-	return res;
 }
 
-
-hyper_mat convert2bip(hyper_mat mat)
+void convert2bip(hyper_mat mat)
 {
 	_assert(mat!=NULL,"input mat cannot be NULL");
 
 	hyper_mat res;
 
 	if(cmpstr(mat -> interleave,"bip") == 1)
-		res = hyper_mat_copy(mat);
+		return;
 	else if(cmpstr(mat -> interleave,"bil") == 1)
+	{
 		res = bil2bip(mat);
+		hyper_mat_copy_to(res,mat);
+		delete_hyper_mat(res);
+		return;
+	}
 	else if(cmpstr(mat -> interleave,"bsq") == 1)
+	{
 		res = bsq2bip(mat);
+		hyper_mat_copy_to(res,mat);
+		delete_hyper_mat(res);
+		return;
+	}
 	else 
 		_assert(1,"wrong interleave");
 
-	return res;
 }
 
 /**

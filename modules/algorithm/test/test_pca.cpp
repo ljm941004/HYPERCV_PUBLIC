@@ -16,7 +16,7 @@ void test_pca()
 	delete_hyper_mat(t);
 	hyper_mat dst_mat = hyper_mat_copy(float_mat);
 	hyper_mat_pca(float_mat,dst_mat,1);
-	hmwrite("pca",dst_mat);
+	hmsave("pca",dst_mat);
 	delete_hyper_mat(float_mat);
 	delete_hyper_mat(dst_mat);
 }
