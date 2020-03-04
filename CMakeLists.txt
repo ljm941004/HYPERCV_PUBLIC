@@ -40,8 +40,9 @@ add_custom_target(
 	#bin/testcore --gtest_filter=CORE.VECTOR
 	#bin/testcore --gtest_filter=CORE.SMSAVE
 	#bin/testcore --gtest_filter=CORE.READ_WAVELENGTH
-    bin/testcore --gtest_filter=CORE.HMREAD_WITH_HDR
+	#bin/testcore --gtest_filter=CORE.HMREAD_WITH_HDR
 	#bin/testprocess --gtest_filter=PROCESS.PYRAMIDUP
+	bin/testprocess --gtest_filter=PROCESS.CONVERT
 	#bin/testprocess --gtest_filter=PROCESS.LAPLACIAN
 	#bin/testprocess --gtest_filter=PROCESS.OTSU
 	#bin/testprocess --gtest_filter=PROCESS.MAKEBORDER

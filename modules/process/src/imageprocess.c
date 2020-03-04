@@ -23,9 +23,6 @@ void convert2bsq(hyper_mat mat)
 		delete_hyper_mat(res);
 		return;
 	}
-	else 
-		_assert(1,"wrong interleave");
-
 }
 
 void convert2bil(hyper_mat mat)
@@ -50,8 +47,6 @@ void convert2bil(hyper_mat mat)
 		delete_hyper_mat(res);
 		return;
 	}
-	else 
-		_assert(1,"wrong interleave");
 
 }
 
@@ -77,8 +72,6 @@ void convert2bip(hyper_mat mat)
 		delete_hyper_mat(res);
 		return;
 	}
-	else 
-		_assert(1,"wrong interleave");
 
 }
 
