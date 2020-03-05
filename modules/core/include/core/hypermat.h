@@ -93,7 +93,7 @@ void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type,
  * @param[in]  interleave  bil bsq bip.
  * @param[in]  wavelength  wavelength pointer.
  **/
-void writehdr(const char* img_path, int samples, int lines, int bands, int data_type, const char* interleave, float* wavelength);
+void writehdr(const char* img_path, int samples, int lines, int bands, int data_type,  const char* interleave, float* wavelength);
 
 /**
  * @brief       copy hyper mat.

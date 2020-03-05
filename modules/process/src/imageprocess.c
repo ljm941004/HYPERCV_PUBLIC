@@ -94,12 +94,7 @@ hyper_mat bil2bsq(hyper_mat bil_mat)
 	int bands     = bil_mat -> bands;
 	int elem_size = get_elemsize(bil_mat->data_type);
 
-	char interleave[3];
-	interleave[0] = 'b';
-	interleave[1] = 's';
-	interleave[2] = 'q';
-
-	hyper_mat bsq_mat = create_hyper_mat(samples, lines, bands, bil_mat->data_type, interleave);
+	hyper_mat bsq_mat = create_hyper_mat(samples, lines, bands, bil_mat->data_type, "bsq");
 
 	char* bil_data = (char*)bil_mat -> data;
 	char* bsq_data = (char*)bsq_mat -> data;
@@ -149,12 +144,7 @@ hyper_mat bil2bip(hyper_mat bil_mat)
 	int bands     = bil_mat -> bands;
 	int elem_size = get_elemsize(bil_mat->data_type);
 
-	char interleave[3];
-	interleave[0] = 'b';
-	interleave[1] = 'i';
-	interleave[2] = 'p';
-
-	hyper_mat bip_mat = create_hyper_mat(samples, lines, bands, bil_mat->data_type, interleave);
+	hyper_mat bip_mat = create_hyper_mat(samples, lines, bands, bil_mat->data_type, "bip");
 
 	char* bil_data = (char*)bil_mat -> data;
 	char* bip_data = (char*)bip_mat -> data;
@@ -204,12 +194,7 @@ hyper_mat bsq2bil(hyper_mat bsq_mat)
 	int bands     = bsq_mat -> bands;
 	int elem_size = get_elemsize(bsq_mat->data_type);
 
-	char interleave[3];
-	interleave[0] = 'b';
-	interleave[1] = 'i';
-	interleave[2] = 'l';
-
-	hyper_mat bil_mat = create_hyper_mat(samples, lines, bands, bsq_mat->data_type, interleave);
+	hyper_mat bil_mat = create_hyper_mat(samples, lines, bands, bsq_mat->data_type, "bil");
 
 	char* bsq_data = (char*)bsq_mat -> data;
 	char* bil_data = (char*)bil_mat -> data;
@@ -259,12 +244,8 @@ hyper_mat bsq2bip(hyper_mat bsq_mat)
 	int bands     = bsq_mat -> bands;
 	int elem_size = get_elemsize(bsq_mat->data_type);
 
-	char interleave[3];
-	interleave[0] = 'b';
-	interleave[1] = 'i';
-	interleave[2] = 'p';
 
-	hyper_mat bip_mat = create_hyper_mat(samples, lines, bands, bsq_mat->data_type, interleave);
+	hyper_mat bip_mat = create_hyper_mat(samples, lines, bands, bsq_mat->data_type, "bip");
 
 	char* bsq_data = (char*)bsq_mat -> data;
 	char* bip_data = (char*)bip_mat -> data;
@@ -314,12 +295,7 @@ hyper_mat bip2bsq(hyper_mat bip_mat)
 	int bands     = bip_mat -> bands;
 	int elem_size = get_elemsize(bip_mat->data_type);
 
-	char interleave[3];
-	interleave[0] = 'b';
-	interleave[1] = 's';
-	interleave[2] = 'q';
-
-	hyper_mat bsq_mat = create_hyper_mat(samples, lines, bands, bip_mat->data_type, interleave);
+	hyper_mat bsq_mat = create_hyper_mat(samples, lines, bands, bip_mat->data_type, "bsq");
 
 	char* bip_data = (char*)bip_mat -> data;
 	char* bsq_data = (char*)bsq_mat -> data;
@@ -367,12 +343,7 @@ hyper_mat bip2bil(hyper_mat bip_mat)
 	int bands     = bip_mat -> bands;
 	int elem_size = get_elemsize(bip_mat->data_type);
 
-	char interleave[3];
-	interleave[0] = 'b';
-	interleave[1] = 'i';
-	interleave[2] = 'l';
-
-	hyper_mat bil_mat = create_hyper_mat(samples, lines, bands, bip_mat->data_type, interleave);
+	hyper_mat bil_mat = create_hyper_mat(samples, lines, bands, bip_mat->data_type, "bil");
 
 	char* bip_data = (char*)bip_mat -> data;
 	char* bil_data = (char*)bil_mat -> data;

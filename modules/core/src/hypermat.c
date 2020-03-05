@@ -358,7 +358,10 @@ void hmsave(const char* image_path, hyper_mat mat)
 	GDALDatasetH  dst;
 	GDALDriverH hDriver = GDALGetDriverByName("ENVI");	
 	int DT = date_type_2_gdal_data_type(mat->data_type);
-	dst = GDALCreate(hDriver,image_path, samples, lines, bands, DT, NULL);
+	
+	char** papszOptions = NULL;
+	dst = GDALCreate(hDriver,image_path, samples, lines, bands, DT, papszOptions);
+	
 	GDALRasterBandH hBand;
 	for(int i=1;i<=bands;i++)
 	{
@@ -367,6 +370,7 @@ void hmsave(const char* image_path, hyper_mat mat)
 	}
 	GDALClose(dst);
 
+	writehdr(image_path, samples, lines, bands, mat->data_type, mat->interleave,mat->wavelength);
 #else
 
 	FILE* image_fp;
@@ -482,7 +486,7 @@ void hyper_mat_copy_to(hyper_mat src_mat, hyper_mat dst_mat)
 
 	_assert(dst_mat->samples == samples && dst_mat->lines == lines && dst_mat->bands == bands && data_type == dst_mat->data_type,"src_mat size == dst_mat size");
 
-    char* src_data = (char*)src_mat->data;
+	char* src_data = (char*)src_mat->data;
 	char* dst_data = (char*)dst_mat->data;
 
 	memcpy(dst_data,src_data,samples*lines*bands*elemsize);

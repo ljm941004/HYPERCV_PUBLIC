@@ -70,18 +70,16 @@ void test_reshape_hypermat_2_simplemat()
 void test_convert2()
 {
 	hyper_mat mat = hmread_with_hdr("/home/ljm/Hymap_data.img","/home/ljm/Hymap_data.hdr");
+	printf("%s\n",mat->interleave);
 	convert2bil(mat);
-	printf("debug1");
+	printf("%s\n",mat->interleave);
 	hmsave("bil",mat);
-	printf("debug2");
 	convert2bsq(mat);
-	printf("debug3");
+	printf("%s\n",mat->interleave);
 	hmsave("bsq",mat);
-	printf("debug4");
 	convert2bip(mat);
-	printf("debug5");
+	printf("%s\n",mat->interleave);
 	hmsave("bip",mat);
-	printf("debug6");
 	delete_hyper_mat(mat);
 
 }
