@@ -70,14 +70,22 @@ void test_reshape_hypermat_2_simplemat()
 void test_convert2()
 {
 	hyper_mat mat = hmread_with_hdr("/home/ljm/Hymap_data.img","/home/ljm/Hymap_data.hdr");
+	for(int i=0;i<mat->bands;i++)
+		printf("%f,",mat->wavelength[i]);
 	printf("%s\n",mat->interleave);
 	convert2bil(mat);
+	for(int i=0;i<mat->bands;i++)
+		printf("%f,",mat->wavelength[i]);
 	printf("%s\n",mat->interleave);
 	hmsave("bil",mat);
 	convert2bsq(mat);
+	for(int i=0;i<mat->bands;i++)
+		printf("%f,",mat->wavelength[i]);
 	printf("%s\n",mat->interleave);
 	hmsave("bsq",mat);
 	convert2bip(mat);
+	for(int i=0;i<mat->bands;i++)
+		printf("%f,",mat->wavelength[i]);
 	printf("%s\n",mat->interleave);
 	hmsave("bip",mat);
 	delete_hyper_mat(mat);
