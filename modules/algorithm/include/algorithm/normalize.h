@@ -13,3 +13,5 @@
  * @param[in]  norm_type  norm_type norm_inf=1 norm_l1=2 norm_l2=4 norm_minmax=32 .
  **/
 void hypercv_normalize(simple_mat src, simple_mat dst, float alpha, float beta, int norm_type);
+void hypercv_normalize_uchar(simple_mat src, simple_mat dst, float alpha, float beta, int norm_type);
+void hypercv_normalize_float(simple_mat src, simple_mat dst, float alpha, float beta, int norm_type);

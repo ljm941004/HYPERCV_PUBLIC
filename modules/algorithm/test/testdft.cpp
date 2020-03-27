@@ -22,6 +22,8 @@ static void hypercv_test_setup(int rows, int cols, int data_type, int channels)
 	dst_mat = create_simple_mat(rows, cols, data_type, channels);
 }
 
+
+//dubug todo 
 void test_hypercv_dft()
 {
   // hypercv_test_setup<unsigned char>(100,100,1,3);
@@ -29,24 +31,23 @@ void test_hypercv_dft()
 	simple_mat mat = smread_bmp("/home/ljm/test.bmp");
 	simple_mat gmat = sm_rgb2gray(mat,0);
 
-	simple_mat remat = create_simple_mat(gmat->rows,gmat->cols,4,1);
-	simple_mat immat = create_simple_mat(gmat->rows,gmat->cols,4,1);
+	int m = getOptimalDFTSize(gmat->rows);
+	int n = getOptimalDFTSize(gmat->cols);
 
-	dst_mat = create_simple_mat(mat->rows,mat->cols,1,1); 
-	simple_mat src_mat = create_simple_mat(mat->rows,mat->cols,1,1); 
-	hypercv_dft(gmat,remat,immat);
-	hypercv_dft_frespectrum(gmat,dst_mat);
-	hypercv_idft(remat,immat,src_mat);
+	simple_mat padded = hypercv_copy_make_border(gmat,0,m-gmat->rows,0,n-gmat->cols,BORDER_CONSTANT,0);
 
-	simple_mat re_mat = simple_mat_float2uchar(remat);
+	smwrite_bmp("padded.bmp",padded);
+///	
+	simple_mat remat = create_simple_mat(padded->rows,padded->cols,4,1);
+	simple_mat immat = create_simple_mat(padded->rows,padded->cols,4,1);
+	hypercv_dft(padded,remat,immat);
 
-	simple_mat im_mat = simple_mat_float2uchar(immat);
+	simple_mat mag = simple_mat_copy(remat);
+	hypercv_magnitude(remat, immat, mag);
 
-	smwrite_bmp("remat.bmp",re_mat);
-	smwrite_bmp("test.bmp",gmat);
-	smwrite_bmp("huanyuan.bmp",src_mat);
-	smwrite_bmp("immat.bmp",im_mat);
-	smwrite_bmp("dst.bmp",dst_mat);
+	hypercv_normalize(mag,mag,0,255,NORM_MINMAX);
+
+	smwrite_bmp("TEST.bmp",mag);
 
 }
 TEST(ALGORITHM,DFT)
