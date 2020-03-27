@@ -92,6 +92,8 @@ void simple_mat_2_hyper_mat(hyper_mat dst_mat, simple_mat src_mat, int band);
 **/
 void simple_mat_transport(simple_mat res, simple_mat src);
 
-simple_mat simple_mat_addition_uchar(simple_mat mat1, simple_mat mat2);
-simple_mat simple_mat_addition_float(simple_mat mat1, simple_mat mat2);
+void simple_mat_addition_uchar(simple_mat mat1, simple_mat mat2, simple_mat dst_mat);
 
+void simple_mat_addition_float(simple_mat mat1, simple_mat mat2, simple_mat dst_mat);
+
+void simple_mat_log(simple_mat src_mat, simple_mat dst_mat);

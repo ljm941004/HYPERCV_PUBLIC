@@ -566,11 +566,11 @@ void simple_mat_transport(simple_mat res,simple_mat src)
 
 }
 
-simple_mat simple_mat_addition_uchar(simple_mat mat1, simple_mat mat2)
+void simple_mat_addition_uchar(simple_mat mat1, simple_mat mat2, simple_mat dst_mat)
 {
-	_assert(mat1!=NULL&&mat2!=NULL,"input mat cannot be empty");
+	_assert(mat1!=NULL&&mat2!=NULL&&dst_mat!=NULL,"input mat cannot be empty");
 	_assert(mat1->channels == mat2->channels,"input mat channels error");
-
+	
 	int rows,cols;
 	int channels = mat1->channels;
 	
@@ -584,23 +584,21 @@ simple_mat simple_mat_addition_uchar(simple_mat mat1, simple_mat mat2)
 	else
 		cols = mat1->cols;
 
-	simple_mat dst = create_simple_mat(mat1->rows,mat1->cols,3,channels);
-
 	unsigned char* data1 = (unsigned char*)mat1->data;
 	unsigned char* data2 = (unsigned char*)mat2->data;
-	int* dst_data = (int*)dst->data;
+	
+	unsigned char* dst_data = (unsigned char*)dst_mat->data;
 
 	for(int i=0;i<rows;i++)
 		for(int j=0;j<cols;j++)	
 			for(int k=0;k<channels;k++)
 				dst_data[i*cols*channels+j*channels+k] = data1[i*cols*channels+j*channels+k]+data2[i*cols*channels+j*channels+k];
 
-	return dst;
 }
 
-simple_mat simple_mat_addition_float(simple_mat mat1, simple_mat mat2)
+void simple_mat_addition_float(simple_mat mat1, simple_mat mat2, simple_mat dst_mat)
 {
-	_assert(mat1!=NULL&&mat2!=NULL,"input mat cannot be empty");
+	_assert(mat1!=NULL&&mat2!=NULL&&dst_mat!=NULL,"input mat cannot be empty");
 	_assert(mat1->channels == mat2->channels,"input mat channels error");
 
 	int rows,cols;
@@ -616,16 +614,29 @@ simple_mat simple_mat_addition_float(simple_mat mat1, simple_mat mat2)
 	else
 		cols = mat1->cols;
 
-	simple_mat dst = simple_mat_copy(mat1);
-
 	float* data1 = (float*)mat1->data;
 	float* data2 = (float*)mat2->data;
-	float* dst_data = (float*)dst->data;
+	float* dst_data = (float*)dst_mat->data;
 
 	for(int i=0;i<rows;i++)
 		for(int j=0;j<cols;j++)
 			for(int k=0;k<channels;k++)
 				dst_data[i*cols*channels+j*channels+k] = data1[i*cols*channels+j*channels+k]+data2[i*cols*channels+j*channels+k];
 
-	return dst;
 }
+
+void simple_mat_log(simple_mat src_mat, simple_mat dst_mat)
+{
+	_assert(src_mat->data_type==4&&dst_mat->data_type == 4 , "input mat must be float mat");
+	_assert(src_mat->rows == dst_mat->rows && src_mat->cols == dst_mat->cols, "src mat size == dst_mat size");
+
+	int rows = src_mat->rows;
+	int cols = src_mat->cols;
+	
+	float* src_data = (float*)src_mat->data;
+	float* dst_data = (float*)dst_mat->data;
+
+	for(int i=0;i<rows*cols;i++)
+		dst_data[i] = log(src_data[i]);
+}
+

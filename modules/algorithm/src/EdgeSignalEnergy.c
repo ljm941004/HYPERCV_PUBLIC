@@ -30,14 +30,17 @@ float cal_edge_signal_energy(simple_mat mat)
 	hypercv_filter2D(mat,dst1,opt1,3,3,0);
 	hypercv_filter2D(mat,dst2,opt2,3,3,0);
 
-	simple_mat res = simple_mat_addition_float(dst1,dst2);
+    simple_mat_addition_float(dst1,dst2,dst1);
 
-	float* res_data = (float*)res->data;
+	float* res_data = (float*)dst1->data;
 
 	float r = 0.0;
 	for(int i=0;i<rows;i++)
 		for(int j=0;j<cols;j++)
 			r+=pow(res_data[i*cols+j],2);
+
+	delete_simple_mat(dst1);
+	delete_simple_mat(dst2);
 
 	return r/rows/cols;
 }

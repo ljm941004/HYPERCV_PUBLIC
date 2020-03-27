@@ -4,6 +4,10 @@
 	> Mail: jimin@iscas.ac.cn
  ************************************************************************/
 #include "precomp.h"
+#ifndef opencv_switch
+#define opencv_switch 0 
+#endif
+
 
 using namespace std;
 

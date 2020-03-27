@@ -51,8 +51,8 @@ static void test_filter()
 	test_show_mat<float>((float*)dst1->data,10,10,1);
 	hypercv_filter2D(src_mat,dst2,opt2,3,3,0);
     test_show_mat<float>((float*)dst2->data,10,10,1);
-	simple_mat t = simple_mat_addition_float(dst1,dst2);
-    test_show_mat<float>((float*)t->data,10,10,1);
+    simple_mat_addition_float(dst1,dst2,dst1);
+    test_show_mat<float>((float*)dst1->data,10,10,1);
 
 	
 

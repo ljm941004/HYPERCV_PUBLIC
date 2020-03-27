@@ -65,6 +65,14 @@ if(SDL_FOUND)
 	endif()
 endif()
 
+find_package(OpenCV)
+if(OpenCV_FOUND)
+	ADD_DEFINITIONS(-Dopencv_switch=1)
+	include_directories(${OPENCV_INCLUDE_DIRS})
+	target_link_libraries(hypercv ${OpenCV_LIBS})
+endif()
+
+
 
 install(TARGETS hypercv DESTINATION lib)
 file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h" "highgui/include/highgui/*.h")

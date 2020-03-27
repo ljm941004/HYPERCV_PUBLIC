@@ -60,7 +60,6 @@ static inline int get_elemsize(const int data_type)
 	}
 	return -1;
 }
-
 #define  BORDER_CONSTANT     0
 #define  BORDER_REPLICATE    1
 #define  BORDER_REFLECT      2

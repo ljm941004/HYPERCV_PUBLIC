@@ -437,7 +437,10 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
 			fprintf(fp,"%f,",wavelength[i]);
 		fprintf(fp,"%f}",wavelength[bands-1]);
 	}
-
+	else 
+	{
+		fputs("wavelength = unknown \n",fp);
+	}
 	fclose(fp);
 }
 

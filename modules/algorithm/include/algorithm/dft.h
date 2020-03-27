@@ -191,6 +191,16 @@ int getOptimalDFTSize( int size0 );
 
 void hypercv_dft(simple_mat src, simple_mat re_mat, simple_mat im_mat);
 
+void hypercv_dft_uchar(simple_mat src, simple_mat re_mat, simple_mat im_mat);
+
+void hypercv_dft_ushort(simple_mat src, simple_mat re_mat, simple_mat im_mat);
+
 void hypercv_dft_frespectrum(simple_mat src, simple_mat dst);
 
 void hypercv_idft(simple_mat re_mat ,simple_mat im_mat, simple_mat dst_mat);
+
+void hypercv_idft_uchar(simple_mat re_mat ,simple_mat im_mat, simple_mat dst_mat);
+
+void hypercv_idft_ushort(simple_mat re_mat ,simple_mat im_mat, simple_mat dst_mat);
+
+void hypercv_magnitude(simple_mat re_mat, simple_mat im_mat, simple_mat dst_mat);
