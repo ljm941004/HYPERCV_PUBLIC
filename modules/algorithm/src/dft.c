@@ -6,22 +6,22 @@
 
 #include "precomp.h"
 
-int getOptimalDFTSize( int size0 )
+int get_optimal_DFT_size(int size0 )
 {
-    int a = 0, b = sizeof(optimalDFTSizeTab)/sizeof(optimalDFTSizeTab[0]) - 1;
-    if( (unsigned)size0 >= (unsigned)optimalDFTSizeTab[b] )
+    int a = 0, b = sizeof(optimal_DFT_sizetab)/sizeof(optimal_DFT_sizetab[0]) - 1;
+    if( (unsigned)size0 >= (unsigned)optimal_DFT_sizetab[b] )
         return -1;
 
     while( a < b )
     {
         int c = (a + b) >> 1;
-        if( size0 <= optimalDFTSizeTab[c] )
+        if( size0 <= optimal_DFT_sizetab[c] )
             b = c;
         else
             a = c+1;
     }
 
-    return optimalDFTSizeTab[b];
+    return optimal_DFT_sizetab[b];
 }
 
 void hypercv_dft(simple_mat src, simple_mat re_mat, simple_mat im_mat)

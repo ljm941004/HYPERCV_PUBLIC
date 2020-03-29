@@ -31,8 +31,8 @@ void test_hypercv_dft()
 	simple_mat mat = smread_bmp("/home/ljm/test.bmp");
 	simple_mat gmat = sm_rgb2gray(mat,0);
 
-	int m = getOptimalDFTSize(gmat->rows);
-	int n = getOptimalDFTSize(gmat->cols);
+	int m = get_optimal_DFT_size(gmat->rows);
+	int n = get_optimal_DFT_size(gmat->cols);
 
 	simple_mat padded = hypercv_copy_make_border(gmat,0,m-gmat->rows,0,n-gmat->cols,BORDER_CONSTANT,0);
 
