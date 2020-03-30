@@ -283,8 +283,8 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	if(wavelength == NULL)
 		wavelength = (float*)malloc(bands*sizeof(float));
 	
-	int elem_size = get_elemsize(data_type);
-	int data_size = samples * lines * bands;
+	unsigned int elem_size = get_elemsize(data_type);
+	unsigned int data_size = samples * lines * bands;
 
 	void* data = (void *)malloc(data_size * elem_size);
 	_assert(data != NULL, "malloc fail");

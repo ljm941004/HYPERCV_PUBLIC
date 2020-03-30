@@ -98,9 +98,10 @@ static void test_write_hdr()
 
 static void test_hmread_with_hdr()
 {
-	const char* image_path = "/home/ljm/test";
-	const char* hdr_path = "/home/ljm/test.hdr";
-	hyper_mat t = hmread_with_hdr(image_path,hdr_path);
+	const char* image_path = "/home/ljm/XiongAn.img";
+	const char* hdr_path = "/home/ljm/XiongAn.hdr";
+
+    hyper_mat t = hmread_with_hdr(image_path,hdr_path);
 	for(int i=0;i<t->bands;i++)
 		printf("%f,",t->wavelength[i]);
 }
