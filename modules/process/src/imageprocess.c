@@ -640,3 +640,26 @@ void simple_mat_log(simple_mat src_mat, simple_mat dst_mat)
 		dst_data[i] = log(src_data[i]);
 }
 
+void hyper_mat_merge(hyper_mat mat, hyper_mat part, int start_bands)
+{
+	_assert(mat->samples == part->samples && mat->lines == part->lines,"input mat's samples & lines not equal");
+	_assert(mat->bands>start_bands+part->bands,"merge can not out range");
+	_assert(mat->data_type == part->data_type,"data type error");
+
+	convert2bsq(mat);
+	convert2bsq(part);
+
+	int samples = mat->samples;
+	int lines = mat->lines;
+	int elemsize = get_elemsize(mat->data_type); 
+
+	unsigned char* mat_data = (unsigned char*)mat->data+start_bands*samples*lines*elemsize;
+	unsigned char* part_data= (unsigned char*)part->data;
+
+	for(int i=0;i<part->bands;i++)	
+	{
+		memcpy(mat_data, part_data, samples*lines*elemsize);
+		part_data+=samples*lines*elemsize;
+	}
+}
+

@@ -72,7 +72,7 @@ if(OpenCV_FOUND)
 	target_link_libraries(hypercv ${OpenCV_LIBS})
 endif()
 
-
+target_link_libraries(hypercv -lpthread -lm)
 
 install(TARGETS hypercv DESTINATION lib)
 file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h" "highgui/include/highgui/*.h")
