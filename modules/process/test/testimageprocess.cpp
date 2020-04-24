@@ -56,9 +56,9 @@ static void test_bil2bsq()
 }
 void test_hypermat_get_range()
 {	
-
-	hyper_mat t = hyper_mat_get_range(src_mat,20,20,20,80,80,80);
-	hyper_mat s = hyper_mat_get_range(src_mat,20,20,20,80,80,80);
+   hyper_mat r = hmread_with_hdr("/home/ljm/res","/home/ljm/res.hdr");
+   hyper_mat t = hyper_mat_get_range(r,0,0,0,395,156,1);
+   hmsave("res",t);
 
 }
 void test_reshape_hypermat_2_simplemat()
@@ -95,4 +95,9 @@ void test_convert2()
 TEST(PROCESS,CONVERT)
 {
 	test_convert2();
+}
+
+TEST(PROCESS,GETRANGE)
+{
+	test_hypermat_get_range();
 }

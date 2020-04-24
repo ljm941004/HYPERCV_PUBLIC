@@ -9,17 +9,14 @@
 
 using namespace std;
 
-int readFileList(char *basePath)
+
+char** readFileList(char *basePath)
 {
     DIR *dir;
     struct dirent *ptr;
-    char base[1000];
 
-    if ((dir=opendir(basePath)) == NULL)
-    {
-        perror("Open dir error...");
-        exit(1);
-    }
+	char** filename = char*[10000];
+    assert((dir=opendir(basePath))== NULL,"Open dir error...");
 
     while ((ptr=readdir(dir)) != NULL)
     {
@@ -29,14 +26,6 @@ int readFileList(char *basePath)
             printf("d_name:%s/%s\n",basePath,ptr->d_name);
         else if(ptr->d_type == 10)    ///link file
             printf("d_name:%s/%s\n",basePath,ptr->d_name);
-        else if(ptr->d_type == 4)    ///dir
-        {
-            memset(base,'\0',sizeof(base));
-            strcpy(base,basePath);
-            strcat(base,"/");
-            strcat(base,ptr->d_name);
-            readFileList(base);
-        }
     }
     closedir(dir);
     return 1;
