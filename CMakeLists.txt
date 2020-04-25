@@ -48,7 +48,7 @@ add_custom_target(
 	#bin/testprocess --gtest_filter=PROCESS.MAKEBORDER
 	#bin/testprocess --gtest_filter=PROCESS.FLOAT2UCHAR
     #bin/testprocess --gtest_filter=PROCESS.FLIP
-	bin/testprocess --gtest_filter=PROCESS.GETRANGE
+	bin/testprocess --gtest_filter=PROCESS.MERGE
 	#bin/testalgorithm --gtest_filter=ALGORITHM.DFT
 	#bin/testalgorithm --gtest_filter=ALGORITHM.OTSU
 	#bin/testhighgui --gtest_filter=HIGHGUI.DRAWPOINT

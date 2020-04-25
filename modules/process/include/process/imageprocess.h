@@ -98,4 +98,4 @@ void simple_mat_addition_float(simple_mat mat1, simple_mat mat2, simple_mat dst_
 
 void simple_mat_log(simple_mat src_mat, simple_mat dst_mat);
 
-void hyper_mat_merge(hyper_mat mat, hyper_mat part, int start_bands);
+void hyper_mat_merge(hyper_mat mat, hyper_mat part, int start_index);
