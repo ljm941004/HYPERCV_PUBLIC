@@ -9,54 +9,38 @@
 
 using namespace std;
 
+struct dirent **name_list;
 
-char** readFileList(char *basePath, int *i)
+int readFileList(char *basePath)
 {
-    DIR *dir;
-    struct dirent *ptr;
+	int n = scandir(basePath, &name_list, 0, versionsort);
+	return n;
 
-	char** filename = (char**) malloc(sizeof(char*)*10000); 
-    dir = opendir(basePath);
-	_assert(dir != NULL,"Open dir error...");
-
-	*i = 0;
-    while ((ptr=readdir(dir)) != NULL)
-    {
-        if(strcmp(ptr->d_name,".")==0 || strcmp(ptr->d_name,"..")==0)
-            continue;
-        else 
-		{
-	        char* name = (char*) malloc(100);
-			strcpy(name,basePath);
-			strcat(name,"/");
-			strcat(name,ptr->d_name);
-			if(*i<10000)
-			{
-				filename[*i] = name;
-				(*i)++;
-			}
-		}
-		
-	}
-    closedir(dir);
-    return filename;
 }
-
 
 static void test_hyper_mat_merge()
 {
 
-	char* file = "/home/ljm/test";
-	int t =0;
-	char** filename = readFileList(file,&t);
-
-	hyper_mat mat = create_hyper_mat(2048, t , 256, 12,"bil");
-	for (int i=0;i<t;i++)
+	char* file = "/home/ljm/tests";
+	int t = readFileList(file);
+	hyper_mat mat = create_hyper_mat(2048, t-2, 256, 12,"bil");
+	
+	for(int i=2;i<t;i++)
 	{
-		printf("%s\n",filename[i]);
-		hyper_mat tmp = hmread_with_size(filename[i],2048,1,256,12,"bil");
-		hyper_mat_merge(mat,tmp,i*2048*256);
-		delete_hyper_mat(tmp);
+		if(i>1)
+		{
+			char* name = (char*) malloc(100);
+			strcpy(name,file);
+			strcat(name,"/");
+			strcat(name,name_list[i]->d_name);
+			printf("%s\n",name);
+			hyper_mat tmp = hmread_with_size(name,2048,1,256,12,"bil");	
+			hyper_mat_merge(mat,tmp,(i-2)*2048*256);	
+			delete_hyper_mat(tmp);
+			free(name);
+			name = NULL;
+		}
+		free(name_list[i]);
 	}
 	hmsave("test",mat);
 }
@@ -64,5 +48,6 @@ static void test_hyper_mat_merge()
 TEST(PROCESS,MERGE)
 {
 	test_hyper_mat_merge();
+	free(name_list);
 }
 
