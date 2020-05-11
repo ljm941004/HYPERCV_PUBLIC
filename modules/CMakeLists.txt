@@ -2,7 +2,9 @@ AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/core/src/" HYPERCV_src)
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/process/src/" HYPERCV_src)
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/highgui/src/" HYPERCV_src)
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/algorithm/src/" HYPERCV_src)
-INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/core/include" "${CMAKE_CURRENT_SOURCE_DIR}/process/include"  "${CMAKE_CURRENT_SOURCE_DIR}/algorithm/include" "${CMAKE_CURRENT_SOURCE_DIR}/highgui/include")
+AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/satellite/src/" HYPERCV_src)
+
+INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/core/include" "${CMAKE_CURRENT_SOURCE_DIR}/process/include"  "${CMAKE_CURRENT_SOURCE_DIR}/algorithm/include" "${CMAKE_CURRENT_SOURCE_DIR}/highgui/include" "${CMAKE_CURRENT_SOURCE_DIR}/satellite/include")
 
 ADD_LIBRARY(hypercv SHARED ${HYPERCV_src})
 #ADD_LIBRARY(hypercv_static STATIC ${HYPERCV_src})
@@ -36,7 +38,11 @@ if (GTest_FOUND)
     add_executable(testhighgui ${testhighgui_src})
     target_link_libraries(testhighgui ${GTEST_BOTH_LIBRARIES})
     target_link_libraries(testhighgui hypercv)
-
+ 
+	#    AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/satellite/test/" testsatellite_src)
+	# add_executable(testsatellite ${testsatellite_src})
+	# target_link_libraries(testsatellite ${GTEST_BOTH_LIBRARIES})
+	#target_link_libraries(testsatellite hypercv)
 endif()
 
 find_package(GDAL)
@@ -75,5 +81,5 @@ endif()
 target_link_libraries(hypercv -lpthread -lm)
 
 install(TARGETS hypercv DESTINATION lib)
-file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h" "highgui/include/highgui/*.h")
+file(GLOB hdrs "core/include/core/*.h" "process/include/process/*.h" "algorithm/include/algorithm/*.h" "highgui/include/highgui/*.h" "satellite/include/satellite/*.h")
 install(FILES ${hdrs} DESTINATION include)
