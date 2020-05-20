@@ -7,3 +7,4 @@
 #include "process.h"
 #include "Algorithm.h"
 #include "hypercv_gui.h"
+#include "satellite.h"
