@@ -5,6 +5,6 @@
 #include <string.h>
 #include <stdint.h>
 #include "core/core.h"
-#include "process/process.h"
+#include "process/hypercv_process.h"
 #include "highgui/hypercv_gui.h"
 #include "algorithm/Algorithm.h"

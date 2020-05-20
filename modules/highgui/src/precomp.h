@@ -40,7 +40,7 @@
 
 
 #include "core/core.h"
-#include "process/process.h"
+#include "process/hypercv_process.h"
 #include "algorithm/Algorithm.h"
 #include "highgui/hypercv_gui.h"
 
