@@ -55,7 +55,7 @@ static void test_simple_mat_copy()
 			test_setup<unsigned char>(i,j,1,1);
 			t = simple_mat_copy(src_mat);
 			int tmp = hypercv_mat_compare<unsigned char>((unsigned char*)t->data,(unsigned char*)src_mat->data,j,i,1);
-			_assert(tmp==0,"wrong");
+			hypercv_assert(tmp==0,"wrong");
 			test_delete_simple_mat;
 		}
 	}

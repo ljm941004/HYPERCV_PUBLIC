@@ -7,7 +7,7 @@
 
 void smshow(const char* display_name, simple_mat mat)
 {
-	_assert(mat!=NULL,"show mat != NULL");
+	hypercv_assert(mat!=NULL,"show mat != NULL");
 #if USE_SDL
 
 	Uint32 flags = SDL_SWSURFACE;

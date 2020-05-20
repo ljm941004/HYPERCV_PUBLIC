@@ -12,11 +12,11 @@
 **/
 void HisEqualization( simple_mat src_mat,simple_mat dst_mat)
 {
-	_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat could not be NULL");
+	hypercv_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat could not be NULL");
 	
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
-	_assert(rows==dst_mat->rows&&dst_mat->cols==cols,"input mat size equal");
+	hypercv_assert(rows==dst_mat->rows&&dst_mat->cols==cols,"input mat size equal");
 
 	unsigned char* data = (unsigned char*) src_mat ->data;
 	unsigned char* dst_data = (unsigned char*) dst_mat ->data;
@@ -38,12 +38,12 @@ void HisEqualization( simple_mat src_mat,simple_mat dst_mat)
 
 void hyper_mat_linear_tension (hyper_mat bsq_mat,hyper_mat dst_mat)
 {
-	_assert(cmpstr(bsq_mat->interleave,"bsq")==1,"input src mat must be bsq");
+	hypercv_assert(cmpstr(bsq_mat->interleave,"bsq")==1,"input src mat must be bsq");
 	int samples = bsq_mat -> samples;
 	int lines = bsq_mat -> lines;
 	int bands = bsq_mat -> bands;
-	_assert(dst_mat->samples == samples&& dst_mat->lines == lines&&dst_mat->bands == bands,"src mat size == dst mat size");
-	_assert(dst_mat ->data_type ==1,"dst data type char");
+	hypercv_assert(dst_mat->samples == samples&& dst_mat->lines == lines&&dst_mat->bands == bands,"src mat size == dst mat size");
+	hypercv_assert(dst_mat ->data_type ==1,"dst data type char");
 	float * srcdata = (float*)bsq_mat -> data;
 	unsigned char* dstdata = (unsigned char*) dst_mat->data;
 	float maxdata = 0.0;

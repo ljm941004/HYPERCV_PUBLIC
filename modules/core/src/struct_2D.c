@@ -13,7 +13,7 @@
  **/
 S_2D create_2D_struct(int width, int height)
 {
-	_assert(width>=1 && height>=1, "2D struct's width or height must bigger than 0");
+	hypercv_assert(width>=1 && height>=1, "2D struct's width or height must bigger than 0");
 	
 	unsigned char * data = (unsigned char*)malloc(width * height * sizeof(unsigned char));
 	
@@ -34,13 +34,13 @@ S_2D create_2D_struct(int width, int height)
  **/
 S_2D create_2D_struct_with_data(int width, int height, void* data)
 {
-	_assert(width>=1 && height>=1, "2D struct's width or height must bigger than 0");
+	hypercv_assert(width>=1 && height>=1, "2D struct's width or height must bigger than 0");
 
 	int memneeded = sizeof(STRUCT_2D);
 	
 	S_2D s;
 	s = (S_2D)malloc(memneeded);
-	_assert(s != NULL ,"fail to build 2d_struct");
+	hypercv_assert(s != NULL ,"fail to build 2d_struct");
 
 	s->data = data;
 	s->width = width;

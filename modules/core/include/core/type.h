@@ -118,8 +118,8 @@ static inline int HYPERCV_ROUND( double value )
  **/
 static inline int hypercv_border_Interpolate(int p, int len, unsigned int border_type )
 {
-	_assert(len>=0,"length of src must >= 0");
-	_assert(border_type == BORDER_REFLECT
+	hypercv_assert(len>=0,"length of src must >= 0");
+	hypercv_assert(border_type == BORDER_REFLECT
 			||border_type == BORDER_REFLECT_101
 			||border_type == BORDER_REPLICATE
 			||border_type == BORDER_WRAP

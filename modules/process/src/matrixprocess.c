@@ -369,8 +369,8 @@ void set_identity_matrix_float(float* mat,int m)
 
 void swap_rows_float(float* data, int m,int n, int r1, int r2)
 {
-	_assert(r1>=0&&r1<m&&r2>=0&&r2<m,"select rows from 0 2 lines");
-	_assert(r1!=r2,"select row can not equal");
+	hypercv_assert(r1>=0&&r1<m&&r2>=0&&r2<m,"select rows from 0 2 lines");
+	hypercv_assert(r1!=r2,"select row can not equal");
 
 	float* tmp =(float*)malloc(n*sizeof(float));
 	float* dr1 = data + r1*n;
@@ -384,7 +384,7 @@ void swap_rows_float(float* data, int m,int n, int r1, int r2)
 
 void matrix_row_multi_scalar_float(float* mat, int rows, int cols,int r,float scalar)
 {
-	_assert(r>=0&&r<rows,"select rows in [o,rows)");
+	hypercv_assert(r>=0&&r<rows,"select rows in [o,rows)");
 
 	for(int i=0;i<cols;i++)
 		mat[r*cols+i] = mat[r*cols+i]*scalar;
@@ -393,7 +393,7 @@ void matrix_row_multi_scalar_float(float* mat, int rows, int cols,int r,float sc
 
 void shear_row(float* mat, int rows, int cols, int r1, int r2, float scalar)
 {
-	_assert(r1!=r2&&r1>=0&&r1<rows&&r2>=0&&r2<rows,"shear_row r1!=r2,r1,r2<rows");
+	hypercv_assert(r1!=r2&&r1>=0&&r1<rows&&r2>=0&&r2<rows,"shear_row r1!=r2,r1,r2<rows");
 	for(int i=0;i<cols;i++)
 		mat[r1*cols+i]+=scalar*mat[r2*cols+i];
 }

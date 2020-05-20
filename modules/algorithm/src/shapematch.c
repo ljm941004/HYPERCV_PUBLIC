@@ -26,7 +26,7 @@ void calc_hu_moment(double* hu,simple_mat mat)
 	if(hu==NULL)
 		hu = (double*)malloc(7*sizeof(double));
 
-	_assert(mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(mat!=NULL,"input mat cannot be NULL");
 
 	int cols = mat->cols;
 	int rows = mat->rows;
@@ -104,7 +104,7 @@ void calc_hu_moment(double* hu,simple_mat mat)
 
 double hypercv_match_shapes(simple_mat mat1, simple_mat mat2)
 {
-	_assert(mat1!=NULL&&mat2!=NULL,"input mat cannot be NULL");
+	hypercv_assert(mat1!=NULL&&mat2!=NULL,"input mat cannot be NULL");
 
 	double* hu1 = (double*)malloc(7*sizeof(double));
 	double* hu2 = (double*)malloc(7*sizeof(double));

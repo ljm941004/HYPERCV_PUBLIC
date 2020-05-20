@@ -5,7 +5,6 @@
 	> Created Time: 2020年05月11日 星期一 21时42分00秒
  ************************************************************************/
 
-#pragma once
 #include "satellite_attitude.h"
 #include "satellite_orbit.h"
 

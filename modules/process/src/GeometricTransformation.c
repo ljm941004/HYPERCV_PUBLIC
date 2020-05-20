@@ -8,12 +8,12 @@
 
 void simple_mat_flip_horizontal(simple_mat src_mat,simple_mat dst_mat)
 {
-	_assert(src_mat != NULL && dst_mat != NULL,"input mat cannot be null");
+	hypercv_assert(src_mat != NULL && dst_mat != NULL,"input mat cannot be null");
 	
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
 	int channels = src_mat->channels;
-	_assert(rows == dst_mat->rows && cols == dst_mat->cols && channels == dst_mat->channels,"src_mat size != dst_mat size");
+	hypercv_assert(rows == dst_mat->rows && cols == dst_mat->cols && channels == dst_mat->channels,"src_mat size != dst_mat size");
 
 	unsigned char* src_data = (unsigned char*)src_mat->data;
 	unsigned char* dst_data = (unsigned char*)dst_mat->data;
@@ -27,12 +27,12 @@ void simple_mat_flip_horizontal(simple_mat src_mat,simple_mat dst_mat)
 
 void simple_mat_flip_vertical(simple_mat src_mat,simple_mat dst_mat)
 {
-	_assert(src_mat != NULL && dst_mat != NULL,"input mat cannot be null");
+	hypercv_assert(src_mat != NULL && dst_mat != NULL,"input mat cannot be null");
 	
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
 	int channels = src_mat->channels;
-	_assert(rows == dst_mat->rows && cols == dst_mat->cols && channels == dst_mat->channels,"src_mat size != dst_mat size");
+	hypercv_assert(rows == dst_mat->rows && cols == dst_mat->cols && channels == dst_mat->channels,"src_mat size != dst_mat size");
 
 	unsigned char* src_data = (unsigned char*)src_mat->data;
 	unsigned char* dst_data = (unsigned char*)dst_mat->data;
@@ -45,11 +45,11 @@ void simple_mat_flip_vertical(simple_mat src_mat,simple_mat dst_mat)
 
 void simple_mat_flip(simple_mat src_mat, simple_mat dst_mat, int FLIPCODE)
 {
-	_assert(src_mat != NULL && dst_mat != NULL,"input mat cannot be null");
+	hypercv_assert(src_mat != NULL && dst_mat != NULL,"input mat cannot be null");
 	
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
-	_assert(rows == dst_mat->rows && cols == dst_mat->cols,"src_mat size != dst_mat size");
+	hypercv_assert(rows == dst_mat->rows && cols == dst_mat->cols,"src_mat size != dst_mat size");
 	
 	switch(FLIPCODE)
 	{
@@ -73,17 +73,17 @@ void simple_mat_flip(simple_mat src_mat, simple_mat dst_mat, int FLIPCODE)
 
 void hypercv_pyramid_down(simple_mat src, simple_mat dst)
 {
-	_assert(src!=NULL,"input mat cannot be NULL");
+	hypercv_assert(src!=NULL,"input mat cannot be NULL");
 	
 	int src_rows = src->rows;
 	int src_cols = src->cols;
 	int data_type = src->data_type;
 	int channels = src->channels;
 
-	_assert(src_rows>=2&&src_cols>=2,"input mat size must > 2*2");
-	_assert(dst != NULL, "dst mat == null");
-	_assert(dst->rows ==(int)((src_rows+1)/2) && dst->cols==(int)((src_cols+1)/2),"dst size error");
-	_assert(dst->data_type == src->data_type, "dst data_type error");
+	hypercv_assert(src_rows>=2&&src_cols>=2,"input mat size must > 2*2");
+	hypercv_assert(dst != NULL, "dst mat == null");
+	hypercv_assert(dst->rows ==(int)((src_rows+1)/2) && dst->cols==(int)((src_cols+1)/2),"dst size error");
+	hypercv_assert(dst->data_type == src->data_type, "dst data_type error");
 	
 	simple_mat tmp = create_simple_mat(src_rows,src_cols,data_type,channels);
 
@@ -104,17 +104,17 @@ void hypercv_pyramid_down(simple_mat src, simple_mat dst)
 
 void hypercv_pyramid_up(simple_mat src, simple_mat dst)
 {
-	_assert(src!=NULL,"input mat cannot be NULL");
+	hypercv_assert(src!=NULL,"input mat cannot be NULL");
 	
 	int src_rows = src->rows;
 	int src_cols = src->cols;
 	int data_type = src->data_type;
 	int channels = src->channels;
 
-	_assert(src_rows>=2&&src_cols>=2,"input mat size must > 2*2");
-	_assert(dst != NULL, "dst mat == null");
-	_assert(dst->rows == src_rows*2 && dst->cols== src_cols*2,"dst size error");
-	_assert(dst->data_type == src->data_type, "dst data_type error");
+	hypercv_assert(src_rows>=2&&src_cols>=2,"input mat size must > 2*2");
+	hypercv_assert(dst != NULL, "dst mat == null");
+	hypercv_assert(dst->rows == src_rows*2 && dst->cols== src_cols*2,"dst size error");
+	hypercv_assert(dst->data_type == src->data_type, "dst data_type error");
 	
 	simple_mat tmp = simple_mat_copy(dst);
 

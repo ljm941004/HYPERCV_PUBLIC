@@ -38,9 +38,9 @@ float sp_standard_deviation(float *x, int length)
  **/
 simple_mat spectrum_SAM_match(hyper_mat bip_mat, float* spectrum, float threshold)
 {
-	_assert(bip_mat != NULL,                       "input hyper mat must not be NULL");
-	_assert(cmpstr(bip_mat->interleave,"bip") == 1,"hyper mat interleave should be bip");
-	_assert(spectrum != NULL,                      "spectrum must not be NULL");
+	hypercv_assert(bip_mat != NULL,                       "input hyper mat must not be NULL");
+	hypercv_assert(cmpstr(bip_mat->interleave,"bip") == 1,"hyper mat interleave should be bip");
+	hypercv_assert(spectrum != NULL,                      "spectrum must not be NULL");
 
 	int samples = bip_mat -> samples;
 	int lines = bip_mat -> lines;
@@ -86,7 +86,7 @@ simple_mat spectrum_SAM_match(hyper_mat bip_mat, float* spectrum, float threshol
  **/
 float spectral_angle_mapper(float * x, float * y, int length)
 {
-	_assert(x != NULL && y != NULL, "spectral angle mapper input must not be NULL");
+	hypercv_assert(x != NULL && y != NULL, "spectral angle mapper input must not be NULL");
 
 	float XY = 0.0, X = 0.0, Y = 0.0;
 
@@ -114,7 +114,7 @@ float* read_spectrum_file(const char* sp_path, int length)
 	FILE *fp;
 	fp = fopen(sp_path, "r");
 
-	_assert(fp != NULL, "can not open files");
+	hypercv_assert(fp != NULL, "can not open files");
 
 	float* spectrum = (float*)malloc(length*sizeof(float));
 
@@ -156,13 +156,13 @@ float euclidean_distance(float * x, float * y, int length)
  **/
 void hyper_mat_mean(hyper_mat bip_mat, simple_mat dst_mat)
 {
-	_assert(bip_mat != NULL, "input hyper mat must not be NULL");
-	_assert(cmpstr(bip_mat->interleave, "bip") == 1, "hyper mat interleave should be bip");
+	hypercv_assert(bip_mat != NULL, "input hyper mat must not be NULL");
+	hypercv_assert(cmpstr(bip_mat->interleave, "bip") == 1, "hyper mat interleave should be bip");
 	int samples = bip_mat -> samples;
 	int lines = bip_mat -> lines;
 	int bands = bip_mat -> bands;
-	_assert(samples == dst_mat -> cols&&lines == dst_mat->rows,"dst_mat size == bip_mat size");
-	_assert(dst_mat->data_type == 4,"simple mat datatype ==4");
+	hypercv_assert(samples == dst_mat -> cols&&lines == dst_mat->rows,"dst_mat size == bip_mat size");
+	hypercv_assert(dst_mat->data_type == 4,"simple mat datatype ==4");
 //todo other data type
 	float* src_data = (float*)bip_mat->data;
 	float* dst_data = (float*)dst_mat->data;
@@ -184,14 +184,14 @@ void hyper_mat_mean(hyper_mat bip_mat, simple_mat dst_mat)
  **/
 void hyper_mat_transport(hyper_mat dst_mat, hyper_mat src_mat)
 {
-	_assert(src_mat != NULL, "input hyper mat must not be NULL");
-	_assert(cmpstr(src_mat->interleave, "bsq") == 1, "hyper mat interleave should be bsq");
+	hypercv_assert(src_mat != NULL, "input hyper mat must not be NULL");
+	hypercv_assert(cmpstr(src_mat->interleave, "bsq") == 1, "hyper mat interleave should be bsq");
 	int s_samples = src_mat->samples;
 	int d_samples = dst_mat->samples;
 	int s_lines = src_mat->lines;
 	int d_lines = dst_mat->lines;
 	int bands = src_mat->bands;
-	_assert(s_samples == d_lines && s_lines == d_samples&& bands == dst_mat->bands,"size must equal");
+	hypercv_assert(s_samples == d_lines && s_lines == d_samples&& bands == dst_mat->bands,"size must equal");
 	char* src =(char*)src_mat->data;
 	char* dst =(char*)dst_mat->data;
 	int elemsize = get_elemsize(src_mat ->data_type);

@@ -36,7 +36,7 @@ static void cal_covariance_matrix(simple_mat x, simple_mat mean_mat,simple_mat r
 void hyper_mat_pca(hyper_mat bip_mat,hyper_mat res_bip_mat,int iteration)
 {
 
-	_assert(bip_mat->data_type = 4,"only use in float");
+	hypercv_assert(bip_mat->data_type = 4,"only use in float");
 	int samples = bip_mat->samples;
 	int lines = bip_mat->lines;
 	int bands = bip_mat->bands;

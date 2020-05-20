@@ -14,7 +14,7 @@ do {                                                                       \
 #endif /* MEMORY_H */
 
 
-#define _assert(exp, description) \
+#define hypercv_assert(exp, description) \
         { \
            if(exp) \
               ; \

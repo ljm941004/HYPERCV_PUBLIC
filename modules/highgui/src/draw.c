@@ -7,9 +7,9 @@
 
 void draw_POINT(simple_mat src_mat, simple_mat dst_mat, POINT* v, int point_num, RGB_data color, int size)
 {
-	_assert(src_mat!=NULL&&dst_mat !=NULL, "input mat cannot be NULL");
-	_assert(src_mat->data_type == 1, "input mat data type == 1");
-	_assert(src_mat->rows == dst_mat->rows&&src_mat->cols == dst_mat->cols&&src_mat->channels==dst_mat->channels,"src,dst size should be equal");
+	hypercv_assert(src_mat!=NULL&&dst_mat !=NULL, "input mat cannot be NULL");
+	hypercv_assert(src_mat->data_type == 1, "input mat data type == 1");
+	hypercv_assert(src_mat->rows == dst_mat->rows&&src_mat->cols == dst_mat->cols&&src_mat->channels==dst_mat->channels,"src,dst size should be equal");
 
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
@@ -46,9 +46,9 @@ void draw_POINT(simple_mat src_mat, simple_mat dst_mat, POINT* v, int point_num,
 
 void draw_line(simple_mat src_mat, simple_mat dst_mat, POINT pt1, POINT pt2, RGB_data color, int thickness)
 {
-	_assert(src_mat!=NULL&&dst_mat !=NULL, "input mat cannot be NULL");
-	_assert(src_mat->data_type == 1, "input mat data type == 1");
-	_assert(src_mat->rows == dst_mat->rows&&src_mat->cols == dst_mat->cols&&src_mat->channels==dst_mat->channels,"src,dst size should be equal");
+	hypercv_assert(src_mat!=NULL&&dst_mat !=NULL, "input mat cannot be NULL");
+	hypercv_assert(src_mat->data_type == 1, "input mat data type == 1");
+	hypercv_assert(src_mat->rows == dst_mat->rows&&src_mat->cols == dst_mat->cols&&src_mat->channels==dst_mat->channels,"src,dst size should be equal");
 
 	int rows,cols;
 	rows = src_mat->rows;

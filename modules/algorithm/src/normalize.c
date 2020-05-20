@@ -17,8 +17,8 @@
 
 void hypercv_normalize(simple_mat src, simple_mat dst, float alpha, float beta, int norm_type)
 {
-    _assert(src!=NULL&&dst!=NULL,"INPUT MAT could not be null");
-	_assert(dst->rows==src->rows&&dst->cols==src->cols,"src size == dst size");
+    hypercv_assert(src!=NULL&&dst!=NULL,"INPUT MAT could not be null");
+	hypercv_assert(dst->rows==src->rows&&dst->cols==src->cols,"src size == dst size");
 
 	if(src->data_type == 1)
 		hypercv_normalize_uchar(src, dst, alpha, beta, norm_type);
@@ -28,8 +28,8 @@ void hypercv_normalize(simple_mat src, simple_mat dst, float alpha, float beta, 
 
 void hypercv_normalize_uchar(simple_mat src, simple_mat dst, float alpha, float beta, int norm_type)
 {
-	_assert(src!=NULL&&dst!=NULL,"INPUT MAT could not be null");
-	_assert(dst->rows==src->rows&&dst->cols==src->cols,"src size == dst size");
+	hypercv_assert(src!=NULL&&dst!=NULL,"INPUT MAT could not be null");
+	hypercv_assert(dst->rows==src->rows&&dst->cols==src->cols,"src size == dst size");
 	int rows = src->rows;
 	int cols = src->cols;
 	int data_type = src->data_type;
@@ -83,8 +83,8 @@ void hypercv_normalize_uchar(simple_mat src, simple_mat dst, float alpha, float 
  
 void hypercv_normalize_float(simple_mat src, simple_mat dst, float alpha, float beta, int norm_type)
 {
-	_assert(src!=NULL&&dst!=NULL,"INPUT MAT could not be null");
-	_assert(dst->rows==src->rows&&dst->cols==src->cols,"src size == dst size");
+	hypercv_assert(src!=NULL&&dst!=NULL,"INPUT MAT could not be null");
+	hypercv_assert(dst->rows==src->rows&&dst->cols==src->cols,"src size == dst size");
 	int rows = src->rows;
 	int cols = src->cols;
 	int data_type = src->data_type;

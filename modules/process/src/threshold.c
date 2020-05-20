@@ -71,10 +71,10 @@ int otsuThreshold(simple_mat img)
 
 void hypercv_threshold_binary(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value)
 {
-	_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
-	_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
-	_assert(src_mat->data_type == 1,"0-255");
-	_assert(src_mat->channels == 1, "threshold only use in gray image");
+	hypercv_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
+	hypercv_assert(src_mat->data_type == 1,"0-255");
+	hypercv_assert(src_mat->channels == 1, "threshold only use in gray image");
 
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
@@ -94,10 +94,10 @@ void hypercv_threshold_binary(simple_mat src_mat, simple_mat dst_mat, int thresh
 
 void hypercv_threshold_binary_inv(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value)
 {
-    _assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
-	_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
-	_assert(src_mat->data_type == 1,"0-255");
-	_assert(src_mat->channels == 1, "threshold only use in gray image");
+    hypercv_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
+	hypercv_assert(src_mat->data_type == 1,"0-255");
+	hypercv_assert(src_mat->channels == 1, "threshold only use in gray image");
 
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
@@ -117,10 +117,10 @@ void hypercv_threshold_binary_inv(simple_mat src_mat, simple_mat dst_mat, int th
 
 void hypercv_threshold_trunc(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value)
 {
-    _assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
-	_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
-	_assert(src_mat->data_type == 1,"0-255");
-	_assert(src_mat->channels == 1, "threshold only use in gray image");
+    hypercv_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
+	hypercv_assert(src_mat->data_type == 1,"0-255");
+	hypercv_assert(src_mat->channels == 1, "threshold only use in gray image");
 
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
@@ -140,10 +140,10 @@ void hypercv_threshold_trunc(simple_mat src_mat, simple_mat dst_mat, int thresh,
 
 void hypercv_threshold_tozero(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value)
 {
-    _assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
-	_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
-	_assert(src_mat->data_type == 1,"0-255");
-	_assert(src_mat->channels == 1, "threshold only use in gray image");
+    hypercv_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
+	hypercv_assert(src_mat->data_type == 1,"0-255");
+	hypercv_assert(src_mat->channels == 1, "threshold only use in gray image");
 
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
@@ -163,10 +163,10 @@ void hypercv_threshold_tozero(simple_mat src_mat, simple_mat dst_mat, int thresh
 
 void hypercv_threshold_tozero_inv(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value)
 {
-    _assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
-	_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
-	_assert(src_mat->data_type == 1,"0-255");
-	_assert(src_mat->channels == 1, "threshold only use in gray image");
+    hypercv_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
+	hypercv_assert(src_mat->data_type == 1,"0-255");
+	hypercv_assert(src_mat->channels == 1, "threshold only use in gray image");
 
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
@@ -188,10 +188,10 @@ void hypercv_threshold_mask(simple_mat src_mat, simple_mat dst_mat, int thresh, 
 
 void hypercv_threshold_otsu(simple_mat src_mat, simple_mat dst_mat)
 {
- _assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
-	_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
-	_assert(src_mat->data_type == 1,"0-255");
-	_assert(src_mat->channels == 1, "threshold only use in gray image");
+ hypercv_assert(src_mat!=NULL&&dst_mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(src_mat->rows == dst_mat->rows&&src_mat->cols==dst_mat->cols&&src_mat->channels==dst_mat->channels,"src_mat & dst_mat size equal");
+	hypercv_assert(src_mat->data_type == 1,"0-255");
+	hypercv_assert(src_mat->channels == 1, "threshold only use in gray image");
 
 
 	int rows = src_mat->rows;
@@ -217,9 +217,9 @@ void hypercv_threshold_triangle(simple_mat src_mat, simple_mat dst_mat, int thre
 
 void hypercv_threshold(simple_mat src_mat, simple_mat dst_mat, int thresh, int max_value, int type)
 {
-	_assert(src_mat!=NULL,"input mat cannot be NULL");
-	_assert(dst_mat!=NULL,"output mat cannot be NULL");
-	_assert(type == THRESH_BINARY ||
+	hypercv_assert(src_mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(dst_mat!=NULL,"output mat cannot be NULL");
+	hypercv_assert(type == THRESH_BINARY ||
 			type == THRESH_BINARY_INV||
 			type == THRESH_TRUNC||
 			type == THRESH_TOZERO||

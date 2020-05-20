@@ -13,7 +13,7 @@
  **/
 hyper_mat hyper_mat_uchar2short(hyper_mat uc_mat)
 {
-	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
+	hypercv_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
 
 	int samples = uc_mat->samples;
 	int lines = uc_mat->lines;
@@ -42,7 +42,7 @@ hyper_mat hyper_mat_uchar2short(hyper_mat uc_mat)
  **/
 hyper_mat hyper_mat_uchar2int(hyper_mat uc_mat)
 {
-	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
+	hypercv_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
 
 	int samples = uc_mat->samples;
 	int lines = uc_mat->lines;
@@ -71,7 +71,7 @@ hyper_mat hyper_mat_uchar2int(hyper_mat uc_mat)
  **/
 hyper_mat hyper_mat_uchar2float(hyper_mat uc_mat)
 {
-	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
+	hypercv_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
 
 	int samples = uc_mat->samples;
 	int lines = uc_mat->lines;
@@ -100,7 +100,7 @@ hyper_mat hyper_mat_uchar2float(hyper_mat uc_mat)
  **/
 hyper_mat hyper_mat_uchar2ushort(hyper_mat uc_mat)
 {
-	_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
+	hypercv_assert(uc_mat->data_type == 1,"intput mat datatype == unsigned char");
 
 	int samples = uc_mat->samples;
 	int lines = uc_mat->lines;
@@ -130,7 +130,7 @@ hyper_mat hyper_mat_uchar2ushort(hyper_mat uc_mat)
 //todo write all brief and fix order data type
 hyper_mat hyper_mat_float2int(hyper_mat f_mat)
 {
-	_assert(f_mat->data_type == 4,"intput mat datatype == float");
+	hypercv_assert(f_mat->data_type == 4,"intput mat datatype == float");
 	int samples = f_mat->samples;
 	int lines = f_mat->lines;
 	int bands = f_mat->bands;
@@ -158,7 +158,7 @@ hyper_mat hyper_mat_float2int(hyper_mat f_mat)
  **/
 hyper_mat hyper_mat_float2char(hyper_mat f_mat)
 {
-	_assert(f_mat->data_type == 4,"intput mat datatype == float")
+	hypercv_assert(f_mat->data_type == 4,"intput mat datatype == float")
 		int samples = f_mat->samples;
 	int lines = f_mat->lines;
 	int bands = f_mat->bands;
@@ -195,7 +195,7 @@ hyper_mat hyper_mat_float2char(hyper_mat f_mat)
  **/
 hyper_mat hyper_mat_float2short(hyper_mat f_mat)
 {
-	_assert(f_mat->data_type == 4,"intput mat datatype == float");
+	hypercv_assert(f_mat->data_type == 4,"intput mat datatype == float");
 	int samples = f_mat->samples;
 	int lines = f_mat->lines;
 	int bands = f_mat->bands;
@@ -223,7 +223,7 @@ hyper_mat hyper_mat_float2short(hyper_mat f_mat)
  **/
 hyper_mat hyper_mat_float2ushort(hyper_mat f_mat)
 {
-	_assert(f_mat->data_type == 4,"intput mat datatype == float");
+	hypercv_assert(f_mat->data_type == 4,"intput mat datatype == float");
 	int samples = f_mat->samples;
 	int lines = f_mat->lines;
 	int bands = f_mat->bands;
@@ -256,7 +256,7 @@ hyper_mat hyper_mat_float2ushort(hyper_mat f_mat)
  **/
 hyper_mat hyper_mat_float2uchar(hyper_mat f_mat)
 {
-	_assert(f_mat->data_type == 4,"intput mat datatype == float");
+	hypercv_assert(f_mat->data_type == 4,"intput mat datatype == float");
 	int samples = f_mat->samples;
 	int lines = f_mat->lines;
 	int bands = f_mat->bands;
@@ -293,7 +293,7 @@ hyper_mat hyper_mat_float2uchar(hyper_mat f_mat)
  **/
 hyper_mat hyper_mat_float2uint(hyper_mat f_mat)
 {
-	_assert(f_mat->data_type == 4,"intput mat datatype == float");
+	hypercv_assert(f_mat->data_type == 4,"intput mat datatype == float");
 	int samples = f_mat->samples;
 	int lines = f_mat->lines;
 	int bands = f_mat->bands;
@@ -331,7 +331,7 @@ hyper_mat hyper_mat_float2uint(hyper_mat f_mat)
  **/
 hyper_mat hyper_mat_ushort2float(hyper_mat us_mat)
 {
-	_assert(us_mat->data_type == 12,"intput mat datatype == unsigned short");
+	hypercv_assert(us_mat->data_type == 12,"intput mat datatype == unsigned short");
 	int samples = us_mat->samples;
 	int lines = us_mat->lines;
 	int bands = us_mat->bands;
@@ -362,8 +362,8 @@ hyper_mat hyper_mat_ushort2float(hyper_mat us_mat)
  **/
 simple_mat simple_mat_float2uchar(simple_mat src)
 {
-	_assert(src!=NULL,"input mat cannot be NULL");
-	_assert(src->data_type == 4,"input mat must be float");
+	hypercv_assert(src!=NULL,"input mat cannot be NULL");
+	hypercv_assert(src->data_type == 4,"input mat must be float");
 
 	simple_mat dst = create_simple_mat(src->rows,src->cols,1,src->channels);
 	int rows = src->rows;

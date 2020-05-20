@@ -16,9 +16,9 @@ static int distance(POINT p, int i,int j)
 
 void hypercv_k_means(simple_mat src, POINT* v1, int kind, int iter_threshold)
 {
-	_assert(src!=NULL,"INPUT MAT CANNOT BE Null");
-	_assert(kind>=1,"kind must >=1");
-	_assert(vector_size(v1)==kind,"input point vector size == kind");
+	hypercv_assert(src!=NULL,"INPUT MAT CANNOT BE Null");
+	hypercv_assert(kind>=1,"kind must >=1");
+	hypercv_assert(vector_size(v1)==kind,"input point vector size == kind");
 
 	simple_mat mat;
 	if(src->channels != 1)

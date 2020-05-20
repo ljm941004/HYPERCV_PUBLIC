@@ -75,7 +75,7 @@ static void test_hyper_mat_copy()
 				hyper_mat t = hyper_mat_copy(src_mat);
 				int tmp = hypercv_mat_compare<char>((char*)src_mat->data,(char*)t->data,samples,lines,bands);
 				
-				_assert(tmp==0,"hyper_mat_copy_wrong");
+				hypercv_assert(tmp==0,"hyper_mat_copy_wrong");
 
 				test_delete_hyper_mat();
 			}

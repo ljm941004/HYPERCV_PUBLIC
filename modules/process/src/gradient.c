@@ -15,8 +15,8 @@
  **/
 void hypercv_laplacian(simple_mat src, simple_mat dst, int k_size, int border_type)
 {
-	_assert(src!=NULL&&dst!=NULL, "input mat can not be NULL");
-	_assert(k_size>0,"kernel size > 0");
+	hypercv_assert(src!=NULL&&dst!=NULL, "input mat can not be NULL");
+	hypercv_assert(k_size>0,"kernel size > 0");
 	int cols = src->cols;
 	int rows = src->rows;
 	int channels = src->channels;
@@ -74,13 +74,13 @@ void hypercv_laplacian(simple_mat src, simple_mat dst, int k_size, int border_ty
  **/
 void hypercv_sobel(simple_mat src, simple_mat dst, int threshold, int border_type)
 {
-	_assert(src->rows == dst->rows&&src->cols==dst->cols, "src size == dst size");
-	_assert(border_type == BORDER_REFLECT
+	hypercv_assert(src->rows == dst->rows&&src->cols==dst->cols, "src size == dst size");
+	hypercv_assert(border_type == BORDER_REFLECT
 			||border_type == BORDER_REFLECT_101
 			||border_type == BORDER_REPLICATE
 			||border_type == BORDER_WRAP
 			||border_type == BORDER_CONSTANT ,"Unknown/unsupported border type" );
-	_assert(src->channels == 1,"sobel image channels == 1")
+	hypercv_assert(src->channels == 1,"sobel image channels == 1")
 
 	int rows = src->rows;
 	int cols = src->cols;

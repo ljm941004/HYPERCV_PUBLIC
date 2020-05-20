@@ -23,7 +23,7 @@ int cmpstr(char temp1[],char temp2[])
 {
 
 	int len = strlen(temp1)>strlen(temp2)?strlen(temp2):strlen(temp1);
-	_assert(len>=1,"cmpstr input strlen >= 1");
+	hypercv_assert(len>=1,"cmpstr input strlen >= 1");
 	for (int i=0;i<len;i++)
 	{
 		if(temp1[i]!=temp2[i])
@@ -110,7 +110,7 @@ static int date_type_2_gdal_data_type(const int data_type)
  **/
 void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char* interleave, float** wavelength)
 {
-	_assert(hdr_fp != NULL, "can not open hdr file");
+	hypercv_assert(hdr_fp != NULL, "can not open hdr file");
 
 	char line[MAXLINE];
 	char item[MAXLINE];
@@ -200,9 +200,9 @@ hyper_mat create_hyper_mat(const int samples, const int lines, const int bands, 
  **/
 hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const int bands, const int data_type, const char* interleave, void* data, float* wavelength)
 {
-	_assert(samples > 0, "the samples of hyper mat must be greater than zero.");
-	_assert(lines > 0, "the lines of hyper mat must be greater than zero.");
-	_assert(bands > 0, "the bands of hyper mat must be greater than zero.");
+	hypercv_assert(samples > 0, "the samples of hyper mat must be greater than zero.");
+	hypercv_assert(lines > 0, "the lines of hyper mat must be greater than zero.");
+	hypercv_assert(bands > 0, "the bands of hyper mat must be greater than zero.");
 
 	hyper_mat mat;
 
@@ -223,7 +223,7 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 	}
 
 	mat = (hyper_mat)malloc(sizeof(char) * memneeded);
-	_assert(mat != NULL, "fail to allocate memory for hyper mat");
+	hypercv_assert(mat != NULL, "fail to allocate memory for hyper mat");
 
 	if (data == NULL)
 	{
@@ -259,8 +259,8 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
  **/
 hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 {
-	_assert(image_path != NULL, "image path or hdr path can not be NULL");
-	_assert(hdr_path != NULL, "image path or hdr path can not be NULL");
+	hypercv_assert(image_path != NULL, "image path or hdr path can not be NULL");
+	hypercv_assert(hdr_path != NULL, "image path or hdr path can not be NULL");
 
 	int samples, lines, bands, data_type;
 	char* interleave = (char*)malloc(3*sizeof(char));
@@ -287,7 +287,7 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	unsigned int data_size = samples * lines * bands;
 
 	void* data = (void *)malloc(data_size * elem_size);
-	_assert(data != NULL, "malloc fail");
+	hypercv_assert(data != NULL, "malloc fail");
 	
 	fread(data, elem_size, data_size, image_fp);
 	
@@ -312,8 +312,8 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
  **/
 hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int bands, int data_type, const char* interleave)
 {
-	_assert(image_path != NULL, "image path or hdr path can not be NULL");
-	_assert(samples >0 && lines>0 && bands>0, "image size must >0 ");
+	hypercv_assert(image_path != NULL, "image path or hdr path can not be NULL");
+	hypercv_assert(samples >0 && lines>0 && bands>0, "image size must >0 ");
 
 	FILE* image_fp = NULL;
 	image_fp = fopen( image_path, "r");
@@ -346,7 +346,7 @@ hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int b
  **/
 void hmsave(const char* image_path, hyper_mat mat)
 {
-	_assert(image_path != NULL && mat != NULL, "image_path & mat could not be NULL");
+	hypercv_assert(image_path != NULL && mat != NULL, "image_path & mat could not be NULL");
 	int elemsize = get_elemsize(mat->data_type);
 	int samples = mat->samples;
 	int lines = mat->lines;
@@ -375,7 +375,7 @@ void hmsave(const char* image_path, hyper_mat mat)
 
 	FILE* image_fp;
 	image_fp = fopen(image_path, "wb");
-	_assert(image_fp != NULL, "can not open files");
+	hypercv_assert(image_fp != NULL, "can not open files");
 	fwrite(mat->data, elemsize, samples * lines * bands, image_fp);
 	writehdr(image_path, samples, lines, bands, mat->data_type, mat->interleave,mat->wavelength);
 	fclose(image_fp);
@@ -452,7 +452,7 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
  **/
 hyper_mat hyper_mat_copy(hyper_mat mat)
 {
-	_assert(mat!=NULL,"mat could not be NULL");
+	hypercv_assert(mat!=NULL,"mat could not be NULL");
 
 	int samples = mat->samples;
 	int lines = mat->lines;
@@ -479,7 +479,7 @@ hyper_mat hyper_mat_copy(hyper_mat mat)
 
 void hyper_mat_copy_to(hyper_mat src_mat, hyper_mat dst_mat)
 {
-	_assert(src_mat!=NULL && dst_mat!=NULL,"INPUT MAT CAN NOT BE NULL");
+	hypercv_assert(src_mat!=NULL && dst_mat!=NULL,"INPUT MAT CAN NOT BE NULL");
 
 	int samples = src_mat->samples;
 	int lines = src_mat -> lines;
@@ -487,7 +487,7 @@ void hyper_mat_copy_to(hyper_mat src_mat, hyper_mat dst_mat)
 	int data_type = src_mat->data_type;
 	int elemsize = get_elemsize(data_type);
 
-	_assert(dst_mat->samples == samples && dst_mat->lines == lines && dst_mat->bands == bands && data_type == dst_mat->data_type,"src_mat size == dst_mat size");
+	hypercv_assert(dst_mat->samples == samples && dst_mat->lines == lines && dst_mat->bands == bands && data_type == dst_mat->data_type,"src_mat size == dst_mat size");
 
 	char* src_data = (char*)src_mat->data;
 	char* dst_data = (char*)dst_mat->data;
@@ -507,8 +507,8 @@ void hyper_mat_copy_to(hyper_mat src_mat, hyper_mat dst_mat)
 void hyper_mat_copy_wavelength(hyper_mat src, hyper_mat dst)
 {
 
-	_assert(src!=NULL&&dst!=NULL,"mat could not be NULL");
-	_assert(src->bands == dst->bands,"src mat bands == dst mat bands");
+	hypercv_assert(src!=NULL&&dst!=NULL,"mat could not be NULL");
+	hypercv_assert(src->bands == dst->bands,"src mat bands == dst mat bands");
 
 	if(src->wavelength == NULL)
 		return;
@@ -569,7 +569,7 @@ int hyper_mat_empty(hyper_mat mat)
  **/
 void delete_hyper_mat(hyper_mat mat)
 {
-	_assert(mat != NULL, "already free");
+	hypercv_assert(mat != NULL, "already free");
 
 	if ((uintptr_t)mat + ALLOC_BYTE_ALIGNMENT >= (uintptr_t)mat->data)
 	{

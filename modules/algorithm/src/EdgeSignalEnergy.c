@@ -8,9 +8,9 @@
 
 float cal_edge_signal_energy(simple_mat mat)
 {
-	_assert(mat!=NULL, "input mat cannot be NULL");
-	_assert(mat->channels = 1,"only use in grayimage");
-	_assert(mat->data_type = 1,"data_type == 1");
+	hypercv_assert(mat!=NULL, "input mat cannot be NULL");
+	hypercv_assert(mat->channels = 1,"only use in grayimage");
+	hypercv_assert(mat->data_type = 1,"data_type == 1");
   
 	float opt1[9] = {-1,-1,1,-1,4,-1,1,-1,-1};
 	float opt2[9] = {1,-1,-1,-1,4,-1,-1,-1,1};

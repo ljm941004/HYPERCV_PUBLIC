@@ -26,10 +26,10 @@ int get_optimal_DFT_size(int size0 )
 
 void hypercv_dft(simple_mat src, simple_mat re_mat, simple_mat im_mat)
 {
-	_assert(src!=NULL&&re_mat!=NULL&&im_mat!=NULL,"INPUT MAT CANNOT BE NULL");
-	_assert(src->rows == re_mat->rows&&src->rows == im_mat->rows&&src->cols == re_mat->cols&&src->cols == im_mat->cols,"src,im,re mat size equal");
-	_assert(re_mat->data_type == 4&&im_mat->data_type == 4,"re_mat and im_mat data_type ==4");
-	_assert(src->channels == re_mat->channels&&src->channels == im_mat->channels&&src->channels == 1,"only gray image");
+	hypercv_assert(src!=NULL&&re_mat!=NULL&&im_mat!=NULL,"INPUT MAT CANNOT BE NULL");
+	hypercv_assert(src->rows == re_mat->rows&&src->rows == im_mat->rows&&src->cols == re_mat->cols&&src->cols == im_mat->cols,"src,im,re mat size equal");
+	hypercv_assert(re_mat->data_type == 4&&im_mat->data_type == 4,"re_mat and im_mat data_type ==4");
+	hypercv_assert(src->channels == re_mat->channels&&src->channels == im_mat->channels&&src->channels == 1,"only gray image");
 
 	if(src->data_type == 1)
 		hypercv_dft_uchar(src, re_mat, im_mat);
@@ -40,10 +40,10 @@ void hypercv_dft(simple_mat src, simple_mat re_mat, simple_mat im_mat)
 
 void hypercv_dft_uchar(simple_mat src, simple_mat re_mat, simple_mat im_mat)
 {
-	_assert(src!=NULL&&re_mat!=NULL&&im_mat!=NULL,"INPUT MAT CANNOT BE NULL");
-	_assert(src->rows == re_mat->rows&&src->rows == im_mat->rows&&src->cols == re_mat->cols&&src->cols == im_mat->cols,"src,im,re mat size equal");
-	_assert(re_mat->data_type == 4&&im_mat->data_type == 4,"re_mat and im_mat data_type ==4");
-	_assert(src->channels == re_mat->channels&&src->channels == im_mat->channels&&src->channels == 1,"only gray image");
+	hypercv_assert(src!=NULL&&re_mat!=NULL&&im_mat!=NULL,"INPUT MAT CANNOT BE NULL");
+	hypercv_assert(src->rows == re_mat->rows&&src->rows == im_mat->rows&&src->cols == re_mat->cols&&src->cols == im_mat->cols,"src,im,re mat size equal");
+	hypercv_assert(re_mat->data_type == 4&&im_mat->data_type == 4,"re_mat and im_mat data_type ==4");
+	hypercv_assert(src->channels == re_mat->channels&&src->channels == im_mat->channels&&src->channels == 1,"only gray image");
 
 	float re,im,temp;
 
@@ -77,10 +77,10 @@ void hypercv_dft_uchar(simple_mat src, simple_mat re_mat, simple_mat im_mat)
 
 void hypercv_dft_ushort(simple_mat src, simple_mat re_mat, simple_mat im_mat)
 {
-	_assert(src!=NULL&&re_mat!=NULL&&im_mat!=NULL,"INPUT MAT CANNOT BE NULL");
-	_assert(src->rows == re_mat->rows&&src->rows == im_mat->rows&&src->cols == re_mat->cols&&src->cols == im_mat->cols,"src,im,re mat size equal");
-	_assert(re_mat->data_type == 4&&im_mat->data_type == 4,"re_mat and im_mat data_type ==4");
-	_assert(src->channels == re_mat->channels&&src->channels == im_mat->channels&&src->channels == 1,"only gray image");
+	hypercv_assert(src!=NULL&&re_mat!=NULL&&im_mat!=NULL,"INPUT MAT CANNOT BE NULL");
+	hypercv_assert(src->rows == re_mat->rows&&src->rows == im_mat->rows&&src->cols == re_mat->cols&&src->cols == im_mat->cols,"src,im,re mat size equal");
+	hypercv_assert(re_mat->data_type == 4&&im_mat->data_type == 4,"re_mat and im_mat data_type ==4");
+	hypercv_assert(src->channels == re_mat->channels&&src->channels == im_mat->channels&&src->channels == 1,"only gray image");
 
 	float re,im,temp;
 
@@ -116,10 +116,10 @@ void hypercv_dft_ushort(simple_mat src, simple_mat re_mat, simple_mat im_mat)
 void hypercv_dft_frespectrum(simple_mat src, simple_mat dst)
 {
 
-	_assert(src!=NULL, "INPUT MAT CAN NOT BE NULL");
-	_assert(dst!=NULL, "OUTPUT MAT CAN NOT BE Null");
+	hypercv_assert(src!=NULL, "INPUT MAT CAN NOT BE NULL");
+	hypercv_assert(dst!=NULL, "OUTPUT MAT CAN NOT BE Null");
 
-	_assert(src->rows == dst->rows&&src->cols == dst->cols,"SIZE ERROR");
+	hypercv_assert(src->rows == dst->rows&&src->cols == dst->cols,"SIZE ERROR");
 
 	int rows = src->rows;
 	int cols = src->cols;
@@ -164,9 +164,9 @@ void hypercv_idft(simple_mat re_mat ,simple_mat im_mat, simple_mat dst_mat)
 
 void hypercv_idft_uchar(simple_mat re_mat ,simple_mat im_mat, simple_mat dst_mat)
 {
-	_assert(re_mat->rows==im_mat->rows&&re_mat->rows==dst_mat->rows&&re_mat->cols == im_mat->cols&&re_mat->cols == dst_mat->cols,"INPUT MAT SIZE ERROR");
-	_assert(re_mat->data_type == im_mat->data_type&&re_mat->data_type == 4,"re and im mat data_type == 4");
-	_assert(dst_mat->data_type == 1,"output mat is gray image");
+	hypercv_assert(re_mat->rows==im_mat->rows&&re_mat->rows==dst_mat->rows&&re_mat->cols == im_mat->cols&&re_mat->cols == dst_mat->cols,"INPUT MAT SIZE ERROR");
+	hypercv_assert(re_mat->data_type == im_mat->data_type&&re_mat->data_type == 4,"re and im mat data_type == 4");
+	hypercv_assert(dst_mat->data_type == 1,"output mat is gray image");
 
 	int rows = re_mat->rows;
 	int cols = re_mat->cols;
@@ -196,9 +196,9 @@ void hypercv_idft_uchar(simple_mat re_mat ,simple_mat im_mat, simple_mat dst_mat
 
 void hypercv_idft_ushort(simple_mat re_mat ,simple_mat im_mat, simple_mat dst_mat)
 {
-	_assert(re_mat->rows==im_mat->rows&&re_mat->rows==dst_mat->rows&&re_mat->cols == im_mat->cols&&re_mat->cols == dst_mat->cols,"INPUT MAT SIZE ERROR");
-	_assert(re_mat->data_type == im_mat->data_type&&re_mat->data_type == 4,"re and im mat data_type == 4");
-	_assert(dst_mat->data_type == 12,"output mat is gray image");
+	hypercv_assert(re_mat->rows==im_mat->rows&&re_mat->rows==dst_mat->rows&&re_mat->cols == im_mat->cols&&re_mat->cols == dst_mat->cols,"INPUT MAT SIZE ERROR");
+	hypercv_assert(re_mat->data_type == im_mat->data_type&&re_mat->data_type == 4,"re and im mat data_type == 4");
+	hypercv_assert(dst_mat->data_type == 12,"output mat is gray image");
 
 	int rows = re_mat->rows;
 	int cols = re_mat->cols;
@@ -229,9 +229,9 @@ void hypercv_idft_ushort(simple_mat re_mat ,simple_mat im_mat, simple_mat dst_ma
 
 void hypercv_magnitude(simple_mat re_mat, simple_mat im_mat, simple_mat dst_mat)
 {
-	_assert(re_mat->rows==im_mat->rows&&re_mat->rows==dst_mat->rows&&re_mat->cols == im_mat->cols&&re_mat->cols == dst_mat->cols,"INPUT MAT SIZE ERROR");
-	_assert(re_mat->data_type == im_mat->data_type&&re_mat->data_type == 4,"re and im mat data_type == 4");
-	_assert(dst_mat->data_type == 4,"output mat is float image");
+	hypercv_assert(re_mat->rows==im_mat->rows&&re_mat->rows==dst_mat->rows&&re_mat->cols == im_mat->cols&&re_mat->cols == dst_mat->cols,"INPUT MAT SIZE ERROR");
+	hypercv_assert(re_mat->data_type == im_mat->data_type&&re_mat->data_type == 4,"re and im mat data_type == 4");
+	hypercv_assert(dst_mat->data_type == 4,"output mat is float image");
 
 	int cols = re_mat->cols;
 	int rows = re_mat->rows;

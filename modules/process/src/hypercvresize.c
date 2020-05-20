@@ -14,7 +14,7 @@ void simple_mat_resize(simple_mat src_mat, simple_mat dst_mat, int flag)
     int src_cols = src_mat -> cols;
     int dst_rows = dst_mat -> rows;
     int dst_cols = dst_mat -> cols;
-    _assert(src_mat != NULL && dst_mat != NULL, "The source mat or the destination mat must not be null!");
-    _assert(src_datatype == dst_datatype, "The source mat's type and the destination map's type must be the same!");
+    hypercv_assert(src_mat != NULL && dst_mat != NULL, "The source mat or the destination mat must not be null!");
+    hypercv_assert(src_datatype == dst_datatype, "The source mat's type and the destination map's type must be the same!");
 }
 

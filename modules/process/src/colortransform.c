@@ -20,8 +20,8 @@
 
 simple_mat hypercv_colortransform(simple_mat src_mat, int method)
 {
-	_assert(src_mat != NULL,"input mat cannot be NULL");
-	_assert(method == COLOR_BGR2RGB||
+	hypercv_assert(src_mat != NULL,"input mat cannot be NULL");
+	hypercv_assert(method == COLOR_BGR2RGB||
 			method == COLOR_RGB2BGR||
 			method == COLOR_BGR2GRAY||
 			method == COLOR_RGB2GRAY||
@@ -45,7 +45,7 @@ simple_mat hypercv_colortransform(simple_mat src_mat, int method)
 **/
 simple_mat sm_binary2rgb(simple_mat binary_image)
 {
-	_assert(binary_image->channels == 1,"input binary_image channels == 1");
+	hypercv_assert(binary_image->channels == 1,"input binary_image channels == 1");
 
 	int rows = binary_image -> rows;
 	int cols = binary_image -> cols;
@@ -71,7 +71,7 @@ simple_mat sm_binary2rgb(simple_mat binary_image)
 **/
 simple_mat sm_gray2rgb(simple_mat gray_image)
 {	
-	_assert(gray_image->channels == 1,"input gray image channels == 1");
+	hypercv_assert(gray_image->channels == 1,"input gray image channels == 1");
 
 	int rows = gray_image -> rows;
 	int cols = gray_image -> cols;
@@ -97,7 +97,7 @@ simple_mat sm_gray2rgb(simple_mat gray_image)
 **/
 simple_mat sm_rgb2gray(simple_mat rgb_image, int method)
 {
-	_assert(rgb_image->channels == 3,"input rgb_image channels == 3");
+	hypercv_assert(rgb_image->channels == 3,"input rgb_image channels == 3");
 
 	int rows = rgb_image -> rows;
 	int cols = rgb_image -> cols;
@@ -149,10 +149,10 @@ simple_mat sm_rgb2gray(simple_mat rgb_image, int method)
 **/
 void sm_bgr2rgb(simple_mat src_mat, simple_mat dst_mat)
 {
-	_assert(src_mat!=NULL&&dst_mat !=NULL, "input mat cannot be NULL");
-	_assert(src_mat->data_type == 1, "input mat data type == 1");
-	_assert(src_mat->rows == dst_mat->rows&&src_mat->cols == dst_mat->cols&&src_mat->channels==dst_mat->channels,"src,dst size should be equal");
-	_assert(src_mat->channels == 3,"input mat channels == 3");
+	hypercv_assert(src_mat!=NULL&&dst_mat !=NULL, "input mat cannot be NULL");
+	hypercv_assert(src_mat->data_type == 1, "input mat data type == 1");
+	hypercv_assert(src_mat->rows == dst_mat->rows&&src_mat->cols == dst_mat->cols&&src_mat->channels==dst_mat->channels,"src,dst size should be equal");
+	hypercv_assert(src_mat->channels == 3,"input mat channels == 3");
 
 	int rows,cols;
 	rows = src_mat->rows;

@@ -8,8 +8,8 @@
 
 simple_mat hyper_mat_cem(hyper_mat bsq_mat, float* spectral)
 {
-	_assert(bsq_mat->data_type == 4,"input mat data_type is float");
-	_assert(cmpstr(bsq_mat->interleave,"bsq"),"input mat interleave is bsq");
+	hypercv_assert(bsq_mat->data_type == 4,"input mat data_type is float");
+	hypercv_assert(cmpstr(bsq_mat->interleave,"bsq"),"input mat interleave is bsq");
 	int samples = bsq_mat -> samples;
 	int lines = bsq_mat -> lines;
 	int bands = bsq_mat -> bands;

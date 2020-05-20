@@ -3,7 +3,7 @@
 
 void convert2bsq(hyper_mat mat)
 {
-	_assert(mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(mat!=NULL,"input mat cannot be NULL");
 
 	hyper_mat res;
 
@@ -27,7 +27,7 @@ void convert2bsq(hyper_mat mat)
 
 void convert2bil(hyper_mat mat)
 {
-	_assert(mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(mat!=NULL,"input mat cannot be NULL");
 
 	hyper_mat res;
 
@@ -52,7 +52,7 @@ void convert2bil(hyper_mat mat)
 
 void convert2bip(hyper_mat mat)
 {
-	_assert(mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(mat!=NULL,"input mat cannot be NULL");
 
 	hyper_mat res;
 
@@ -82,12 +82,12 @@ void convert2bip(hyper_mat mat)
 **/
 hyper_mat bil2bsq(hyper_mat bil_mat)
 {
-	_assert(bil_mat != NULL,"hyper_mat can not be NULL");
+	hypercv_assert(bil_mat != NULL,"hyper_mat can not be NULL");
 
 	if(cmpstr(bil_mat -> interleave,"bsq") == 1)
 		return hyper_mat_copy(bil_mat);
 
-	_assert(cmpstr(bil_mat -> interleave,"bil") == 1, "input hyper mat's interleave must be bil");
+	hypercv_assert(cmpstr(bil_mat -> interleave,"bil") == 1, "input hyper mat's interleave must be bil");
 
 	int samples   = bil_mat -> samples;
 	int lines     = bil_mat -> lines;
@@ -132,12 +132,12 @@ hyper_mat bil2bsq(hyper_mat bil_mat)
 **/
 hyper_mat bil2bip(hyper_mat bil_mat)
 {
-	_assert(bil_mat != NULL,                "hyper_mat can not be NULL");
+	hypercv_assert(bil_mat != NULL,                "hyper_mat can not be NULL");
 
 	if(cmpstr(bil_mat -> interleave,"bip") == 1)
 		return hyper_mat_copy(bil_mat);
 
-	_assert(cmpstr(bil_mat -> interleave,"bil") == 1, "input hyper mat's interleave must be bil");
+	hypercv_assert(cmpstr(bil_mat -> interleave,"bil") == 1, "input hyper mat's interleave must be bil");
 
 	int samples   = bil_mat -> samples;
 	int lines     = bil_mat -> lines;
@@ -182,12 +182,12 @@ hyper_mat bil2bip(hyper_mat bil_mat)
 **/
 hyper_mat bsq2bil(hyper_mat bsq_mat)
 {
-	_assert(bsq_mat != NULL,                "hyper_mat can not be NULL");
+	hypercv_assert(bsq_mat != NULL,                "hyper_mat can not be NULL");
 
 	if(cmpstr(bsq_mat -> interleave,"bil") == 1)
 		return hyper_mat_copy(bsq_mat);
 
-	_assert(cmpstr(bsq_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
+	hypercv_assert(cmpstr(bsq_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
 
 	int samples   = bsq_mat -> samples;
 	int lines     = bsq_mat -> lines;
@@ -232,12 +232,12 @@ hyper_mat bsq2bil(hyper_mat bsq_mat)
 **/
 hyper_mat bsq2bip(hyper_mat bsq_mat)
 {
-	_assert(bsq_mat != NULL,"hyper_mat can not be NULL");
+	hypercv_assert(bsq_mat != NULL,"hyper_mat can not be NULL");
 
 	if(cmpstr(bsq_mat -> interleave,"bip") == 1)
 		return hyper_mat_copy(bsq_mat);
 
-	_assert(cmpstr(bsq_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
+	hypercv_assert(cmpstr(bsq_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
 
 	int samples   = bsq_mat -> samples;
 	int lines     = bsq_mat -> lines;
@@ -283,12 +283,12 @@ hyper_mat bsq2bip(hyper_mat bsq_mat)
 **/
 hyper_mat bip2bsq(hyper_mat bip_mat)
 {
-	_assert(bip_mat != NULL,                "hyper_mat can not be NULL");
+	hypercv_assert(bip_mat != NULL,                "hyper_mat can not be NULL");
 
 	if(cmpstr(bip_mat -> interleave,"bsq") == 1)
 		return hyper_mat_copy(bip_mat);
 
-	_assert(cmpstr(bip_mat -> interleave,"bip") == 1, "input hyper mat's interleave must be bip");
+	hypercv_assert(cmpstr(bip_mat -> interleave,"bip") == 1, "input hyper mat's interleave must be bip");
 
 	int samples   = bip_mat -> samples;
 	int lines     = bip_mat -> lines;
@@ -333,10 +333,10 @@ hyper_mat bip2bsq(hyper_mat bip_mat)
 **/
 hyper_mat bip2bil(hyper_mat bip_mat)
 {
-	_assert(bip_mat != NULL,                "hyper_mat can not be NULL");
+	hypercv_assert(bip_mat != NULL,                "hyper_mat can not be NULL");
 	if(cmpstr(bip_mat -> interleave,"bil") == 1)
 		return hyper_mat_copy(bip_mat);
-	_assert(cmpstr(bip_mat -> interleave,"bip") == 1, "input hyper mat's interleave must be bip");
+	hypercv_assert(cmpstr(bip_mat -> interleave,"bip") == 1, "input hyper mat's interleave must be bip");
 
 	int samples   = bip_mat -> samples;
 	int lines     = bip_mat -> lines;
@@ -387,7 +387,7 @@ hyper_mat bip2bil(hyper_mat bip_mat)
 **/
 hyper_mat hyper_mat_get_range(hyper_mat src_mat, int start_row, int start_col, int start_band, int end_row, int end_col, int end_band)
 {
-	_assert(start_col<end_col && start_row<end_row && start_band<end_band, "start col & start row & start band must < end col & end row & end band");
+	hypercv_assert(start_col<end_col && start_row<end_row && start_band<end_band, "start col & start row & start band must < end col & end row & end band");
 
 	int samples = end_col - start_col;
 	int lines = end_row - start_row;
@@ -488,7 +488,7 @@ simple_mat reshape_hypermat_2_simplemat(hyper_mat src_mat, int dst_rows, int dst
 	int src_size = src_samples * src_lines * src_bands;
 	int dst_size = dst_rows * dst_cols ;
 
-	_assert(src_size == dst_size, "reshape could not change the size");
+	hypercv_assert(src_size == dst_size, "reshape could not change the size");
 
 	simple_mat dst_mat = create_simple_mat(dst_rows, dst_cols, src_mat->data_type,1);
 
@@ -505,7 +505,7 @@ simple_mat reshape_hypermat_2_simplemat(hyper_mat src_mat, int dst_rows, int dst
 **/
 void hyper_mat_2_simple_mat(hyper_mat src_mat, simple_mat dst_mat, int band)
 {
-	_assert(cmpstr(src_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
+	hypercv_assert(cmpstr(src_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
 	int samples,lines;
 	samples = src_mat -> samples;
 	lines = src_mat -> lines;
@@ -531,9 +531,9 @@ void simple_mat_2_hyper_mat(hyper_mat dst_mat, simple_mat src_mat, int band)
 	int samples = dst_mat->samples;
 	int lines = dst_mat->lines;
 	int bands = dst_mat->bands;
-	_assert(src_mat->rows==lines&&src_mat->cols==samples,"simple mat size unequal to hyper mat");
-	_assert(band<=bands&&band>0,"band<bands");
-	_assert(cmpstr(dst_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
+	hypercv_assert(src_mat->rows==lines&&src_mat->cols==samples,"simple mat size unequal to hyper mat");
+	hypercv_assert(band<=bands&&band>0,"band<bands");
+	hypercv_assert(cmpstr(dst_mat -> interleave,"bsq") == 1, "input hyper mat's interleave must be bsq");
 
 	char* dst = (char*)dst_mat->data + samples*lines*(band-1);
 	char* src = (char*)src_mat->data;
@@ -551,7 +551,7 @@ void simple_mat_transport(simple_mat res,simple_mat src)
 	int rows = res->rows;
 	int cols = res->cols;
 	
-	_assert(rows == src->cols && cols == src->rows && res->data_type == src->data_type, "data size of transport image equal to srcmat ");
+	hypercv_assert(rows == src->cols && cols == src->rows && res->data_type == src->data_type, "data size of transport image equal to srcmat ");
 
 	int data_type = src->data_type;
 	int elemsize = get_elemsize(data_type);
@@ -568,8 +568,8 @@ void simple_mat_transport(simple_mat res,simple_mat src)
 
 void simple_mat_addition_uchar(simple_mat mat1, simple_mat mat2, simple_mat dst_mat)
 {
-	_assert(mat1!=NULL&&mat2!=NULL&&dst_mat!=NULL,"input mat cannot be empty");
-	_assert(mat1->channels == mat2->channels,"input mat channels error");
+	hypercv_assert(mat1!=NULL&&mat2!=NULL&&dst_mat!=NULL,"input mat cannot be empty");
+	hypercv_assert(mat1->channels == mat2->channels,"input mat channels error");
 	
 	int rows,cols;
 	int channels = mat1->channels;
@@ -598,8 +598,8 @@ void simple_mat_addition_uchar(simple_mat mat1, simple_mat mat2, simple_mat dst_
 
 void simple_mat_addition_float(simple_mat mat1, simple_mat mat2, simple_mat dst_mat)
 {
-	_assert(mat1!=NULL&&mat2!=NULL&&dst_mat!=NULL,"input mat cannot be empty");
-	_assert(mat1->channels == mat2->channels,"input mat channels error");
+	hypercv_assert(mat1!=NULL&&mat2!=NULL&&dst_mat!=NULL,"input mat cannot be empty");
+	hypercv_assert(mat1->channels == mat2->channels,"input mat channels error");
 
 	int rows,cols;
 	int channels = mat1->channels;
@@ -627,8 +627,8 @@ void simple_mat_addition_float(simple_mat mat1, simple_mat mat2, simple_mat dst_
 
 void simple_mat_log(simple_mat src_mat, simple_mat dst_mat)
 {
-	_assert(src_mat->data_type==4&&dst_mat->data_type == 4 , "input mat must be float mat");
-	_assert(src_mat->rows == dst_mat->rows && src_mat->cols == dst_mat->cols, "src mat size == dst_mat size");
+	hypercv_assert(src_mat->data_type==4&&dst_mat->data_type == 4 , "input mat must be float mat");
+	hypercv_assert(src_mat->rows == dst_mat->rows && src_mat->cols == dst_mat->cols, "src mat size == dst_mat size");
 
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
@@ -642,7 +642,7 @@ void simple_mat_log(simple_mat src_mat, simple_mat dst_mat)
 
 void hyper_mat_merge(hyper_mat mat, hyper_mat part, int start_index)
 {
-	_assert(mat->data_type == part->data_type,"data type error");
+	hypercv_assert(mat->data_type == part->data_type,"data type error");
 
 	int elemsize = get_elemsize(mat->data_type); 
 

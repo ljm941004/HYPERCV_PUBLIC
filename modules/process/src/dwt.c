@@ -118,7 +118,7 @@ void wt_info_free(wt_info* wt_if)
 
 wavelet_base* set_wavelet_base(int wave_type)
 {
-	_assert(wave_type!=HYPERCV_WAVE_DB3||wave_type!=HYPERCV_WAVE_BIOR3_7,"ERROR WAVE TYPE")
+	hypercv_assert(wave_type!=HYPERCV_WAVE_DB3||wave_type!=HYPERCV_WAVE_BIOR3_7,"ERROR WAVE TYPE")
 	wavelet_base *wb;
 	wb = (wavelet_base*) calloc(1,sizeof(wavelet_base));
 	
@@ -144,7 +144,7 @@ wavelet_base* set_wavelet_base(int wave_type)
 
 wt_info* hypercv_wavedec(simple_mat src, int wt_level, int wave_type, int border_type)
 {
-	_assert(src!=NULL,"input mat cannot be NULL");
+	hypercv_assert(src!=NULL,"input mat cannot be NULL");
 
 	//int i,j,k;
 	//int coef_len;

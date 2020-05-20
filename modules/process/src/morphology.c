@@ -16,8 +16,8 @@
  **/
 void hypercv_corrosion(simple_mat mat, simple_mat dst_mat, S_2D s)
 {
-	_assert(mat!=NULL,"input mat cannot be NULL");
-	_assert(s!= NULL, "corrosion kernel cannot be NULL");
+	hypercv_assert(mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(s!= NULL, "corrosion kernel cannot be NULL");
 
 	int rows = mat->rows;
 	int cols = mat->cols;
@@ -80,8 +80,8 @@ void hypercv_corrosion(simple_mat mat, simple_mat dst_mat, S_2D s)
  **/
 void hypercv_expend(simple_mat mat, simple_mat dst_mat, S_2D s)
 {
-	_assert(mat!=NULL,"input mat cannot be NULL");
-	_assert(s!= NULL, "expend kernel cannot be NULL");
+	hypercv_assert(mat!=NULL,"input mat cannot be NULL");
+	hypercv_assert(s!= NULL, "expend kernel cannot be NULL");
 
 	int rows = mat->rows;
 	int cols = mat->cols;
@@ -146,8 +146,8 @@ void hypercv_expend(simple_mat mat, simple_mat dst_mat, S_2D s)
  **/ 
 void hypercv_open(simple_mat src, simple_mat dst, S_2D kernel, int iterations)
 {
-	_assert(src!= NULL,"input mat cannot be NULL");
-	_assert(kernel != NULL, "kernel cannot be NULL");
+	hypercv_assert(src!= NULL,"input mat cannot be NULL");
+	hypercv_assert(kernel != NULL, "kernel cannot be NULL");
 
 	int rows = src->rows;
 	int cols = src->cols;
@@ -174,8 +174,8 @@ void hypercv_open(simple_mat src, simple_mat dst, S_2D kernel, int iterations)
  **/ 
 void hypercv_close(simple_mat src, simple_mat dst, S_2D kernel, int iterations)
 {
-	_assert(src!= NULL,"input mat cannot be NULL");
-	_assert(kernel != NULL, "kernel cannot be NULL");
+	hypercv_assert(src!= NULL,"input mat cannot be NULL");
+	hypercv_assert(kernel != NULL, "kernel cannot be NULL");
 
 	int rows = src->rows;
 	int cols = src->cols;

@@ -39,7 +39,7 @@ static unsigned char median_member(unsigned char* array,int size)
 **/
 static void hypercv_make_const_border(simple_mat src, simple_mat dst, int top, int bottom, int left, int right, int border_type, unsigned char value)
 {
-	_assert(src !=NULL,"INPUT MAT CANNOT BE NULL");
+	hypercv_assert(src !=NULL,"INPUT MAT CANNOT BE NULL");
 	int src_rows = src->rows;
 	int src_cols = src->cols;
 	int dst_rows = dst->rows;
@@ -85,9 +85,9 @@ static void hypercv_make_const_border(simple_mat src, simple_mat dst, int top, i
  **/
 void hypercv_filter2D(simple_mat src, simple_mat dst, float* kernel, int k_rows, int k_cols, int border_type)
 {
-	_assert(src!= NULL&&dst!=NULL,"input mat cannot be null");
-	_assert(kernel!=NULL,"kernel cannot be null");
-	_assert(dst->data_type = 4,"dst data_type == float");
+	hypercv_assert(src!= NULL&&dst!=NULL,"input mat cannot be null");
+	hypercv_assert(kernel!=NULL,"kernel cannot be null");
+	hypercv_assert(dst->data_type = 4,"dst data_type == float");
 
 	int rows = src->rows;
 	int cols = src->cols;
@@ -139,8 +139,8 @@ void hypercv_filter2D(simple_mat src, simple_mat dst, float* kernel, int k_rows,
  **/
 void hypercv_medianblur(simple_mat src_mat, simple_mat dst_mat, int size)
 {
-	_assert(!src_mat,"input mat can not be NULL");
-	_assert(size%2==1,"size should be odd number");
+	hypercv_assert(!src_mat,"input mat can not be NULL");
+	hypercv_assert(size%2==1,"size should be odd number");
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
 	int data_type = src_mat->data_type;
@@ -175,7 +175,7 @@ void hypercv_medianblur(simple_mat src_mat, simple_mat dst_mat, int size)
  **/
 void hypercv_meanblur(simple_mat src_mat, simple_mat dst_mat, int size)
 {
-	_assert(!src_mat,"input mat can not be NULL");
+	hypercv_assert(!src_mat,"input mat can not be NULL");
 	int rows = src_mat->rows;
 	int cols = src_mat->cols;
 	int data_type = src_mat->data_type;
@@ -216,8 +216,8 @@ void hypercv_meanblur(simple_mat src_mat, simple_mat dst_mat, int size)
  **/
 simple_mat gaussian_kernel(int kernel_size, double sigma, int ktype)
 {
-	_assert(kernel_size>0, "length of kernel must >0");
-	_assert(ktype == 4 || ktype == 5 ,"ktype is illegal");
+	hypercv_assert(kernel_size>0, "length of kernel must >0");
+	hypercv_assert(ktype == 4 || ktype == 5 ,"ktype is illegal");
 
 	const int SMALL_GAUSSIAN_SIZE = 7;
 	float temp1[]= {1.f};
@@ -281,9 +281,9 @@ simple_mat gaussian_kernel(int kernel_size, double sigma, int ktype)
  **/
 void hypercv_gaussian_blur(simple_mat src_mat, simple_mat dst_mat, int ksize_width, int ksize_height, double sigma1, double sigma2, int border_type)
 {
-	_assert(src_mat!=NULL,"input mat must not be NULL");
-	_assert(ksize_width > 0 && ksize_width % 2 == 1 && ksize_height > 0 && ksize_height % 2 == 1 , " ksize is illegal");
-	_assert(border_type == BORDER_REFLECT||border_type == BORDER_REFLECT_101||border_type == BORDER_REPLICATE||border_type == BORDER_WRAP||border_type == BORDER_CONSTANT ,"Unknown/unsupported border type");
+	hypercv_assert(src_mat!=NULL,"input mat must not be NULL");
+	hypercv_assert(ksize_width > 0 && ksize_width % 2 == 1 && ksize_height > 0 && ksize_height % 2 == 1 , " ksize is illegal");
+	hypercv_assert(border_type == BORDER_REFLECT||border_type == BORDER_REFLECT_101||border_type == BORDER_REPLICATE||border_type == BORDER_WRAP||border_type == BORDER_CONSTANT ,"Unknown/unsupported border type");
 
 	int data_type = src_mat -> data_type;
 
@@ -324,17 +324,17 @@ void hypercv_gaussian_blur_with_kernel(simple_mat src_mat,simple_mat dst_mat, si
 	int ksize_width = kernel_mat_x->cols;
 	int ksize_height = kernel_mat_y->cols;
 
-	_assert(src_mat!=NULL,"input mat must not be NULL");
-	_assert(ksize_width>=0,"length of kernel_x must >=0");
-	_assert(ksize_height>=0,"length of kernel_y must >=0");
-	_assert(border_type == BORDER_REFLECT
+	hypercv_assert(src_mat!=NULL,"input mat must not be NULL");
+	hypercv_assert(ksize_width>=0,"length of kernel_x must >=0");
+	hypercv_assert(ksize_height>=0,"length of kernel_y must >=0");
+	hypercv_assert(border_type == BORDER_REFLECT
 			||border_type == BORDER_REFLECT_101
 			||border_type == BORDER_REPLICATE
 			||border_type == BORDER_WRAP
 			||border_type == BORDER_CONSTANT ,"Unknown/unsupported border type" );
 
 	int cn = src_mat ->channels;
-	_assert(cn == 1 ||cn == 3 ,"src channel equal 1 or 3 ");
+	hypercv_assert(cn == 1 ||cn == 3 ,"src channel equal 1 or 3 ");
 
 	int border_x = ksize_width/2;
 	int border_y = ksize_height/2;
@@ -460,20 +460,20 @@ void hypercv_gaussian_blur_with_kernel(simple_mat src_mat,simple_mat dst_mat, si
  **/
 void hypercv_integral(simple_mat src, simple_mat dst)
 {
-	_assert(src != NULL,"input mat cannot be null");
+	hypercv_assert(src != NULL,"input mat cannot be null");
 
 	int rows = src->rows;
 	int cols = src->cols;
 	int data_type = src-> data_type;
 	int channels = src->channels;
 
-	_assert(data_type == 1,"only use in char");
-	_assert(channels == 1,"integral use with gray image");
+	hypercv_assert(data_type == 1,"only use in char");
+	hypercv_assert(channels == 1,"integral use with gray image");
 
 	if(dst == NULL)
 		dst = create_simple_mat(rows,cols,3,1);
 
-	_assert(dst->channels == 1&&dst->data_type == 3,"dst mat error");
+	hypercv_assert(dst->channels == 1&&dst->data_type == 3,"dst mat error");
 
 	unsigned char* src_data = (unsigned char*)src->data;
 	int* dst_data = (int*)dst->data;
@@ -503,9 +503,9 @@ void hypercv_integral(simple_mat src, simple_mat dst)
  **/
 simple_mat hypercv_copy_make_border(simple_mat src, int top, int bottom, int left, int right, int border_type, unsigned char value)
 {
-	_assert(src!=NULL,"INPUT MAT CANNOT BE NULL");
-	_assert(left>=0&&right>=0&&top>=0&&bottom>=0,"new border >=0");
-	_assert(border_type == BORDER_REFLECT
+	hypercv_assert(src!=NULL,"INPUT MAT CANNOT BE NULL");
+	hypercv_assert(left>=0&&right>=0&&top>=0&&bottom>=0,"new border >=0");
+	hypercv_assert(border_type == BORDER_REFLECT
 			||border_type == BORDER_REFLECT_101
 			||border_type == BORDER_REPLICATE
 			||border_type == BORDER_WRAP

@@ -25,7 +25,7 @@ simple_mat create_simple_mat(int rows, int cols, int date_type, int channels)
  **/
 simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int channels, void* data)
 {
-	_assert(rows > 0 && cols > 0, "the rows and cols of mat must be greater than zero ");
+	hypercv_assert(rows > 0 && cols > 0, "the rows and cols of mat must be greater than zero ");
 
 	simple_mat mat;
 
@@ -39,7 +39,7 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int cha
 	}
 
 	mat = (simple_mat)malloc(sizeof(char) * memneeded);
-	_assert(mat != NULL, "failed to allocate memory");
+	hypercv_assert(mat != NULL, "failed to allocate memory");
 
 	if(data == NULL)
 	{
@@ -67,12 +67,12 @@ simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int cha
  **/
 simple_mat smread(const char * image_path, int rows, int cols, int data_type, int channels)
 {
-	_assert(image_path != NULL, "image path or hdr path can not be NULL");
+	hypercv_assert(image_path != NULL, "image path or hdr path can not be NULL");
 
 	FILE* image_fp;
 	image_fp = fopen(image_path, "r");
 
-	_assert(image_fp != NULL, "can not open files");
+	hypercv_assert(image_fp != NULL, "can not open files");
 
 	int elem_size = get_elemsize(data_type);
 	int data_size = rows * cols;
@@ -118,9 +118,9 @@ simple_mat simple_mat_copy(simple_mat mat)
 **/
 simple_mat smread_bmp(const char *bmpName)
 {
-	_assert(bmpName!=NULL,"read bmp file name can not be NULL");
+	hypercv_assert(bmpName!=NULL,"read bmp file name can not be NULL");
 	FILE *fp = fopen(bmpName, "rb");
-	_assert(fp!=NULL,"BMP IMAGE NOT EXIST");
+	hypercv_assert(fp!=NULL,"BMP IMAGE NOT EXIST");
 
 	fseek(fp, sizeof(BmpFileHeader), SEEK_SET);
 	BmpInfoHeader head;
@@ -181,12 +181,12 @@ simple_mat smread_bmp(const char *bmpName)
  **/
 void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 {
-	_assert(bmpName != NULL, "write bmp image path can not be NULL");
-	_assert(src_mat != NULL,"save mat can not be null");
-	_assert(src_mat->data_type == 1,"save mat only 0-255");
+	hypercv_assert(bmpName != NULL, "write bmp image path can not be NULL");
+	hypercv_assert(src_mat != NULL,"save mat can not be null");
+	hypercv_assert(src_mat->data_type == 1,"save mat only 0-255");
 
 	FILE *fp = fopen(bmpName, "wb");
-	_assert(fp != NULL,"save file can not open");
+	hypercv_assert(fp != NULL,"save file can not open");
 
 	simple_mat mat;
 	if(src_mat -> channels == 1)
@@ -275,8 +275,8 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
  **/
 float simple_mat_mean(simple_mat mat)
 {
-	_assert(mat!=NULL,"input_mat cannot be NULL");
-	_assert(mat->channels == 1,"only use in gray image");
+	hypercv_assert(mat!=NULL,"input_mat cannot be NULL");
+	hypercv_assert(mat->channels == 1,"only use in gray image");
 	int rows = mat -> rows;
 	int cols = mat -> cols;
 
@@ -324,8 +324,8 @@ float simple_mat_mean(simple_mat mat)
  **/
 float simple_mat_variance(simple_mat mat)
 {
-	_assert(mat != NULL,"input mat cannot be NULL");
-	_assert(mat->channels == 1,"only use in gray image");
+	hypercv_assert(mat != NULL,"input mat cannot be NULL");
+	hypercv_assert(mat->channels == 1,"only use in gray image");
 	int rows = mat->rows;
 	int cols = mat->cols;
 	float res =0.0;
@@ -372,9 +372,9 @@ float simple_mat_variance(simple_mat mat)
  **/
 void simple_mat_grayscale_statistics(simple_mat mat , int* gray_statist)
 {
-	_assert(mat != NULL,"input mat cannot be NULL");
-	_assert(mat-> data_type == 1,"only use in unsigned char image");
-	_assert(sizeof(gray_statist)==256,"gray array error");
+	hypercv_assert(mat != NULL,"input mat cannot be NULL");
+	hypercv_assert(mat-> data_type == 1,"only use in unsigned char image");
+	hypercv_assert(sizeof(gray_statist)==256,"gray array error");
 
 	int rows = mat->rows;
 	int cols = mat->cols;
@@ -404,8 +404,8 @@ void simple_mat_grayscale_statistics(simple_mat mat , int* gray_statist)
  **/
 float simple_mat_contrast_ratio(simple_mat mat)
 {
-	_assert(mat != NULL,"input mat cannot be NULL");
-	_assert(mat-> data_type == 1,"only use in unsigned char image");
+	hypercv_assert(mat != NULL,"input mat cannot be NULL");
+	hypercv_assert(mat-> data_type == 1,"only use in unsigned char image");
 
 	int rows = mat->rows;
 	int cols = mat->cols;
@@ -449,8 +449,8 @@ float simple_mat_contrast_ratio(simple_mat mat)
  **/
 float simple_mat_entropy(simple_mat mat)
 {
-	_assert(mat != NULL,"input mat cannot be NULL");
-	_assert(mat-> data_type == 1,"only use in unsigned char image");
+	hypercv_assert(mat != NULL,"input mat cannot be NULL");
+	hypercv_assert(mat-> data_type == 1,"only use in unsigned char image");
 
 	int rows = mat->rows;
 	int cols = mat->cols;
