@@ -64,7 +64,6 @@ simple_mat spectrum_SAM_match(hyper_mat bip_mat, float* spectrum, float threshol
 
 			float res =	spectral_angle_mapper(temp ,spectrum, bands);
 
-			printf("%f\n",res);
 			smat = (char*)match_image->data + i*samples +j;
 			
 			if(res>=threshold)

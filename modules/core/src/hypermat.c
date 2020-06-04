@@ -206,41 +206,32 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 
 	hyper_mat mat;
 
-	if(data==NULL&&wavelength!=NULL)
-	{
-		printf("data==NULL but wavelength !=NULL");
-		return mat ;	
-	}
-
-	int memneeded = sizeof(HyperMat);
+	long int  memneeded = sizeof(HyperMat);
 	int elem_size = get_elemsize(data_type);
+    
+	long int mat_data_size = samples * lines * bands * elem_size;
+	int wave_data_size = bands * sizeof(float);
 
-	if (data == NULL)
-	{
-		int mat_data_size = samples * lines * bands * elem_size;
-		int wave_data_size = bands * sizeof(float);
-		memneeded += mat_data_size + wave_data_size + ALLOC_BYTE_ALIGNMENT*2;
-	}
+	memneeded += mat_data_size + ALLOC_BYTE_ALIGNMENT;
+	memneeded += wave_data_size + ALLOC_BYTE_ALIGNMENT;
 
 	mat = (hyper_mat)malloc(sizeof(char) * memneeded);
 	hypercv_assert(mat != NULL, "fail to allocate memory for hyper mat");
 
-	if (data == NULL)
-	{
-		uintptr_t address = (uintptr_t)mat + sizeof(hyper_mat);
-		BYTE_ALIGNMENT(address, ALLOC_BYTE_ALIGNMENT);
-		memset((void*)address, 0, samples * lines * bands * elem_size);
-		mat->data = (void*)address;
-		address += samples * lines * bands * elem_size;
-		BYTE_ALIGNMENT(address, ALLOC_BYTE_ALIGNMENT);
-		memset((void*)address, 0, bands*sizeof(float));
-		mat->wavelength = (void*)address;
-	}
-	else
-	{
-		mat->data = data;
-		mat->wavelength = wavelength;
-	}
+	uintptr_t address = (uintptr_t)mat + sizeof(HyperMat);
+	BYTE_ALIGNMENT(address, ALLOC_BYTE_ALIGNMENT);
+	memset((void*)address, 0, mat_data_size);
+	mat->data = (void*)address;
+	address += mat_data_size;
+	BYTE_ALIGNMENT(address, ALLOC_BYTE_ALIGNMENT);
+	memset((void*)address, 0, wave_data_size);
+	mat->wavelength = (float*)address;
+	
+	if(data!=NULL)
+		memcpy(mat->data, data, mat_data_size);
+
+	if(wavelength != NULL)
+		memcpy(mat->wavelength, wavelength, wave_data_size);
 
 	mat->samples = samples;
 	mat->lines = lines;
@@ -249,8 +240,10 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 	mat->interleave[0] = interleave[0];
 	mat->interleave[1] = interleave[1];
 	mat->interleave[2] = interleave[2];
+
 	return mat;
 }
+
 
 /**
  * @brief      read the hyper spectral image.
@@ -515,13 +508,10 @@ void hyper_mat_copy_wavelength(hyper_mat src, hyper_mat dst)
 
 	float* src_wavelength = (float*)src->wavelength;
 	float* dst_wavelength = (float*)dst->wavelength;
-
 	int bands = src->bands;
 
-	if(dst_wavelength == NULL)
-		dst_wavelength = (float*)malloc(bands*sizeof(bands));
+	memcpy(dst_wavelength,src_wavelength,bands*sizeof(float));
 
-	memcpy(dst_wavelength,src_wavelength,bands*sizeof(bands));
 }
 /**
  * @brief      function to show information the hyper mat.
@@ -569,27 +559,12 @@ int hyper_mat_empty(hyper_mat mat)
  **/
 void delete_hyper_mat(hyper_mat mat)
 {
-	hypercv_assert(mat != NULL, "already free");
+//	hypercv_assert(mat != NULL, "already free");
 
-	if ((uintptr_t)mat + ALLOC_BYTE_ALIGNMENT >= (uintptr_t)mat->data)
-	{
-		free(mat);
-		mat = NULL;
-	}
-	else
-	{
-		if(mat->data!=NULL)
-		{
-			free(mat->data);
-			mat->data = NULL;
-		}
-		if(mat->wavelength)
-		{
-			free(mat->wavelength);
-			mat->wavelength = NULL;
-		}
-		free(mat);
-		mat = NULL;
-	}
+	if(mat == NULL)
+		return;
+
+	free(mat);
+	mat = NULL;
 }
 

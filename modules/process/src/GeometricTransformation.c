@@ -150,3 +150,58 @@ void hypercv_pyramid_up(simple_mat src, simple_mat dst)
 	hypercv_gaussian_blur_with_kernel(tmp,dst,kernel,kernel,1);
 }
 
+
+hyper_mat hyper_mat_rotate(hyper_mat mat, double angle)
+{
+
+	if(cmpstr(mat->interleave,"bip")!=1)
+		convert2bip(mat);
+	double theta = angle * PI/180;
+	double c = cos(theta);
+	double s = sin(theta);
+
+	int h = (mat->lines+1)/2;
+	int w = (mat->samples+1)/2;
+
+    float x0 = - w * c - h * s;
+	float y0 = -h * c + w * s;
+	float x1 = w * c - h * s;
+	float y1 = -h * c - w * s;
+	float x2 = w * c + h * s;
+	float y2 = h * c - w * s;
+	float x3 = -w * c + h * s;
+	float y3 = h * c + w * s;
+	float width1 = fabs(x2 - x0);
+	float width2 = fabs(x3 - x1);
+	float height1 = fabs(y2 - y0);
+	float height2 = fabs(y3 - y1);
+
+	int width = (width1 > width2 ? width1 : width2);
+	int height = (height1 > height2 ? height1 : height2);
+
+	hyper_mat dst_mat = create_hyper_mat_with_data(width, height, mat->bands,mat->data_type, mat->interleave, NULL, mat->wavelength);
+
+	int di = x0 + width / 2;
+	int dj = y0 + height / 2;
+	
+	unsigned char* src_data = (unsigned char*)mat->data;
+	unsigned char* dst_data = (unsigned char*)dst_mat->data;
+	
+	int elem_size = get_elemsize(mat->data_type);
+
+	for(int i=0;i<mat->lines;i++)
+	{
+		for(int j=0;j<mat->samples;j++)
+		{
+            int x = i * c + j * s + di;
+			int y = j * c - i * s + dj;
+			int dstOft = (x * width + y) * mat->bands * elem_size;
+			int srcOft = (i * mat->samples + j) * mat->bands * elem_size;
+			unsigned char* src = src_data + srcOft;
+			unsigned char* dst = dst_data + dstOft;
+			memcpy(dst,src,mat->bands*elem_size);
+		}
+
+	}
+	return dst_mat;
+}

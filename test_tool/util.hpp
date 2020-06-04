@@ -11,12 +11,13 @@
 	template<typename type>
 void hypercv_dataInit(type* mat, int samples, int lines, int bands)
 {
-	int datasize = samples*lines*bands;
-	for(int i=0;i<datasize;i++)
+	long int datasize = samples*lines*bands;
+	
+	for(long int i=0;i<datasize;i++)
 	{
 		double data = drand48();
+		
 		data = data * 13.27680f - 1.63840f;
-
 		data = fabs(data);
 
 		data = (type)(data);
