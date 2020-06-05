@@ -640,7 +640,7 @@ void simple_mat_log(simple_mat src_mat, simple_mat dst_mat)
 		dst_data[i] = log(src_data[i]);
 }
 
-void hyper_mat_merge(hyper_mat mat, hyper_mat part, int start_index)
+void hyper_mat_splicing(hyper_mat mat, hyper_mat part, int start_index)
 {
 	hypercv_assert(mat->data_type == part->data_type,"data type error");
 

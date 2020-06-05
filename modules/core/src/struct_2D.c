@@ -20,9 +20,8 @@ S_2D create_2D_struct(int width, int height)
 	for(int i=0; i<width*height; i++)
 		data[i] = 1;
 	
-	S_2D s = create_2D_struct_with_data(width, height, data);
+	return create_2D_struct_with_data(width, height, data);
 	
-	return s;
 }
 
 /**
@@ -45,6 +44,8 @@ S_2D create_2D_struct_with_data(int width, int height, void* data)
 	s->data = data;
 	s->width = width;
 	s->height = height;
+
+	return s;
 }
 
 /**
@@ -53,7 +54,7 @@ S_2D create_2D_struct_with_data(int width, int height, void* data)
  **/
 void delete_S_2D(S_2D s)
 {
-	if (s==NULL)
+	if (s == NULL)
 		return;
 
 	free(s);

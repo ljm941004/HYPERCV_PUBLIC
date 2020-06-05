@@ -15,21 +15,23 @@
 #endif
 
 //*************************************************************
-//                       private 
+//                       private                              * 
 //*************************************************************
 
 // function purpose to compare 2 char[]
 int cmpstr(char temp1[],char temp2[])
 {
+	int len = strlen(temp1)<=strlen(temp2)? strlen(temp1):strlen(temp2);
 
-	int len = strlen(temp1)>strlen(temp2)?strlen(temp2):strlen(temp1);
-	hypercv_assert(len>=1,"cmpstr input strlen >= 1");
-	for (int i=0;i<len;i++)
-	{
-		if(temp1[i]!=temp2[i])
-			return -1;
-	}
-	return 1;
+	if(strlen(temp1) == strlen(temp2) && len == 0)
+		return 1;
+
+	for(int i=0; i<len; i++)
+		if(temp1[i] != temp2[i])
+			return 0;
+
+	return 1; 
+
 }
 
 // private function purpose to read wavelength from hdr file
@@ -222,6 +224,7 @@ hyper_mat create_hyper_mat_with_data(const int samples, const int lines, const i
 	BYTE_ALIGNMENT(address, ALLOC_BYTE_ALIGNMENT);
 	memset((void*)address, 0, mat_data_size);
 	mat->data = (void*)address;
+	
 	address += mat_data_size;
 	BYTE_ALIGNMENT(address, ALLOC_BYTE_ALIGNMENT);
 	memset((void*)address, 0, wave_data_size);
@@ -273,11 +276,8 @@ hyper_mat hmread_with_hdr(const char* image_path,const char* hdr_path)
 	else
 		readhdr(hdr_fp, &samples, &lines,&bands, &data_type, interleave, &wavelength);
 	
-	if(wavelength == NULL)
-		wavelength = (float*)malloc(bands*sizeof(float));
-	
 	unsigned int elem_size = get_elemsize(data_type);
-	unsigned int data_size = samples * lines * bands;
+	long int data_size = samples * lines * bands;
 
 	void* data = (void *)malloc(data_size * elem_size);
 	hypercv_assert(data != NULL, "malloc fail");
@@ -318,7 +318,7 @@ hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int b
 	}
 
 	int elem_size = get_elemsize(data_type);
-	int data_size = samples * lines * bands;
+	long int data_size = samples * lines * bands;
 
 	void* data = (void *)malloc(data_size * elem_size);
 
@@ -445,47 +445,41 @@ void writehdr(const char* img_path, int samples, int lines, int bands, int data_
  **/
 hyper_mat hyper_mat_copy(hyper_mat mat)
 {
-	hypercv_assert(mat!=NULL,"mat could not be NULL");
+	if(mat!=NULL)
+		return NULL;
 
-	int samples = mat->samples;
-	int lines = mat->lines;
-	int bands = mat->bands;
+	int samples   = mat->samples;
+	int lines     = mat->lines;
+	int bands     = mat->bands;
 	int data_type = mat->data_type;
-	int elemsize = get_elemsize(data_type);
+	int elemsize  = get_elemsize(data_type);
 
-	hyper_mat dst_mat = create_hyper_mat(samples, lines, bands, data_type, mat->interleave);
-
-	char *dst_data = (char*)dst_mat->data;
-	char *src_data = (char*)mat->data;
-
-	memcpy(dst_data,src_data,samples*lines*bands*elemsize);
-
-	if(mat->wavelength!=NULL)
-	{
-		float *src_wavelength = (float*)mat->wavelength;
-		float *dst_wavelength = (float*)dst_mat->wavelength;
-		memcpy(dst_wavelength,src_wavelength,bands*sizeof(float));
-	}
+	hyper_mat dst_mat = create_hyper_mat_with_data(samples, lines, bands, data_type, mat->interleave, mat->data, mat->wavelength);
 
 	return dst_mat;
 }
 
+/**
+ * @brief       copy hyper mat.
+ * @param[in]   hyper_mat   input hyper mat.
+ * @param[in]   hyper_mat   output hyper mat.
+ **/
 void hyper_mat_copy_to(hyper_mat src_mat, hyper_mat dst_mat)
 {
 	hypercv_assert(src_mat!=NULL && dst_mat!=NULL,"INPUT MAT CAN NOT BE NULL");
 
-	int samples = src_mat->samples;
-	int lines = src_mat -> lines;
-	int bands = src_mat -> bands;
+	int samples   = src_mat -> samples;
+	int lines     = src_mat -> lines;
+	int bands     = src_mat -> bands;
 	int data_type = src_mat->data_type;
-	int elemsize = get_elemsize(data_type);
+	int elemsize  = get_elemsize(data_type);
 
 	hypercv_assert(dst_mat->samples == samples && dst_mat->lines == lines && dst_mat->bands == bands && data_type == dst_mat->data_type,"src_mat size == dst_mat size");
 
 	char* src_data = (char*)src_mat->data;
 	char* dst_data = (char*)dst_mat->data;
 
-	memcpy(dst_data,src_data,samples*lines*bands*elemsize);
+	memcpy(dst_data, src_data, samples*lines*bands*elemsize);
 	hyper_mat_copy_wavelength(src_mat, dst_mat);
 
 	for(int i=0;i<3;i++)
@@ -493,26 +487,27 @@ void hyper_mat_copy_to(hyper_mat src_mat, hyper_mat dst_mat)
 }
 
 /**
- * @brief       copy hyper mat wave.
+ * @brief       copy hyper mat wavelength.
  * @param[in]   src         input hyper mat.
  * @param[in]   dst         input hyper mat.
  **/
 void hyper_mat_copy_wavelength(hyper_mat src, hyper_mat dst)
 {
 
-	hypercv_assert(src!=NULL&&dst!=NULL,"mat could not be NULL");
-	hypercv_assert(src->bands == dst->bands,"src mat bands == dst mat bands");
+	hypercv_assert(src!=NULL && dst!=NULL, "mat could not be NULL");
+	hypercv_assert(src->bands == dst->bands, "src mat bands == dst mat bands");
 
 	if(src->wavelength == NULL)
 		return;
 
 	float* src_wavelength = (float*)src->wavelength;
 	float* dst_wavelength = (float*)dst->wavelength;
+	
 	int bands = src->bands;
 
-	memcpy(dst_wavelength,src_wavelength,bands*sizeof(float));
-
+	memcpy(dst_wavelength, src_wavelength, bands*sizeof(float));
 }
+
 /**
  * @brief      function to show information the hyper mat.
  * @param[in]  mat         hyper mat.
@@ -548,8 +543,7 @@ int hyper_mat_empty(hyper_mat mat)
 {
 	if(mat == NULL)
 		return 1;
-	if(mat->data == NULL)
-		return 1;
+
 	return 0;
 }
 
@@ -559,8 +553,6 @@ int hyper_mat_empty(hyper_mat mat)
  **/
 void delete_hyper_mat(hyper_mat mat)
 {
-//	hypercv_assert(mat != NULL, "already free");
-
 	if(mat == NULL)
 		return;
 

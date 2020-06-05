@@ -6,7 +6,7 @@
 
 #include "precomp.h"
 
-int get_optimal_DFT_size(int size0 )
+int get_optimal_DFT_size(int size0)
 {
     int a = 0, b = sizeof(optimal_DFT_sizetab)/sizeof(optimal_DFT_sizetab[0]) - 1;
     if( (unsigned)size0 >= (unsigned)optimal_DFT_sizetab[b] )

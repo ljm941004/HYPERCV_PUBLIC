@@ -23,7 +23,7 @@ simple_mat create_simple_mat(int rows, int cols, int date_type, int channels)
  * @param[in]  data			Pointer to the user data.
  * @retval      simple_mat   2D mat. 
  **/
-simple_mat create_simple_mat_with_data(int rows, int cols, int data_type,int channels, void* data)
+simple_mat create_simple_mat_with_data(int rows, int cols, int data_type, int channels, void* data)
 {
 	hypercv_assert(rows > 0 && cols > 0, "the rows and cols of mat must be greater than zero ");
 
@@ -94,18 +94,18 @@ simple_mat smread(const char * image_path, int rows, int cols, int data_type, in
  **/
 simple_mat simple_mat_copy(simple_mat mat)
 {
-    int rows = mat -> rows;
-	int cols = mat -> cols;
+    int rows      = mat -> rows;
+	int cols      = mat -> cols;
 	int data_type = mat->data_type;
-	int elemsize = get_elemsize(data_type);
-	int channels = mat->channels;
+	int elemsize  = get_elemsize(data_type);
+	int channels  = mat->channels;
 	
-	simple_mat dst = create_simple_mat(rows,cols,data_type,channels);
+	simple_mat dst = create_simple_mat(rows, cols, data_type, channels);
 	
 	char * src_data = (char*)mat->data;
 	char * dst_data = (char*)dst->data;
 	
-	memcpy(dst_data,src_data,rows*cols*elemsize*channels);
+	memcpy(dst_data, src_data, rows*cols*elemsize*channels);
 	
 	return dst;
 }
@@ -118,19 +118,20 @@ simple_mat simple_mat_copy(simple_mat mat)
 **/
 simple_mat smread_bmp(const char *bmpName)
 {
-	hypercv_assert(bmpName!=NULL,"read bmp file name can not be NULL");
+	hypercv_assert(bmpName!=NULL, "read bmp file name can not be NULL");
+
 	FILE *fp = fopen(bmpName, "rb");
-	hypercv_assert(fp!=NULL,"BMP IMAGE NOT EXIST");
+	hypercv_assert(fp!=NULL, "BMP IMAGE NOT EXIST");
 
 	fseek(fp, sizeof(BmpFileHeader), SEEK_SET);
 	BmpInfoHeader head;
 	fread(&head, sizeof(BmpInfoHeader), 1, fp);
  
-	int channels = 3;
-	int bmpWidth = head.biWidth;
-	int bmpHeight = head.biHeight;
+	int channels   = 3;
+	int bmpWidth   = head.biWidth;
+	int bmpHeight  = head.biHeight;
 	int biBitCount = head.biBitCount;
-    int lineByte = (bmpWidth * biBitCount / 8 + 3) / 4 * 4;
+    int lineByte   = (bmpWidth * biBitCount / 8 + 3) / 4 * 4;
 	
 	if (biBitCount == 8)
 	{
@@ -148,9 +149,9 @@ simple_mat smread_bmp(const char *bmpName)
 		{
 			for(int k=0;k<channels;k++)
 			{
-				int tmp = pBmpBuf[i*lineByte+j*channels+k];
-				pBmpBuf[i*lineByte+j*channels+k] = pBmpBuf[(bmpHeight-i-1)*lineByte+j*channels+2-k];
-				pBmpBuf[(bmpHeight-i-1)*lineByte+j*channels+2-k]=tmp;
+				int tmp = pBmpBuf[i*lineByte + j*channels + k];
+				pBmpBuf[i*lineByte + j*channels + k] = pBmpBuf[(bmpHeight-i-1)*lineByte + j*channels + 2-k];
+				pBmpBuf[(bmpHeight-i-1)*lineByte + j*channels + 2-k] = tmp;
 			}
 		}
 	}
@@ -158,15 +159,15 @@ simple_mat smread_bmp(const char *bmpName)
 	simple_mat res = create_simple_mat(bmpHeight,bmpWidth,1,3);
 	unsigned char* res_data = (unsigned char*)res->data;
 
-	if(lineByte == bmpWidth*biBitCount/8)
-		memcpy(res_data,pBmpBuf,lineByte*bmpHeight);
+	if(lineByte == bmpWidth * biBitCount / 8)
+		memcpy(res_data, pBmpBuf, lineByte*bmpHeight);
 	else
 	{
-		for(int i=0;i<bmpHeight;i++)
+		for(int i=0; i<bmpHeight; i++)
 		{
 			unsigned char* pres = res_data + i*bmpWidth*channels;
 			unsigned char* pbmp = pBmpBuf + i*lineByte;
-			memcpy(pres,pbmp,bmpWidth*channels);
+			memcpy(pres, pbmp, bmpWidth*channels);
 		}
 	}
 
@@ -220,52 +221,51 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
 	fwrite(&fileHead, sizeof(BmpFileHeader), 1, fp);
 
 	BmpInfoHeader infoHead;
-	infoHead.biBitCount = biBitCount;
-	infoHead.biClrImportant = 0;
-	infoHead.biClrUsed = 0;
-	infoHead.biCompression = 0;
-	infoHead.biHeight = height;
-	infoHead.biPlanes = 1;
-	infoHead.biSize = 40;
-	infoHead.biSizeImage = lineByte * height;
-	infoHead.biWidth = width;
+	infoHead.biBitCount      = biBitCount;
+	infoHead.biClrImportant  = 0;
+	infoHead.biClrUsed       = 0;
+	infoHead.biCompression   = 0;
+	infoHead.biHeight        = height;
+	infoHead.biPlanes        = 1;
+	infoHead.biSize          = 40;
+	infoHead.biSizeImage     = lineByte * height;
+	infoHead.biWidth         = width;
 	infoHead.biXPelsPerMeter = 100;
 	infoHead.biYPelsPerMeter = 100;
 
 	fwrite(&infoHead, sizeof(BmpInfoHeader), 1, fp);
 
-	for(int i=0;i<height/2;i++)
+	for(int i=0; i<height/2; i++)
 	{
-		for(int j=0;j<width;j++)
+		for(int j=0; j<width; j++)
 		{
-			for(int k=0;k<channels;k++)
+			for(int k=0; k<channels; k++)
 			{
-				int tempbuf = imgBuf[i*width*channels+j*channels+k];
-				imgBuf[i*width*channels+j*channels+k] = imgBuf[(height-i-1)*width*channels+j*channels+2-k];
-				imgBuf[(height-i-1)*width*channels+j*channels+2-k] = tempbuf;
+				int tempbuf = imgBuf[i*width*channels + j*channels + k];
+				imgBuf[i*width*channels + j*channels + k] = imgBuf[(height-i-1)*width*channels + j*channels + 2-k];
+				imgBuf[(height-i-1)*width*channels + j*channels + 2-k] = tempbuf;
 			}
 
 		}
 	}
 
-	if(lineByte>width*biBitCount/8)
+	if(lineByte > width*biBitCount/8)
 	{
 		unsigned char* tmp = (unsigned char*)malloc(height*lineByte);
 		unsigned char* data = tmp ;
-		for(int i=0;i<height;i++)
+		for(int i=0; i<height; i++)
 		{
-			memcpy(data,imgBuf,width*3);
-			imgBuf+=width*3;
-			data+=lineByte;
+			memcpy(data, imgBuf, width*3);
+			imgBuf += width*3;
+			data += lineByte;
 		}
-		fwrite(tmp,height*lineByte,1,fp);
+		fwrite(tmp, height*lineByte, 1, fp);
 		free(tmp);
 	}
 	else 
-		fwrite(imgBuf,height*lineByte, 1, fp);
+		fwrite(imgBuf, height*lineByte, 1, fp);
 
 	fclose(fp);
-
 }
 
 /**
@@ -275,42 +275,42 @@ void smwrite_bmp(const char *bmpName, simple_mat src_mat)
  **/
 float simple_mat_mean(simple_mat mat)
 {
-	hypercv_assert(mat!=NULL,"input_mat cannot be NULL");
-	hypercv_assert(mat->channels == 1,"only use in gray image");
+	hypercv_assert(mat!=NULL, "input_mat cannot be NULL");
+	hypercv_assert(mat->channels == 1, "only use in gray image");
 	int rows = mat -> rows;
 	int cols = mat -> cols;
 
 	float res = 0.0;
 
-	switch (mat->data_type)
+	switch (mat -> data_type)
 	{
 		case 1:
 			{
-				unsigned char* data = (unsigned char*) mat->data;
-				for(int i=0;i<rows*cols;i++)
-					res+=data[i];
+				unsigned char* data = (unsigned char*)mat->data;
+				for(int i=0; i<rows*cols; i++)
+					res += data[i];
 				break;
 			}
 		case 2:
 		case 12:
 			{
 				unsigned short* data = (unsigned short*) mat->data;
-				for(int i=0;i<rows*cols;i++)
-					res+=data[i];
+				for(int i=0; i<rows*cols; i++)
+					res += data[i];
 				break;
 			}
 		case 3:
 			{
 				unsigned int* data = (unsigned int*) mat->data;
-				for(int i=0;i<rows*cols;i++)
-					res+=data[i];
+				for(int i=0; i<rows*cols; i++)
+					res += data[i];
 				break;
 			}
 		case 4:
 			{
 				float* data = (float*) mat->data;
-				for(int i=0;i<rows*cols;i++)
-					res+=data[i];
+				for(int i=0; i<rows*cols; i++)
+					res += data[i];
 				break;
 			}
 	}
@@ -324,41 +324,43 @@ float simple_mat_mean(simple_mat mat)
  **/
 float simple_mat_variance(simple_mat mat)
 {
-	hypercv_assert(mat != NULL,"input mat cannot be NULL");
-	hypercv_assert(mat->channels == 1,"only use in gray image");
-	int rows = mat->rows;
-	int cols = mat->cols;
-	float res =0.0;
+	hypercv_assert(mat != NULL, "input mat cannot be NULL");
+	hypercv_assert(mat->channels == 1, "only use in gray image");
+
+	int rows   = mat->rows;
+	int cols   = mat->cols;
+	float res  = 0.0;
 	float mean = simple_mat_mean(mat);
-	switch (mat->data_type)
+	
+	switch (mat -> data_type)
 	{
 		case 1:
 			{
-				unsigned char* data = (unsigned char*) mat->data;
-				for(int i=0;i<rows*cols;i++)
-					res += pow(mean-data[i],2);
+				unsigned char* data = (unsigned char*)mat->data;
+				for(int i=0; i<rows*cols; i++)
+					res += pow(mean-data[i], 2);
 				break;
 			}
 		case 2:
 		case 12:
 			{
-				unsigned short* data = (unsigned short*) mat->data;
+				unsigned short* data = (unsigned short*)mat->data;
 				for(int i=0;i<rows*cols;i++)
 					res += pow(mean-data[i],2);
 				break;
 			}
 		case 3:
 			{
-				unsigned int* data = (unsigned int*) mat->data;
-				for(int i=0;i<rows*cols;i++)
-					res += pow(mean-data[i],2);
+				unsigned int* data = (unsigned int*)mat->data;
+				for(int i=0; i<rows*cols; i++)
+					res += pow(mean-data[i], 2);
 				break;
 			}
 		case 4:
 			{
-				float* data = (float*) mat->data;
-				for(int i=0;i<rows*cols;i++)
-					res += pow(mean-data[i],2);
+				float* data = (float*)mat->data;
+				for(int i=0; i<rows*cols; i++)
+					res += pow(mean-data[i], 2);
 				break;
 			}
 	}
@@ -370,26 +372,26 @@ float simple_mat_variance(simple_mat mat)
  * @param[in]  mat              simple mat.
  * @param[in]  gray_statist     grayscale.
  **/
-void simple_mat_grayscale_statistics(simple_mat mat , int* gray_statist)
+void simple_mat_grayscale_statistics(simple_mat mat, int* gray_statist)
 {
-	hypercv_assert(mat != NULL,"input mat cannot be NULL");
-	hypercv_assert(mat-> data_type == 1,"only use in unsigned char image");
-	hypercv_assert(sizeof(gray_statist)==256,"gray array error");
+	hypercv_assert(mat                  != NULL, "input mat cannot be NULL");
+	hypercv_assert(mat-> data_type      == 1,    "only use in unsigned char image");
+	hypercv_assert(sizeof(gray_statist) == 256,  "gray array error");
 
-	int rows = mat->rows;
-	int cols = mat->cols;
+	int rows     = mat->rows;
+	int cols     = mat->cols;
 	int channels = mat->channels;
 
-	simple_mat tmp ;
+	simple_mat tmp;
 
 	if(channels != 1)
-		tmp = sm_rgb2gray(mat,0);
+		tmp = sm_rgb2gray(mat, 0);
 	else 
 		tmp = mat;
 
 	unsigned char* data = (unsigned char*)tmp->data;
 
-	for(int i=0;i<256;i++)
+	for(int i=0; i<256; i++)
 		gray_statist[i] = 0;
 
 	for(int i=0; i<rows*cols; i++)
@@ -404,14 +406,14 @@ void simple_mat_grayscale_statistics(simple_mat mat , int* gray_statist)
  **/
 float simple_mat_contrast_ratio(simple_mat mat)
 {
-	hypercv_assert(mat != NULL,"input mat cannot be NULL");
-	hypercv_assert(mat-> data_type == 1,"only use in unsigned char image");
+	hypercv_assert(mat             != NULL, "input mat cannot be NULL");
+	hypercv_assert(mat-> data_type == 1,    "only use in unsigned char image");
 
-	int rows = mat->rows;
-	int cols = mat->cols;
+	int rows     = mat->rows;
+	int cols     = mat->cols;
 	int channels = mat->channels;
 
-	simple_mat tmp ;
+	simple_mat tmp;
 
 	if(channels != 1)
 		tmp = sm_rgb2gray(mat,0);
@@ -421,19 +423,18 @@ float simple_mat_contrast_ratio(simple_mat mat)
 	unsigned char* data = (unsigned char*)tmp->data;
 
 	float res =0.0;
-	for(int i=0;i<rows;i++)
+	for(int i=0; i<rows; i++)
 	{
-		for(int j=0;j<cols;j++)
+		for(int j=0; j<cols; j++)
 		{
 			if(j!=0)
-				res+=pow(data[i*cols+j]-data[i*cols+j-1],2);
+				res += pow(data[i*cols+j]-data[i*cols+j-1],2);
 			if(j!=cols-1)
-				res+=pow(data[i*cols+j]-data[i*cols+j+1],2);
+				res += pow(data[i*cols+j]-data[i*cols+j+1],2);
 			if(i!=0)
-				res+=pow(data[i*cols+j]-data[(i-1)*cols+j],2);
+				res += pow(data[i*cols+j]-data[(i-1)*cols+j],2);
 			if(i!=rows-1)
-				res+=pow(data[i*cols+j]-data[(i+1)*cols+j],2);
-
+				res += pow(data[i*cols+j]-data[(i+1)*cols+j],2);
 		}
 	}
 
