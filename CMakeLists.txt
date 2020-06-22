@@ -16,6 +16,7 @@ set(INSTALL_PATH        "${CMAKE_CURRENT_SOURCE_DIR}/install")
 set(CMAKE_INSTALL_PREFIX ${INSTALL_PATH})
 
 OPTION(BUILD_SHARED_LIBS            "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)"  ON)
+OPTION(BUILD_WITH_OPENCV            "Build opencv lib in hypercv"  ON)
 
 # ----------------------------------------------------------------------------
 # config the output path of the library and the installation:
