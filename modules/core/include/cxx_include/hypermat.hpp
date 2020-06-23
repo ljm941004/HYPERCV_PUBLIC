@@ -21,6 +21,9 @@ namespace hypercv
 			void*        data;
 			float*       wavelength;
 
+			int          elemsize;
+			long int     data_size;
+
 			HyMat();
 
 			HyMat(int _samples, int _lines, int _bands, int _data_type, const char* _interleave);
@@ -32,10 +35,7 @@ namespace hypercv
 			void create(int _samples, int _lines, int _bands, int _data_type, const char* _interleave, void* _data, float* wavelength= NULL);
 
 			void release();
-
-
 	};
-
 
 	inline HyMat::HyMat(){}
 
@@ -57,15 +57,23 @@ namespace hypercv
 		if(data)
 			release();
 
-		int elemsize  = get_elemsize(data_type);
-		long int data_size = samples*lines*bands*elemsize;
+		elemsize  = get_elemsize(data_type);
+	    data_size = samples*lines*bands*elemsize;
+	
 		data = (void*)malloc(data_size);
 		wavelength = (float*)(bands*sizeof(float));
+
 	}
 
-	inline void HyMat::create(int _samples, int _lines, int _bands, int _data_type, const char* _interleave, void* data, float* wavelength)
+	inline void HyMat::create(int _samples, int _lines, int _bands, int _data_type, const char* _interleave, void* _data, float* _wavelength)
 	{
-		//todo
+		create(_samples, _lines, _bands, _data_type, _interleave);
+
+		if(_data) 
+			memcpy(data, _data, data_size);
+		if(_wavelength)
+			memcpy(wavelength, _wavelength, bands*sizeof(float));
+	
 	}
 
 	inline void HyMat::release()
