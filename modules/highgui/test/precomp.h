@@ -17,7 +17,7 @@
 
 extern"C"
 {
-#include "core/core.h"
+#include "c_include/core.h"
 #include "process/hypercv_process.h"
 #include "algorithm/Algorithm.h"
 #include "highgui/hypercv_gui.h"
