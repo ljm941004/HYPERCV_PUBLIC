@@ -19,7 +19,7 @@ INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/core/include/" "${CMAKE_CURRENT
 if(BUILD_SHARED_LIBS)
 	ADD_LIBRARY(hypercv SHARED ${HYPERCV_src})
 else()
-	ADD_LIBRARY(hypercv_static STATIC ${HYPERCV_src})
+	ADD_LIBRARY(hypercv STATIC ${HYPERCV_src})
 endif()
 
 
