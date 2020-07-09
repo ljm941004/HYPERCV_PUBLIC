@@ -24,6 +24,18 @@
 	(address) = (((address) + ((alignment) - 1)) & (-alignment)); \
 }
 
+enum HYPERCV_DATATYPE 
+{
+	HYPERCV_UCHAR = 1,
+				  HYPERCV_SHORT = 2,
+				  HYPERCV_INT = 3,
+				  HYPERCV_FLOAT = 4,
+				  HYPERCV_DOUBLE =5,
+				  HYPERCV_USHORT = 12,
+				  HYPERCV_UINT = 13,
+				  HYPERCV_LINT = 14,
+				  HYPERCV_ULINT = 15,
+};
 
 //* @param[in]  data_type   data_type of hyper spectral image, data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer.
 static inline int get_elemsize(const int data_type)
@@ -79,9 +91,9 @@ static inline int HYPERCV_ROUND( double value )
 #if defined _MSC_VER && defined _M_IX86
 	int t;
 
-/////////////////////////////////////////////////////////
-//               colortransform  type                  //
-/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
+	//               colortransform  type                  //
+	/////////////////////////////////////////////////////////
 	__asm
 	{
 		fld value;
@@ -140,7 +152,7 @@ static inline int hypercv_border_Interpolate(int p, int len, unsigned int border
 		case BORDER_REFLECT_101:
 			{	
 				if( len == 1 )
-				return 0;
+					return 0;
 				int delta = border_type == BORDER_REFLECT_101;
 				do
 				{
@@ -155,7 +167,7 @@ static inline int hypercv_border_Interpolate(int p, int len, unsigned int border
 		case BORDER_WRAP:
 			{
 				if( index < 0 )
-				index -= ((index-len+1)/len)*len;
+					index -= ((index-len+1)/len)*len;
 				if( index >= len )
 					index %= len;
 				break;
@@ -213,14 +225,14 @@ static unsigned char saturate_cast_float2uchar(float value)
 ///////////////////////////////////////////////////
 
 enum{
-    THRESH_BINARY     = 0,
-    THRESH_BINARY_INV = 1,
-    THRESH_TRUNC      = 2,
-    THRESH_TOZERO     = 3,
-    THRESH_TOZERO_INV = 4,
-    THRESH_MASK       = 7,
-    THRESH_OTSU       = 8,
-    THRESH_TRIANGLE   = 16
+	THRESH_BINARY     = 0,
+	THRESH_BINARY_INV = 1,
+	THRESH_TRUNC      = 2,
+	THRESH_TOZERO     = 3,
+	THRESH_TOZERO_INV = 4,
+	THRESH_MASK       = 7,
+	THRESH_OTSU       = 8,
+	THRESH_TRIANGLE   = 16
 };
 
 
@@ -231,11 +243,11 @@ enum{
 
 enum{   
 	COLOR_BGR2RGB =4,
-    COLOR_RGB2BGR =COLOR_BGR2RGB,
+	COLOR_RGB2BGR =COLOR_BGR2RGB,
 	COLOR_BGR2GRAY =6,
-    COLOR_RGB2GRAY =7,
-    COLOR_GRAY2BGR =8,
-    COLOR_GRAY2RGB =COLOR_GRAY2BGR
+	COLOR_RGB2GRAY =7,
+	COLOR_GRAY2BGR =8,
+	COLOR_GRAY2RGB =COLOR_GRAY2BGR
 };
 
 

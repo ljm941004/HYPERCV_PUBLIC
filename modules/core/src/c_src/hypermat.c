@@ -65,7 +65,7 @@ static void read_wavelength(char* w, float* wavelength, int bands)
 //data_type   data_type of hyper spectral image, data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer.
 
 #if gdal_switch
-static int date_type_2_gdal_data_type(const int data_type)
+int date_type_2_gdal_data_type(const int data_type)
 {
 	switch (data_type)
 	{
@@ -110,7 +110,7 @@ static int date_type_2_gdal_data_type(const int data_type)
  * @param[in]  data_type   data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer
  * @param[in]  interleave  bil bsq bip.
  **/
-void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char* interleave, float** wavelength)
+static void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char* interleave, float** wavelength)
 {
 	hypercv_assert(hdr_fp != NULL, "can not open hdr file");
 

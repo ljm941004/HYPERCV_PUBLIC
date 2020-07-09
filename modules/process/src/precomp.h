@@ -4,7 +4,7 @@
 #include <math.h>
 #include <string.h>
 #include <stdint.h>
-#include "c_include/core.h"
+#include "c_include/hypercv_core.h"
 #include "process/hypercv_process.h"
 #include "highgui/hypercv_gui.h"
-#include "algorithm/Algorithm.h"
+#include "algorithm/hypercv_algorithm.h"

@@ -22,8 +22,8 @@
 #include "gdal/gdal.h"
 #endif
 
-#include "c_include/core.h"
+#include "c_include/hypercv_core.h"
 #include "process/hypercv_process.h"
-#include "algorithm/Algorithm.h"
+#include "algorithm/hypercv_algorithm.h"
 #include "highgui/hypercv_gui.h"
-#include "satellite/satellite.h"
+#include "satellite/hypercv_satellite.h"
