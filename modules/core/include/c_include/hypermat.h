@@ -87,7 +87,7 @@ void hmsave(const char* image_path, hyper_mat mat);
  * @param[in]  interleave  bil bsq bip.
  * @param[in]  wavelength  wavelength pointer.
  **/
-static void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char* interleave, float** wavelength);
+//static void readhdr(FILE* hdr_fp, int* samples, int* lines, int* bands, int* data_type, char* interleave, float** wavelength);
 
 /**
  * @brief      write the HDR file.

@@ -8,9 +8,14 @@
 
 #include "precomp.hpp"
 
-static void readhdr()
+static void readHdr(const char* hdrPath, int samples, int lines, int bands, int dataType, char* interleave, float* wavelength)
 {
+	if(hdrPath == NULL)
+		return;
 
+
+
+	
 }
 
 
