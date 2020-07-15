@@ -1,7 +1,14 @@
 OPTION(BUILD_SHARED_LIBS            "Build shared libraries (.dll/.so) instead of static ones (.lib/.a)"  ON)
-OPTION(BUILD_WITH_OPENCV            "Build opencv lib in hypercv"  ON)
+OPTION(BUILD_WITH_OPENCV            "Build opencv lib in hypercv"  OFF)
 
 OPTION(BUILD_SATELLITE_MODEL "BUILD SATELLITE SIMULATION MODEL" OFF)
+
+OPTION(BUILD_CXX  "C++ fuse c" ON)
+
+if(BUILD_CXX)
+	add_definitions(-D_cplusplus)
+endif()
+
 
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/core/src/c_src" HYPERCV_src)
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}/core/src/cxx_src" HYPERCV_src)

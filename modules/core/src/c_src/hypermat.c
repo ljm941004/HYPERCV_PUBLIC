@@ -64,37 +64,6 @@ static void read_wavelength(char* w, float* wavelength, int bands)
 
 //data_type   data_type of hyper spectral image, data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer.
 
-#if gdal_switch
-int date_type_2_gdal_data_type(const int data_type)
-{
-	switch (data_type)
-	{
-		case 1:
-			return GDT_Byte;
-			break;
-		case 2:
-			return GDT_Int16;
-			break;
-		case 3:
-			return GDT_Int32;
-			break;
-		case 4:
-			return GDT_Float32;
-			break;
-		case 5:
-			return GDT_Float64;
-			break;
-		case 12:
-			return GDT_UInt16;
-			break;
-		case 13:
-			return GDT_UInt32;
-			break;
-	}
-	return GDT_Unknown;
-
-}
-#endif
 
 
 //************************************************************* 
@@ -340,31 +309,11 @@ hyper_mat hmread_with_size(const char* image_path, int samples, int lines, int b
 void hmsave(const char* image_path, hyper_mat mat)
 {
 	hypercv_assert(image_path != NULL && mat != NULL, "image_path & mat could not be NULL");
+
 	int elemsize = get_elemsize(mat->data_type);
 	int samples = mat->samples;
 	int lines = mat->lines;
 	int bands = mat->bands;
-
-#if gdal_switch
-
-	GDALAllRegister();
-	GDALDatasetH  dst;
-	GDALDriverH hDriver = GDALGetDriverByName("ENVI");	
-	int DT = date_type_2_gdal_data_type(mat->data_type);
-	
-	char** papszOptions = NULL;
-	dst = GDALCreate(hDriver,image_path, samples, lines, bands, DT, papszOptions);
-	
-	GDALRasterBandH hBand;
-	for(int i=1;i<=bands;i++)
-	{
-		hBand = GDALGetRasterBand(dst,i);	
-		int tmp = GDALRasterIO(hBand, GF_Write, 0, 0, samples, lines, (char*)mat->data+(i-1)*samples*lines*elemsize, samples, lines, DT, 0, 0);	
-	}
-	GDALClose(dst);
-
-	writehdr(image_path, samples, lines, bands, mat->data_type, mat->interleave,mat->wavelength);
-#else
 
 	FILE* image_fp;
 	image_fp = fopen(image_path, "wb");
@@ -373,7 +322,6 @@ void hmsave(const char* image_path, hyper_mat mat)
 	writehdr(image_path, samples, lines, bands, mat->data_type, mat->interleave,mat->wavelength);
 	fclose(image_fp);
 
-#endif
 }
 
 

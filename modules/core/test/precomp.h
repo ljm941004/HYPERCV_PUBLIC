@@ -11,3 +11,12 @@ extern"C"
 #include "algorithm/hypercv_algorithm.h"
 }
 
+#ifndef _cplusplus 
+
+#define _cplusplus 
+#endif
+
+#include "cxx_include/hypercv_core.hpp"
+using namespace std;
+using namespace hypercv;
+

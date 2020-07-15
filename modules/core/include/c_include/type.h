@@ -1,7 +1,4 @@
-#if gdal_switch
-#pragma once
-#include "gdal/gdal.h"
-#endif
+
 
 #if (defined _M_X64 && defined _MSC_VER && _MSC_VER >= 1400) || (__GNUC__ >= 4 && defined __x86_64__)
 #  if defined WIN32
@@ -260,3 +257,5 @@ enum{
 	FLIP_HORIZONTAL = 1,
 	FLIP_ALL = -1
 };
+
+

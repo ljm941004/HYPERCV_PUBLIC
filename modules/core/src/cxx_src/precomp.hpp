@@ -3,21 +3,15 @@
 
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
-#include <stdint.h>
-#include <stddef.h> /* for size_t */
-#include <errno.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 
 #ifndef gdal_switch 
 #define gdal_switch 0
 #endif
 
-#if gdal_switch
-#include "gdal/gdal.h"
-#endif
 
 extern "C"
 {
@@ -28,5 +22,7 @@ extern "C"
 }
 
 #include "cxx_include/hypercv_core.hpp"
+
+using namespace std;
 
 #endif

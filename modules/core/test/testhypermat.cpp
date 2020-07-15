@@ -1,6 +1,5 @@
 #include "precomp.h"
 
-using namespace std;
 #ifndef TEST_HYPERCV_PERFORMANCE
 #define ITERS 1
 #else
@@ -130,7 +129,32 @@ static void test_read_wavelength()
 
 }
 
+static void test_readHdr()
+{
 
+	hyper_mat t = create_hyper_mat(3,3,3,1,"bsq");
+
+	hmsave("test",t);
+
+	int samples,lines,bands,dataType;
+	char* interleave = (char*)malloc(3);
+	float* wavelength = (float*)malloc(bands*sizeof(float));
+
+    readHdr("test.hdr", samples, lines, bands, dataType,interleave, wavelength);
+
+	cout<<samples<<lines<<bands;
+	cout<<string(interleave);
+	for(int i =0 ;i<bands;i++)
+		cout<<wavelength[i];
+
+
+}
+
+
+TEST(CORE,READHDR)
+{
+	test_readHdr();
+}
 
 TEST(CORE,HMCOPY)
 {

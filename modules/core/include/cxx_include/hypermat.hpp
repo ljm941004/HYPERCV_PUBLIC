@@ -1,11 +1,26 @@
 #ifndef HYPERCV_CORE_HYPERMAT_HPP
 #define HYPERCV_CORE_HYPERMAT_HPP
 
-#ifndef _cplusplus
+#ifdef _cplusplus
 
+#include "type.hpp"
+
+#if gdal_switch 
+#include "gdal_priv.h"
+#include "cpl_conv.h"
+#endif 
 
 namespace hypercv
 {
+
+	extern void readHdr(const char* hdrPath, int& samples, int& lines, int& bands, int& dataType, char* interleave, float* wavelength);
+
+#if gdal_switch
+#ifndef DATA_TYPE_2_GDAL_DATA_TYPE
+#define DATA_TYPE_2_GDAL_DATA_TYPE
+	extern GDALDataType dataType2GDALDataType(const int data_type);
+#endif
+#endif
 
 	class HyMat
 	{
@@ -36,19 +51,27 @@ namespace hypercv
 			void create(int _samples, int _lines, int _bands, int _dataType, const char* _interleave = "bsq");
 			void create(int _samples, int _lines, int _bands, int _dataType, const char* _interleave, void* _data, float* wavelength= NULL);
 
-            void CopyData(void* _data, long int _dataSize = 0);
-	        void CopyWaveLength(float* _data, long int _bands = 0);
-			
+			void CopyData(void* _data, long int _dataSize = 0);
+			void CopyWaveLength(float* _data, long int _bands = 0);
+
+			void save(const char* filePath);
+
 			void release();
 
 			~HyMat()
 			{
 
 			}
+		private:
+
+			void writeHdr(const char* filePath);
 
 	};
 
-	inline HyMat::HyMat(){}
+	inline HyMat::HyMat()
+	{
+		create(0, 0, 0, HYPERCV_UCHAR, NULL);
+	}
 
 	inline HyMat::HyMat(int _samples, int _lines, int _bands, int _dataType, const char* _interleave)
 	{
@@ -109,7 +132,7 @@ namespace hypercv
 		else 
 		{
 			data = (void*)malloc(dataSize);
-		    memset(data, 0, dataSize);
+			memset(data, 0, dataSize);
 		}
 
 		if(_wavelength)
@@ -119,8 +142,87 @@ namespace hypercv
 			wavelength = (float*)malloc(bands*sizeof(float));
 			memset(wavelength, 0, bands*sizeof(float));
 		}	
+	}
+
+	inline void HyMat::CopyData(void* _data, long int _dataSize)
+	{
+		if(_dataSize == 0)
+			_dataSize = dataSize;
+
+		memcpy(data, _data, _dataSize);
+	}
+
+	inline void HyMat::CopyWaveLength(float* _data, long int _bands)
+	{
+		if(_bands == 0)
+			_bands = bands;
+
+		memcpy(wavelength, _data, _bands * sizeof(float));
+	}
+
+	inline void HyMat::save(const char* filePath)
+	{
+		if(filePath == NULL)
+			return;
+
+		if(samples == 0||lines == 0||bands == 0||interleave == NULL)
+		{
+			std::cout<<"mat size error";
+			return;
+		}
+
+		//#if gdal_switch 
+		GDALAllRegister();
+		GDALDataset *dataSet;
+		GDALDriver *hDriver = GetGDALDriverManager()->GetDriverByName("ENVI");	
+		GDALDataType DT = dataType2GDALDataType(dataType);
+
+		char** papszOptions = NULL;
+		dataSet = hDriver->Create(filePath, samples, lines, bands, DT, papszOptions);
+
+		//	dataSet->RasterIO(GF_Write, 0, 0, samples, lines, data, DT, )
+		//todo	
+		//#endif 
+
+		FILE* _fp;
+		_fp = fopen(filePath, "wb");
+		hypercv_assert(_fp != NULL, "can not open files");
+		fwrite(data, elemSize, samples * lines * bands, _fp);
+		this->writeHdr(filePath);
+		fclose(_fp);
 
 	}
+
+	inline void HyMat::writeHdr(const char* filePath)
+	{
+		std::string path(filePath);
+		path = path.substr(0, path.find('.')) + "hdr";
+
+		FILE *fp;
+		fp = fopen(path.c_str(), "w");
+
+		fputs("ENVI\n", fp);
+		fputs("samples = ", fp); fprintf(fp, "%d\n", samples);
+		fputs("lines = ", fp); fprintf(fp, "%d\n", lines);
+		fputs("bands = ", fp); fprintf(fp, "%d\n", bands);
+		fputs("data type = ", fp); fprintf(fp, "%d\n", dataType);
+
+		fputs("interleave = ", fp); fprintf(fp, "%c%c%c\n", interleave[0], interleave[1], interleave[2]);
+
+		if(wavelength != NULL)
+		{
+			fputs("wavelength = { \n", fp); 
+			for(int i=0; i<bands-1; i++)
+				fprintf(fp,"%f,",wavelength[i]);
+			fprintf(fp,"%f}",wavelength[bands-1]);
+		}
+		else 
+		{
+			fputs("wavelength = unknown \n",fp);
+		}
+		fclose(fp);
+	}
+
 
 	inline void HyMat::release()
 	{
@@ -134,24 +236,9 @@ namespace hypercv
 
 	}
 
-	inline void HyMat::CopyData(void* _data, long int _dataSize)
-	{
-	    
-		if(_dataSize == 0)
-			_dataSize = dataSize;
 
-		memcpy(data, _data, _dataSize);
-
-	}
-
-	inline void HyMat::CopyWaveLength(float* _data, long int _bands)
-	{
-		if(_bands == 0)
-			_bands = bands;
-
-		memcpy(wavelength, _data, _bands * sizeof(float));
-	}
 }
+
 
 
 #endif 

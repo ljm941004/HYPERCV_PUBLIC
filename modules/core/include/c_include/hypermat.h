@@ -25,11 +25,6 @@ typedef HyperMat* hyper_mat;
 int cmpstr(char temp1[],char temp2[]);
 
 
-#ifdef gdal_switch
-int date_type_2_gdal_data_type(const int data_type);
-#endif
-
-
 /**
  * @brief      create a hyper mat.
  * @param[in]  samples     image samples.
