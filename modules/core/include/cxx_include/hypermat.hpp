@@ -48,6 +48,7 @@ namespace hypercv
 
 			HyMat(int _samples, int _lines, int _bands, int _dataType, const char* _interleave, void* _data, float* wavelength);
 
+			void create();
 			void create(int _samples, int _lines, int _bands, int _dataType, const char* _interleave = "bsq");
 			void create(int _samples, int _lines, int _bands, int _dataType, const char* _interleave, void* _data, float* wavelength= NULL);
 
@@ -55,6 +56,7 @@ namespace hypercv
 			void CopyWaveLength(float* _data, long int _bands = 0);
 
 			void save(const char* filePath);
+	        void hmread(const char* imagePath, const char* hdrPath);
 
 			void release();
 
@@ -98,6 +100,11 @@ namespace hypercv
 	{
 
 		create(_samples, _lines, _bands, _dataType, _interleave, NULL, NULL);
+	}
+
+	inline void HyMat::create()
+	{
+		create(samples, lines, bands, dataType, interleave);
 	}
 
 	inline void HyMat::create(int _samples, int _lines, int _bands, int _dataType, const char* _interleave, void* _data, float* _wavelength)
@@ -186,7 +193,11 @@ namespace hypercv
 
 		FILE* _fp;
 		_fp = fopen(filePath, "wb");
-		hypercv_assert(_fp != NULL, "can not open files");
+	    if(_fp == NULL)
+		{
+			return;
+			printf("can not open files\n");
+		}
 		fwrite(data, elemSize, samples * lines * bands, _fp);
 		this->writeHdr(filePath);
 		fclose(_fp);
@@ -223,6 +234,35 @@ namespace hypercv
 		fclose(fp);
 	}
 
+	inline void HyMat::hmread(const char* imagePath, const char* hdrPath)
+	{
+		if(imagePath == NULL || hdrPath == NULL)
+		{
+			printf("image path or hdr path can not be NULL\n");
+			return;
+		}
+
+		int _samples, _lines, _bands, _dataType;
+		readHdr(hdrPath, _samples, _lines, _bands, _dataType, interleave, wavelength);
+
+		samples = _samples;
+		lines = _lines;
+		bands = _bands;
+		dataType = _dataType;
+
+		FILE* _fp = NULL;
+		_fp = fopen(imagePath, "r");
+
+		if (_fp == NULL )
+		{
+			printf("can not open file\n");
+			return ;
+		}
+
+		create();
+		fread(data, elemSize, dataSize, _fp);
+		fclose(_fp);
+	}
 
 	inline void HyMat::release()
 	{
@@ -236,6 +276,17 @@ namespace hypercv
 
 	}
 
+	inline HyMat hmread(const char* imagePath, const char* hdrPath)
+	{
+		HyMat mat;
+		
+		if(imagePath == NULL || hdrPath == NULL)
+			printf("image path or hdr path can not be NULL\n");
+		else
+			mat.hmread(imagePath, hdrPath);
+		
+		return mat;
+	}
 
 }
 

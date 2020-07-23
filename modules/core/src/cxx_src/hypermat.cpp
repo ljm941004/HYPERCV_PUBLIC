@@ -47,7 +47,7 @@ GDALDataType dataType2GDALDataType(const int data_type)
 #endif
 
 
-    void readHdr(const char* hdrPath, int& samples, int& lines, int& bands, int& dataType, char* interleave, float* wavelength)
+    void readHdr(const char* hdrPath, int& samples, int& lines, int& bands,  int& dataType, char* interleave, float* wavelength)
 	{
 		if(hdrPath == NULL)
 			return;
@@ -102,8 +102,8 @@ GDALDataType dataType2GDALDataType(const int data_type)
 				
 			}
 		}
+		file.close();
 	}
-
 
 }
 
