@@ -24,15 +24,25 @@
 enum HYPERCV_DATATYPE 
 {
 	HYPERCV_UCHAR = 1,
-				  HYPERCV_SHORT = 2,
-				  HYPERCV_INT = 3,
-				  HYPERCV_FLOAT = 4,
-				  HYPERCV_DOUBLE =5,
-				  HYPERCV_USHORT = 12,
-				  HYPERCV_UINT = 13,
-				  HYPERCV_LINT = 14,
-				  HYPERCV_ULINT = 15,
+	HYPERCV_SHORT = 2,
+	HYPERCV_INT = 3,
+	HYPERCV_FLOAT = 4,
+	HYPERCV_DOUBLE =5,
+	HYPERCV_USHORT = 12,
+	HYPERCV_UINT = 13,
+	HYPERCV_LINT = 14,
+	HYPERCV_ULINT = 15,
 };
+
+
+enum HYPERMAT_INTERLEAVE
+{
+    HYPERCV_BSQ = 0,
+	HYPERCV_BIL = 1,
+	HYPERCV_BIP = 2,
+};
+
+
 
 //* @param[in]  data_type   data_type of hyper spectral image, data type 1: Byte (8 bits) 2: Integer (16 bits) 3: Long integer (32 bits) 4: Floating-point (32 bits) 5: Double-precision floating-point (64 bits) 6: Complex (2x32 bits) 9: Double-precision complex (2x64 bits) 12: Unsigned integer (16 bits) 13: Unsigned long integer (32 bits) 14: Long 64-bit integer 15: Unsigned long 64-bit integer.
 static inline int get_elemsize(const int data_type)

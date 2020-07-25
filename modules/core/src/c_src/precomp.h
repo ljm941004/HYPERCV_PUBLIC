@@ -17,6 +17,6 @@
 #endif
 
 #include "c_include/hypercv_core.h"
-#include "process/hypercv_process.h"
+#include "c_include/hypercv_process.h"
 #include "algorithm/hypercv_algorithm.h"
 #include "highgui/hypercv_gui.h"

@@ -32,7 +32,9 @@ namespace hypercv
 			unsigned int samples;
 			unsigned int bands;
 			unsigned int dataType;
-			char         interleave[3];      
+			char         interleave[3]; 
+//			int          format;
+//todo 修改所有interleave 改成 int formt， HYPERCV_BIL HYPERCV_BIP HYPERCV_BSQ 
 			void*        data;
 			float*       wavelength;
 
@@ -52,11 +54,16 @@ namespace hypercv
 			void create(int _samples, int _lines, int _bands, int _dataType, const char* _interleave = "bsq");
 			void create(int _samples, int _lines, int _bands, int _dataType, const char* _interleave, void* _data, float* wavelength= NULL);
 
+	        HyMat copy();
 			void CopyData(void* _data, long int _dataSize = 0);
 			void CopyWaveLength(float* _data, long int _bands = 0);
 
+			int empty();
 			void save(const char* filePath);
-	        void hmread(const char* imagePath, const char* hdrPath);
+	        void open(const char* imagePath, const char* hdrPath);
+	        void open(const char* path, int _samples, int _lines, int _bands, int _dataType, const char* _interleave);
+
+			void convertTo(int _interleave);
 
 			void release();
 
@@ -120,6 +127,7 @@ namespace hypercv
 				dataType == 13 ||
 				dataType == 14 ||
 				dataType == 15 , " data type error");
+	
 		if(data)
 			release();
 
@@ -130,7 +138,14 @@ namespace hypercv
 
 		for(int i=0; i<3; i++)
 			interleave[i] = _interleave[i];
-
+/*
+		if(cmpstr((char*)_interleave,"bip"))
+			format = HYPERCV_BIP;
+		else if(cmpstr((char*)_interleave,"bsq"))
+			format = HYPERCV_BSQ;
+		else 
+			format = HYPERCV_BIP;
+*/
 		elemSize  = get_elemsize(dataType);
 		dataSize  = samples * lines * bands * elemSize;
 
@@ -151,8 +166,25 @@ namespace hypercv
 		}	
 	}
 
+	inline HyMat HyMat::copy()
+	{
+		HyMat dst;
+
+		if (empty() == 0)
+		{
+			dst.create(samples, lines, bands, dataType, interleave);
+			dst.CopyData(data, dataSize);
+			dst.CopyWaveLength(wavelength, bands);
+		}
+
+		return dst;
+	}
+
 	inline void HyMat::CopyData(void* _data, long int _dataSize)
 	{
+		if(_data == NULL)
+			return;
+
 		if(_dataSize == 0)
 			_dataSize = dataSize;
 
@@ -161,10 +193,21 @@ namespace hypercv
 
 	inline void HyMat::CopyWaveLength(float* _data, long int _bands)
 	{
+		if(_data == NULL)
+			return;
+
 		if(_bands == 0)
 			_bands = bands;
 
 		memcpy(wavelength, _data, _bands * sizeof(float));
+	}
+
+	inline int HyMat::empty()
+	{
+		if(data == NULL || dataSize == 0)
+			return 1;
+		else 
+			return 0;
 	}
 
 	inline void HyMat::save(const char* filePath)
@@ -234,13 +277,16 @@ namespace hypercv
 		fclose(fp);
 	}
 
-	inline void HyMat::hmread(const char* imagePath, const char* hdrPath)
+	inline void HyMat::open(const char* imagePath, const char* hdrPath)
 	{
 		if(imagePath == NULL || hdrPath == NULL)
 		{
 			printf("image path or hdr path can not be NULL\n");
 			return;
 		}
+
+		if (empty() == 0)
+			release();
 
 		int _samples, _lines, _bands, _dataType;
 		readHdr(hdrPath, _samples, _lines, _bands, _dataType, interleave, wavelength);
@@ -250,6 +296,8 @@ namespace hypercv
 		bands = _bands;
 		dataType = _dataType;
 
+		create();
+		
 		FILE* _fp = NULL;
 		_fp = fopen(imagePath, "r");
 
@@ -259,9 +307,40 @@ namespace hypercv
 			return ;
 		}
 
-		create();
 		fread(data, elemSize, dataSize, _fp);
 		fclose(_fp);
+	}
+
+	inline void HyMat::open(const char* path, int _samples, int _lines, int _bands, int _dataType, const char* _interleave)
+	{
+		hypercv_assert(_samples > 0 && _lines > 0 && bands > 0, "HyMat size > 0");
+	 	hypercv_assert(dataType == HYPERCV_UCHAR || 
+				dataType == 2 ||
+				dataType == 3 ||
+				dataType == 4 ||
+				dataType == 5 ||
+				dataType == 12 ||
+				dataType == 13 ||
+				dataType == 14 ||
+				dataType == 15 , " data type error");
+
+		if (empty() == 0)
+			release();
+
+		create(_samples, _lines, _bands, _dataType, _interleave);
+
+		FILE* _fp = NULL;
+		_fp = fopen(path ,"r");
+
+		if (_fp == NULL )
+		{
+			printf("can not open file\n");
+			return ;
+		}
+
+		fread(data, elemSize, dataSize, _fp);
+		fclose(_fp);
+
 	}
 
 	inline void HyMat::release()
@@ -272,7 +351,9 @@ namespace hypercv
 			free(wavelength);
 
 		data = NULL;
+		wavelength = NULL;
 		samples = lines = bands = dataType = 0;
+		
 
 	}
 
@@ -283,10 +364,18 @@ namespace hypercv
 		if(imagePath == NULL || hdrPath == NULL)
 			printf("image path or hdr path can not be NULL\n");
 		else
-			mat.hmread(imagePath, hdrPath);
+			mat.open(imagePath, hdrPath);
 		
 		return mat;
 	}
+
+	inline HyMat hmread(const char* path, int _samples, int _lines, int _bands, int _dataType, const char* _interleave)
+	{
+		HyMat mat;
+		mat.open(path, _samples, _lines, _bands, _dataType, _interleave);	
+		return mat;
+	}
+
 
 }
 
