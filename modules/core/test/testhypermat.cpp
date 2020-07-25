@@ -136,14 +136,12 @@ static void test_readHdr()
 
 	hmsave("test",t);
 
-	int samples,lines,bands,dataType;
-	char* interleave = (char*)malloc(3);
+	int samples,lines,bands,dataType,format;
 	float* wavelength = (float*)malloc(bands*sizeof(float));
 
-    readHdr("test.hdr", samples, lines, bands, dataType,interleave, wavelength);
+    readHdr("test.hdr", samples, lines, bands, dataType,format, wavelength);
 
 	cout<<samples<<lines<<bands;
-	cout<<string(interleave);
 	for(int i =0 ;i<bands;i++)
 		cout<<wavelength[i];
 

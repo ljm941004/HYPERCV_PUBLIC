@@ -12,7 +12,6 @@
 namespace hypercv
 {
 
-
 #if gdal_switch
 
 GDALDataType dataType2GDALDataType(const int data_type)
@@ -46,8 +45,7 @@ GDALDataType dataType2GDALDataType(const int data_type)
 }
 #endif
 
-
-    void readHdr(const char* hdrPath, int& samples, int& lines, int& bands,  int& dataType, char* interleave, float* wavelength)
+    void readHdr(const char* hdrPath, int& samples, int& lines, int& bands,  int& dataType, int& format, float* wavelength)
 	{
 		if(hdrPath == NULL)
 			return;
@@ -59,6 +57,8 @@ GDALDataType dataType2GDALDataType(const int data_type)
 			return;
 
 		string lineBuff;
+
+
 		while (getline(file,lineBuff))
 		{  
 			const char* line = lineBuff.c_str();
@@ -77,9 +77,15 @@ GDALDataType dataType2GDALDataType(const int data_type)
 			else if (cmpstr(item, (char*)"data") == 1)
 				sscanf(line, "%*[^=]=%d", &dataType);
 
-			else if (cmpstr(item, (char*)"interleave") == 1)
-				sscanf(line, "%*[^=]=%s",interleave);
-
+			else if (lineBuff.find("interleave")!=lineBuff.npos)
+			{
+				if(lineBuff.find("q")!=lineBuff.npos)
+					format = HYPERCV_BSQ;
+				else if(lineBuff.find("p")!=lineBuff.npos)
+					format = HYPERCV_BIP;
+				else 
+					format = HYPERCV_BIL;
+			}
 			else if (lineBuff.find("wavelength = {")!=lineBuff.npos)
 			{	
 				string waveBuff, s;
@@ -102,6 +108,7 @@ GDALDataType dataType2GDALDataType(const int data_type)
 				
 			}
 		}
+
 		file.close();
 	}
 
