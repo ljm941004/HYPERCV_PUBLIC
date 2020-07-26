@@ -14,38 +14,38 @@ namespace hypercv
 
 #if gdal_switch
 
-GDALDataType dataType2GDALDataType(const int data_type)
-{
-	switch (data_type)
+	GDALDataType dataType2GDALDataType(const int data_type)
 	{
-		case 1:
-			return GDT_Byte;
-			break;
-		case 2:
-			return GDT_Int16;
-			break;
-		case 3:
-			return GDT_Int32;
-			break;
-		case 4:
-			return GDT_Float32;
-			break;
-		case 5:
-			return GDT_Float64;
-			break;
-		case 12:
-			return GDT_UInt16;
-			break;
-		case 13:
-			return GDT_UInt32;
-			break;
-	}
-	return GDT_Unknown;
+		switch (data_type)
+		{
+			case 1:
+				return GDT_Byte;
+				break;
+			case 2:
+				return GDT_Int16;
+				break;
+			case 3:
+				return GDT_Int32;
+				break;
+			case 4:
+				return GDT_Float32;
+				break;
+			case 5:
+				return GDT_Float64;
+				break;
+			case 12:
+				return GDT_UInt16;
+				break;
+			case 13:
+				return GDT_UInt32;
+				break;
+		}
+		return GDT_Unknown;
 
-}
+	}
 #endif
 
-    void readHdr(const char* hdrPath, int& samples, int& lines, int& bands,  int& dataType, int& format, float* wavelength)
+	void readHdr(const char* hdrPath, int& samples, int& lines, int& bands,  int& dataType, int& format, float* wavelength)
 	{
 		if(hdrPath == NULL)
 			return;
@@ -105,12 +105,95 @@ GDALDataType dataType2GDALDataType(const int data_type)
 					ss>>s;
 					wavelength[i] = atof(s.c_str());
 				}
-				
+
 			}
 		}
 
 		file.close();
 	}
+
+	/**
+	 * @brief      transform bil to bsq.
+	 * @param[in]  bil_mat    bil image.
+	 * @retval     bsq_mat    bsq image.
+	 **/
+	HyMat bil2bsq(HyMat mat)
+	{
+		hypercv_assert(mat.empty() == 0,"mat can not be empty");
+		hypercv_assert(mat.format == HYPERCV_BIL, "format must be bil");
+		
+		HyMat dst{mat.samples, mat.lines, mat.bands, mat.dataType, HYPERCV_BSQ};
+
+		int samples = mat.samples;
+		int lines = mat.lines;
+		int bands = mat.bands;
+		int elemSize = mat.elemSize;
+
+		char* matData = (char*)mat.data;
+		char* dstData = (char*)dst.data;
+
+		long int bilIndex = 0, bsqIndex = 0;
+
+		for (int k=0; k<bands; k++)
+		{
+			for (int i=0; i<lines; i++)
+			{
+				for (int j=0; j<samples; j++)
+				{
+					bilIndex = (i*samples*bands + k*samples + j)*elemSize;
+					bsqIndex = (k*samples*lines + i*samples + j)*elemSize;
+
+					for (int t=0; t<elemSize; t++)
+						dstData[bsqIndex + t] = matData[bilIndex + t];
+				}
+			}
+		}
+
+		dst.CopyWaveLength(mat.wavelength, bands);
+		return dst;
+	}
+
+	/**
+	 * @brief      transform bil to bip.
+	 * @param[in]  bil_mat    bil image.
+	 * @retval     bip_mat    bip image. 
+	 **/
+	HyMat bil2bip(HyMat mat)
+	{
+		hypercv_assert(mat.empty() == 0,"mat can not be empty");
+		hypercv_assert(mat.format == HYPERCV_BIL, "format must be bil");
+		
+		HyMat dst{mat.samples, mat.lines, mat.bands, mat.dataType, HYPERCV_BIP};
+
+		int samples = mat.samples;
+		int lines = mat.lines;
+		int bands = mat.bands;
+		int elemSize = mat.elemSize;
+
+		char* matData = (char*)mat.data;
+		char* dstData = (char*)dst.data;
+
+		long int bilIndex = 0, bipIndex = 0;
+
+		for (int i=0;i<lines; i++)
+		{
+			for (int j=0;j<samples; j++)
+			{
+				for (int k=0; k<bands; k++)
+				{
+					bilIndex = (i*samples*bands + k*samples + j)*elemSize;
+					bipIndex = (i*samples*bands + j*bands + k)*elemSize;
+
+					for (int t=0; t<elemSize; t++)
+						dstData[bipIndex + t] = matData[bilIndex + t];
+				}
+			}
+		}
+
+		dst.CopyWaveLength(mat.wavelength, bands);
+		return dst;
+	}
+
 
 }
 

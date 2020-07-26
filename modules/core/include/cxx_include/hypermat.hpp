@@ -12,7 +12,6 @@
 
 namespace hypercv
 {
-
 	extern void readHdr(const char* hdrPath, int& samples, int& lines, int& bands, int& dataType, int& format, float* wavelength);
 
 #if gdal_switch
@@ -355,6 +354,16 @@ namespace hypercv
 
 	}
 
+	inline void HyMat::convertTo(int _format)
+	{
+		hypercv_assert(_format != HYPERCV_BIL || _format != HYPERCV_BIP || _format != HYPERCV_BSQ, "HyMat format must be bil bsq bip");
+		
+		if(_format == format)
+			return;
+	
+	}
+
+
 	inline void HyMat::release()
 	{
 		if(data)
@@ -388,7 +397,8 @@ namespace hypercv
 		return mat;
 	}
 
-
+	extern HyMat bil2bsq(HyMat mat);
+	extern HyMat bil2bip(HyMat mat);
 }
 
 
