@@ -193,6 +193,49 @@ namespace hypercv
 		dst.CopyWaveLength(mat.wavelength, bands);
 		return dst;
 	}
+	/**
+	 * @brief      transform bsq to bil.
+	 * @param[in]  mat    bsq image.
+	 * @retval     bip_mat    bil image. 
+	 **/
+	HyMat bsq2bil(HyMat mat)
+	{
+		if(mat.format == HYPERCV_BIL)
+			return mat.copy();
+
+		hypercv_assert(mat.format == HYPERCV_BSQ, "input hyper mat's interleave must be bsq");
+
+		int samples   = mat.samples;
+		int lines     = mat.lines;
+		int bands     = mat.bands;
+		int elemSize  = mat.elemSize;
+
+		HyMat dst{samples, lines, bands, mat.dataType, HYPERCV_BIL};
+
+		char* matData = (char*)mat.data;
+		char* dstData = (char*)dst.data;
+
+		unsigned int bsqIndex = 0, bilIndex = 0;
+
+		for (int i=0;i<lines; i++)
+		{
+			for (int k=0; k<bands; k++)
+			{
+				for (int j=0;j<samples; j++)
+				{
+					bsqIndex = (k*samples*lines + i*samples + j)*elemSize;
+					bilIndex = (i*samples*bands + k*samples + j)*elemSize;
+
+					for (int t=0; t<elemSize; t++)
+						dstData[bilIndex + t] = matData[bsqIndex + t];
+				}
+			}
+		}
+
+		dst.CopyWaveLength(mat.wavelength, bands);
+
+		return dst;
+	}
 
 
 }

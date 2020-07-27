@@ -27,10 +27,10 @@ namespace hypercv
 			/* 
 			 * HYPER_MAT 
 			 * */
-			unsigned int lines;
-			unsigned int samples;
-			unsigned int bands;
-			unsigned int dataType;
+			int          lines;
+			int          samples;
+			int          bands;
+			int          dataType;
 			int          format;
 //todo 修改所有format 改成 int formt， HYPERCV_BIL HYPERCV_BIP HYPERCV_BSQ 
 
@@ -44,7 +44,7 @@ namespace hypercv
 			HyMat();
 
 			HyMat(int _samples, int _lines, int _bands, int _dataType, int _format);
-			HyMat(unsigned int _samples, unsigned int _lines, unsigned int _bands, unsigned int _dataType, int _format);
+			//HyMat(unsigned int _samples, unsigned int _lines, unsigned int _bands, unsigned int _dataType, int _format);
 
 			HyMat(int _samples, int _lines, int _bands, int _dataType, int _format, void* _data);			
 
@@ -87,12 +87,13 @@ namespace hypercv
 		create(_samples, _lines, _bands, _dataType, _format);
 	}
 
+/*
 	inline HyMat::HyMat(unsigned int _samples, unsigned int _lines, unsigned int _bands, unsigned int _dataType, int _format)
 	{
 
 		create(_samples, _lines, _bands, _dataType, _format);
 	}
-
+*/
 	inline HyMat::HyMat(int _samples, int _lines, int _bands, int _dataType, int _format, void* _data)			
 	{
 		create(_samples, _lines, _bands, _dataType, _format, _data, NULL);

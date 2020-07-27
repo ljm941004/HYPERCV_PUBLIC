@@ -177,7 +177,7 @@ hyper_mat bil2bip(hyper_mat bil_mat)
 
 /**
 * @brief      transform bsq to bil.
-* @param[in]  bil_mat    bsq image.
+* @param[in]  bsq_mat    bsq image.
 * @retval     bip_mat    bil image. 
 **/
 hyper_mat bsq2bil(hyper_mat bsq_mat)
