@@ -117,7 +117,7 @@ namespace hypercv
 	 * @param[in]  bil_mat    bil image.
 	 * @retval     bsq_mat    bsq image.
 	 **/
-	HyMat bil2bsq(HyMat mat)
+	HyMat bil2bsq(HyMat &mat)
 	{
 		hypercv_assert(mat.empty() == 0,"mat can not be empty");
 		hypercv_assert(mat.format == HYPERCV_BIL, "format must be bil");
@@ -158,7 +158,7 @@ namespace hypercv
 	 * @param[in]  bil_mat    bil image.
 	 * @retval     bip_mat    bip image. 
 	 **/
-	HyMat bil2bip(HyMat mat)
+	HyMat bil2bip(HyMat &mat)
 	{
 		hypercv_assert(mat.empty() == 0,"mat can not be empty");
 		hypercv_assert(mat.format == HYPERCV_BIL, "format must be bil");
@@ -198,7 +198,7 @@ namespace hypercv
 	 * @param[in]  mat    bsq image.
 	 * @retval     bip_mat    bil image. 
 	 **/
-	HyMat bsq2bil(HyMat mat)
+	HyMat bsq2bil(HyMat &mat)
 	{
 		if(mat.format == HYPERCV_BIL)
 			return mat.copy();
@@ -215,7 +215,7 @@ namespace hypercv
 		char* matData = (char*)mat.data;
 		char* dstData = (char*)dst.data;
 
-		unsigned int bsqIndex = 0, bilIndex = 0;
+		long int bsqIndex = 0, bilIndex = 0;
 
 		for (int i=0;i<lines; i++)
 		{
@@ -237,7 +237,134 @@ namespace hypercv
 		return dst;
 	}
 
+	/**
+	 * @brief      transform bsq to bip.
+	 * @param[in]  bil_mat    bsq image.
+	 * @retval     bip_mat    bip image. 
+	 **/
+	HyMat bsq2bip(HyMat &mat)
+	{
+		if(mat.format == HYPERCV_BIP)
+			return mat.copy();
 
+		hypercv_assert(mat.format == HYPERCV_BSQ, "input hyper mat's interleave must be bsq");
+
+		int samples   = mat.samples;
+		int lines     = mat.lines;
+		int bands     = mat.bands;
+		int elemSize  = mat.elemSize;
+
+		HyMat dst{samples, lines, bands, mat.dataType, HYPERCV_BIP};
+
+		char* matData = (char*)mat.data;
+		char* dstData = (char*)dst.data;
+
+	    long int bsqIndex = 0, bipIndex = 0;
+
+		for (int i=0;i<lines; i++)
+		{
+			for (int j=0;j<samples; j++)
+			{
+				for (int k=0; k<bands; k++)
+				{
+					bsqIndex = (k*samples*lines + i*samples + j)*elemSize;
+				    bipIndex = (i*samples*bands + j*bands + k)*elemSize;
+
+					for (int t=0; t<elemSize; t++)
+						dstData[bipIndex + t] = matData[bsqIndex + t];
+				}
+			}
+		}
+
+		dst.CopyWaveLength(mat.wavelength, bands);
+		return dst;
+	}
+
+	/**
+	 * @brief      transform bip to bsp.
+	 * @param[in]  bil_mat    bip image.
+	 * @retval     bip_mat    bsq image. 
+	 **/
+	HyMat bip2bsq(HyMat &mat)
+	{
+		if(mat.format == HYPERCV_BSQ)
+			return mat.copy();
+
+        hypercv_assert(mat.format == HYPERCV_BIP, "input hyper mat's interleave must be bip");
+
+		int samples   = mat.samples;
+		int lines     = mat.lines;
+		int bands     = mat.bands;
+		int elemSize  = mat.elemSize;
+
+		HyMat dst{samples, lines, bands, mat.dataType, HYPERCV_BSQ};
+
+		char* matData = (char*)mat.data;
+		char* dstData = (char*)dst.data;
+
+	    long int bsqIndex = 0, bipIndex = 0;
+
+		for (int i=0;i<lines; i++)
+		{
+			for (int j=0;j<samples; j++)
+			{
+				for (int k=0; k<bands; k++)
+				{
+			        bsqIndex = (k*samples*lines + i*samples + j)*elemSize;
+					bipIndex = (i*samples*bands + j*bands + k)*elemSize;
+
+					for (int t=0; t<elemSize; t++)
+						dstData[bsqIndex + t] = matData[bipIndex + t];
+				}
+			}
+		}
+
+		dst.CopyWaveLength(mat.wavelength, bands);
+		return dst;
+	}
+
+	/**
+	 * @brief      transform bip to bil .
+	 * @param[in]  bip_mat    bip image.
+	 * @retval     bil_mat    bil image. 
+	 **/
+	HyMat bip2bil(HyMat &mat)
+	{
+		if(mat.format == HYPERCV_BIL)
+			return mat.copy();
+
+        hypercv_assert(mat.format == HYPERCV_BIP, "input hyper mat's interleave must be bip");
+
+		int samples   = mat.samples;
+		int lines     = mat.lines;
+		int bands     = mat.bands;
+		int elemSize  = mat.elemSize;
+
+		HyMat dst{samples, lines, bands, mat.dataType, HYPERCV_BIL};
+
+		char* matData = (char*)mat.data;
+		char* dstData = (char*)dst.data;
+
+	    long int bilIndex = 0, bipIndex = 0;
+
+		for (int i=0;i<lines; i++)
+		{
+			for (int j=0;j<samples; j++)
+			{
+				for (int k=0; k<bands; k++)
+				{
+					bilIndex = (i*samples*bands + k*samples + j)*elemSize;
+				    bipIndex = (i*samples*bands + j*bands + k)*elemSize;
+
+					for (int t=0; t<elemSize; t++)
+						dstData[bilIndex + t] = matData[bipIndex + t];
+				}
+			}
+		}
+
+		dst.CopyWaveLength(mat.wavelength, bands);
+		return dst;
+	}
 }
 
 #endif

@@ -361,7 +361,78 @@ namespace hypercv
 		
 		if(_format == format)
 			return;
-	
+
+		char* srcData = (char*)data;
+		char* dstData = (char*)malloc(dataSize);
+
+		long int dstIndex, srcIndex; 
+
+		for (int i=0;i<lines; i++)
+		{
+			for (int j=0;j<samples; j++)
+			{
+				for (int k=0; k<bands; k++)
+				{
+					if(format == HYPERCV_BIL && _format == HYPERCV_BIP)
+					{
+						srcIndex = (i*samples*bands + k*samples + j)*elemSize;
+					    dstIndex = (i*samples*bands + j*bands + k)*elemSize;
+					}
+					else if(format == HYPERCV_BIL && _format == HYPERCV_BSQ)
+					{
+						srcIndex = (i*samples*bands + k*samples + j)*elemSize;
+						dstIndex = (k*samples*lines + i*samples + j)*elemSize;
+					}
+					else if(format == HYPERCV_BSQ && _format == HYPERCV_BIL)
+					{
+						dstIndex = (i*samples*bands + k*samples + j)*elemSize;
+						srcIndex = (k*samples*lines + i*samples + j)*elemSize;
+					}
+					else if(format == HYPERCV_BSQ && _format == HYPERCV_BIP)
+					{
+						dstIndex = (i*samples*bands + j*bands + k)*elemSize;
+						srcIndex = (k*samples*lines + i*samples + j)*elemSize;
+					}
+					else if(format == HYPERCV_BIP && _format == HYPERCV_BSQ)
+					{
+						srcIndex = (i*samples*bands + j*bands + k)*elemSize;
+						dstIndex = (k*samples*lines + i*samples + j)*elemSize;
+					}
+					else if(format == HYPERCV_BIP && _format == HYPERCV_BIL)
+					{
+						srcIndex = (i*samples*bands + j*bands + k)*elemSize;
+						dstIndex = (i*samples*bands + k*samples + j)*elemSize;
+					}
+
+					for (int t=0; t<elemSize; t++)
+						dstData[dstIndex + t] = srcData[srcIndex + t];
+				}
+			}
+		}
+
+		this->CopyData(dstData, dataSize);
+		free(dstData);
+
+		format = _format;
+
+		if(_format == HYPERCV_BIL)
+		{
+			interleave[0] = 'b';
+		    interleave[1] = 'i';
+			interleave[2] = 'l';
+		}
+		else if(_format == HYPERCV_BIP)
+		{
+			interleave[0] = 'b';
+		    interleave[1] = 'i';
+			interleave[2] = 'p';
+		}
+		else if(_format == HYPERCV_BSQ)
+		{
+			interleave[0] = 'b';
+		    interleave[1] = 's';
+			interleave[2] = 'q';
+		}
 	}
 
 
@@ -375,7 +446,6 @@ namespace hypercv
 		data = NULL;
 		wavelength = NULL;
 		samples = lines = bands = dataType = 0;
-
 
 	}
 
@@ -398,11 +468,19 @@ namespace hypercv
 		return mat;
 	}
 
-	extern HyMat bil2bsq(HyMat mat);
-	extern HyMat bil2bip(HyMat mat);
+	extern HyMat bil2bsq(HyMat &mat);
+
+	extern HyMat bil2bip(HyMat &mat);
+
+	extern HyMat bip2bil(HyMat &mat);
+
+	extern HyMat bip2bsq(HyMat &mat);
+
+	extern HyMat bsq2bip(HyMat &mat);
+
+	extern HyMat bsq2bil(HyMat &mat);
+
 }
-
-
 
 #endif 
 
