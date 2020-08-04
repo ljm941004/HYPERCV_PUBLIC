@@ -32,7 +32,7 @@ namespace hypercv
 			int          bands;
 			int          dataType;
 			int          format;
-//todo 修改所有format 改成 int formt， HYPERCV_BIL HYPERCV_BIP HYPERCV_BSQ 
+			//todo 修改所有format 改成 int format， HYPERCV_BIL HYPERCV_BIP HYPERCV_BSQ 
 
 			char         interleave[3];
 			void*        data;
@@ -54,16 +54,19 @@ namespace hypercv
 			void create(int _samples, int _lines, int _bands, int _dataType, int _format = HYPERCV_BSQ);
 			void create(int _samples, int _lines, int _bands, int _dataType, int _format, void* _data, float* wavelength= NULL);
 
-	        HyMat copy();
+			HyMat copy();
 			void CopyData(void* _data, long int _dataSize = 0);
 			void CopyWaveLength(float* _data, long int _bands = 0);
 
 			int empty();
+
 			void save(const char* filePath);
-	        void open(const char* imagePath, const char* hdrPath);
-	        void open(const char* path, int _samples, int _lines, int _bands, int _dataType, int _format);
+			void open(const char* imagePath, const char* hdrPath);
+			void open(const char* path, int _samples, int _lines, int _bands, int _dataType, int _format);
 
 			void convertTo(int _format);
+
+			HyMat range(int startRow, int startCol, int startBand, int endRow, int endCol, int endBand);
 
 			void release();
 
@@ -87,13 +90,13 @@ namespace hypercv
 		create(_samples, _lines, _bands, _dataType, _format);
 	}
 
-/*
-	inline HyMat::HyMat(unsigned int _samples, unsigned int _lines, unsigned int _bands, unsigned int _dataType, int _format)
-	{
+	/*
+	   inline HyMat::HyMat(unsigned int _samples, unsigned int _lines, unsigned int _bands, unsigned int _dataType, int _format)
+	   {
 
-		create(_samples, _lines, _bands, _dataType, _format);
-	}
-*/
+	   create(_samples, _lines, _bands, _dataType, _format);
+	   }
+	   */
 	inline HyMat::HyMat(int _samples, int _lines, int _bands, int _dataType, int _format, void* _data)			
 	{
 		create(_samples, _lines, _bands, _dataType, _format, _data, NULL);
@@ -466,6 +469,87 @@ namespace hypercv
 		HyMat mat;
 		mat.open(path, _samples, _lines, _bands, _dataType, _format);	
 		return mat;
+	}
+
+
+	inline HyMat HyMat::range(int startRow, int startCol, int startBand, int endRow, int endCol, int endBand)
+	{
+		hypercv_assert(startCol<endCol && startRow<endRow && startBand<endBand, "start col & start row & start band must < end col & end row & end band");
+
+		int newSamples = endCol - startCol;
+		int newLines = endRow - startRow;
+		int newBands = endBand - startBand;
+
+		HyMat dst{newSamples, newLines, newBands, dataType, format};
+
+		char* srcData = (char*)data;
+		char* dstData = (char*)dst.data;
+
+		int srcIndex =0, dstIndex =0;
+
+		switch(format)
+		{
+			case HYPERCV_BIL:
+				{
+					for (int i = startRow; i < endRow; i++)
+					{
+						for (int k = startBand; k < endBand; k++)
+						{
+							for (int j = startCol; j < endCol; j++)
+							{
+								srcIndex = (i * samples * bands + k * samples + j) * elemSize;
+								dstIndex = ((i - startRow) * newSamples * newBands + (k - startBand) * newSamples + j - startCol) * elemSize;
+
+								for (int t = 0; t < elemSize; t++)
+									dstData[dstIndex + t] = srcData[srcIndex + t];					
+							}
+						}
+					}
+
+				}
+				break;
+			case HYPERCV_BIP:
+				{
+					for (int i = startRow; i < endRow; i++)
+					{
+						for (int j = startCol; j < endCol; j++)
+						{
+							for (int k = startBand; k < endBand; k++)
+							{
+								srcIndex = (i * samples * bands + j * bands + k) * elemSize;
+								dstIndex = ((i - startRow) * newSamples * newBands + (j - startCol) * newBands + k - startBand) * elemSize;
+
+								for (int t = 0; t < elemSize; t++)
+									dstData[dstIndex + t] = srcData[srcIndex + t];					
+							}
+						}
+					}
+				}
+				break;
+			case HYPERCV_BSQ:
+				{
+					for (int k = startBand; k < endBand; k++)
+					{
+						for (int i = startRow; i < endRow; i++)
+						{
+							for (int j = startCol; j < endCol; j++)
+							{
+								srcIndex = (k * samples * lines + i * samples + j) * elemSize;
+								dstIndex = ((k - startBand) * newSamples * newLines + (i - startRow) * newSamples + j - startCol) * elemSize;
+
+								for (int t = 0; t < elemSize; t++)
+									dstData[dstIndex + t] = srcData[srcIndex + t];					
+							}
+						}
+					}
+
+				}
+				break;
+		}
+
+		dst.CopyWaveLength(wavelength + startBand, newBands);
+
+		return dst;
 	}
 
 	extern HyMat bil2bsq(HyMat &mat);
